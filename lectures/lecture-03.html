@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Лекція 3. Vue.js: Основи роботи з компонентами. Шаблони. Директиви</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/index.css">
+    <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="shower list">
+
+<header class="caption">
+    <h1>Лекція 3. Vue.js: Основи роботи з компонентами. Шаблони. Директиви</h1>
+    <p>
+        <a href="index.html">Назад до змісту лекцій</a>
+    </p>
+</header>
+
+<section class="slide">
+    <h2 class="shout">
+        Лекція 3. Vue.js: Основи роботи з компонентами. Шаблони. Директиви
+    </h2>
+</section>
+
+<section class="slide">
+    <h2>План лекції:</h2>
+    <ol>
+        <li>Що таке компонент Vue.js?</li>
+        <li>Структура компонента Vue</li>
+        <li>Шаблон. Робота з шаблонами Vue.</li>
+        <li>Директиви. Застосування директив.</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2>Основні концепції Vue.js</h2>
+    <ol>
+        <li><a href="https://ua.vuejs.org/guide/essentials/reactivity-fundamentals.html"
+               target="_blank">Реактивність</a>.
+        </li>
+        <li><a href="https://ua.vuejs.org/guide/essentials/forms.html#form-input-bindings">Двостороннє зв'язування</a>.
+        </li>
+        <li><a href="https://ua.vuejs.org/guide/essentials/template-syntax.html">Декларативність (Templates,
+            Directives)</a>.
+        </li>
+        <li><a href="https://ua.vuejs.org/guide/essentials/component-basics.html">Компоненти</a>.</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2>Що таке компонент Vue.js?</h2>
+    <p><b>Компоненти</b> — це блоки, які дозволяють нам розділити інтерфейс користувача (UI) на незалежні частини, які
+        можна багаторазово використовувати, і думати про кожну частину окремо. <a
+            href="https://ua.vuejs.org/guide/essentials/component-basics.html" target="_blank">Documentation.</a>
+    </p>
+    <img src="pictures/vue/3/component.png" alt="" width="650" style="display: block; margin: 0 auto">
+</section>
+
+<section class="slide">
+    <h2>Що таке компонент Vue.js?</h2>
+    <p>
+        Vue.js використовує мову шаблонів,
+        щоб визначити, як має виглядати
+        інтерфейс користувача. Ця мова
+        використовує комбінацію HTML, CSS і
+        JavaScript для визначення макета та
+        стилю програми.
+    </p>
+    <p>
+        <b>Компоненти</b> — це будівельні блоки,
+        які можна повторно
+        використовувати в усій програмі. Ці
+        компоненти створюються за
+        допомогою мови шаблонів Vue.js і
+        можуть використовуватися для
+        створення складних, динамічних
+        інтерфейсів користувача.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Оголошення компонента Vue</h2>
+    <p>
+        Ми визначаємо кожен компонент Vue у спеціальному файлі за допомогою розширення .vue, відомого як однофайловий
+        компонент (скорочено SFC, скорочено від (англ.) Single File Component).
+    </p>
+    <p>
+        Одно-файлові компоненти Vue (відомі також як файли *.vue, скорочено SFC) — це спеціальний формат файлу, який
+        дозволяє нам інкапсулювати шаблон, логіку та стиль компонента Vue в одному файл.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Структура компонента Vue</h2>
+    <div class="columns two">
+        <img src="pictures/vue/3/1.png" width="450" alt="">
+        <div>
+            <ol>
+                <li>Блок template</li>
+                <li>Блок script</li>
+                <li>Блок style</li>
+            </ol>
+            <p>
+                Як ми бачимо, Vue SFC є природним розширенням класичного тріо HTML, CSS і JavaScript.
+                Блоки template, script і style інкапсулюють та розміщують вид, логіку та стиль компонента в одному
+                файлі.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Шаблон (template). Робота з шаблонами Vue</h2>
+    <b>Інтерполяції</b>
+    <p>Найпростіший спосіб зв'язування даних — це
+        текстова інтерполяція з використанням
+        синтаксису Mustache (подвійних фігурних дужок):
+        <br>
+        <code>
+            <span>Повідомлення: {{ msg }}</span>
+        </code>
+    </p>
+    <p>
+        Вираз у фігурних дужках буде замінено значенням
+        властивості msg відповідного об'єкта даних.
+        Крім того, воно буде оновлено за будь-якої зміни цієї
+        властивості (динамічно).
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Шаблон (template). Робота з шаблонами Vue</h2>
+    <b>Сирий (rawHtml) HTML (Директива v-html)</b>.
+    <p>
+        Значення виразу у подвійних фігурних дужках підставляється як
+        простий текст, а не як HTML. Для HTML необхідно
+        використовувати директиву v-html:
+    </p>
+    <p>
+        <code>
+            &lt;p&gt;Інтерполяція: {{ rawHtml }}&lt;/p&gt;
+            <br>
+            &lt;p&gt;Директива v-html: &lt;span v-html="rawHtml"&gt;&lt;/span>&lt;/p&gt;
+        </code>
+    </p>
+    <p>Вміст тега span буде замінено значенням властивості rawHtml,
+        інтерпретованого як звичайний HTML — усі прив'язки даних ігноруються.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Шаблон (template). Робота з шаблонами Vue</h2>
+    <div style="font-size: 18px;">
+        <b>Запам'ятайте!</b>
+        <p>
+            Ви не можете використовувати v-html для вкладення шаблонів один
+            в одного, тому що рушій шаблонів Vue не ґрунтується на рядках. v-html вставляє готовий HTML як текст/DOM,
+            але
+            Vue не сприймає вставлений HTML як Vue-шаблон.
+        </p>
+        <code>
+            const content = '
+            &lt;button @click="handleClick">Натисни&lt;/button&gt;
+            '
+            <br>
+            &lt;div v-html="content">&lt;/div&gt;
+        </code>
+        <p>На перший погляд здається, що Vue має побачити: &lt;button @click="handleClick">Натисни&lt;/button&gt; і
+            підключити @click. Але цього
+            не станеться, оскільки v-html фактично каже браузеру: element.innerHTML = content</p>
+        <p>А звичайний Vue template працює інакше. Vue ще на етапі компіляції аналізує шаблон і перетворює його
+            приблизно на структуру, яка описує:
+            <mark>створи button → додай текст → зареєструй обробник click → handleClick.</mark>
+        </p>
+        <p>
+            Натомість потрібно використовувати компоненти, що дозволяють
+            поєднувати та перевикористовувати елементи UI.
+        </p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Шаблон (template). Робота з шаблонами Vue</h2>
+    <b>Атрибути</b>
+    <p>
+        Синтаксис подвійних фігурних дужок не працює з HTML-атрибутами.
+        Використовуйте замість нього директиву v-bind:
+    </p>
+    <p>
+        <code>
+            &lt;div v-bind:id="dynamicId"&gt;&lt;/div&gt;
+            <br>
+            bind - зв'язати
+        </code>
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Шаблон (template). Робота з шаблонами Vue</h2>
+    <b>Атрибути</b>
+    <p>
+        При використанні булевих атрибутів (коли їх наявність вже означає true)
+        v-bind працює трохи інакше. У цьому прикладі:
+    </p>
+    <p>
+        <code>
+            &lt;button v-bind:disabled="isButtonDisabled"&gt;Кнопка&lt;/button&gt;
+        </code>
+    </p>
+    <p>Якщо значенням isButtonDisabled буде null, undefined чи false, то атрибут
+        disabled не додасться до елемента &lt;button&gt;
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Шаблон (template). Робота з шаблонами Vue</h2>
+    <b>Використання виразів JavaScript</b>
+    <p>
+        Поки ми пов'язували дані з
+        властивостями у шаблонах лише за
+        простими ключами. Однак насправді
+        при зв'язуванні даних Vue підтримує
+        всю потужність виразів JavaScript:
+    </p>
+    <p>
+        <code>
+            {{ number + 1 }}
+            <br>
+            {{ ok ? 'YES' : 'NO' }}
+            <br>
+            {{ message.split('').reverse().join('') }}
+            <br>
+            &lt;div v-bind:id="'list-' + id"&gt;&lt;/div&gt;
+            <br>
+            &lt;div v-bind:id="`list-${id}`"&gt;&lt;/div&gt;
+        </code>
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Шаблон (template). Робота з шаблонами Vue</h2>
+    <p>Вирази будуть обчислені як JavaScript-код у області видимості відповідного
+        екземпляра Vue.</p>
+    <p>
+        Єдине обмеження в тому, що допускається лише один вираз, тому код нижче
+        не спрацює:
+    </p>
+    <p>
+        <code>
+            {{ const a = 1 }}
+            <br>
+            {{ if (ok) {return message} }}
+        </code>
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <b>Директиви</b>
+    <p>
+        Це спеціальні атрибути із префіксом v-.
+    </p>
+    <p>
+        Директива реактивно застосовує DOM зміни при оновленні значення цього виразу.
+    </p>
+    <p>
+        <code>
+            &lt;p v-if="seen"&gt;This is vue directive!&lt;/p&gt;
+        </code>
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <b>Директиви</b>
+    <p>
+        Деякі директиви можуть приймати
+        «аргумент», відокремлений від назви
+        директиви двокрапкою.
+    </p>
+    <p>
+        Наприклад, директива v-bind
+        використовується для реактивного
+        оновлення атрибутів HTML:
+        <br>
+        <code>
+            &lt;a v-bind:href="url"&gt;link&lt;/a&gt;
+        </code>
+    </p>
+    <p>
+        Іншим прикладом буде директива v-on,
+        яка відстежує події DOM:
+        <br>
+        <code>
+            &lt;button v-on:click="doSomething"&gt;Vue button click&lt;/button&gt;
+        </code>
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div class="columns two">
+        <div>
+            <b>Скорочення v-bind</b>
+            <br>
+            <img src="pictures/vue/3/2.png" alt="" width="90%">
+        </div>
+        <div>
+            <b>Скорочення v-on</b>
+            <br>
+            <img src="pictures/vue/3/3.png" alt="" width="90%">
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div class="columns two">
+        <div>
+            <b>Директива v-if</b>
+            <p>
+                Директива v-if використовується
+                для умовного відтворення блоку.
+                Блок буде відтворено, лише якщо
+                вираз директиви повертає
+                правдиве значення.
+            </p>
+            <code>
+                &lt;h1 v-if="flag"&gt;Hello&lt;/h1&gt;
+            </code>
+        </div>
+        <div>
+            <b>Директива v-else</b>
+            <p>Ви можете використовувати
+                директиву v-else, щоб вказати «блок
+                else» для v-if:
+            </p>
+            <code>
+                &lt;button @click="flag = !flag">&gt;Click&lt;/button&gt;
+                <br>
+                &lt;h1 v-if="flag"&gt;Hello!&lt;/h1&gt;
+                <br>
+                &lt;h1 v-else&gt;Bye!&lt;/h1&gt;
+            </code>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <b>Директива v-else-if</b>
+    <p>
+        Служить «блоком else if» для v-if.
+        Можна прив’язувати кілька разів:
+    </p>
+    <img src="pictures/vue/3/4.png" alt="" width="600">
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <b>Директива v-show</b>
+    <div style="font-size: 16px;">
+        <p>
+            Іншим варіантом умовного відображення елемента є директива v-show.
+            Використання в основному однакове: <br><code>
+            &lt;h1 v-show="show"&gt;Hello&lt;/h1&gt;
+        </code>
+        </p>
+        <p>
+            Різниця полягає в тому, що елемент з v-show завжди відображатиметься та
+            залишатиметься в DOM; v-show лише перемикає властивість CSS відображення
+            елемента.
+        </p>
+        <ul>
+            <li>v-if — елемент створюється/знищується.</li>
+            <li>v-show — елемент завжди існує, але його display перемикається.</li>
+        </ul>
+        <p>
+            <mark>v-if варто використовувати</mark>
+            , коли стан змінюється рідко або коли компонент/блок дорогий у створенні. Модальне
+            вікно не має сенсу постійно тримати в DOM, якщо користувач відкриває його раз на кілька хвилин.
+        </p>
+        <p>
+            <mark>v-show добре підходить для ситуацій</mark>
+            , коли елемент часто показується/ховається. Наприклад вкладки (tabs). При
+            перемиканні вкладок компоненти не потрібно щоразу створювати заново.
+        </p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div class="columns two">
+        <div>
+            <b>Директива v-for</b>
+            <p>
+                Використовуйте директиву v-for для відображення
+                списку елементів на основі масиву даних.
+            </p>
+            <p>Директива v-for має особливий
+                синтаксис запису:
+                item in items, де items — вихідний
+                масив, а item — посилання на
+                поточний елемент масиву.
+            </p>
+            <p style="font-size: 15px; color: red">Замість in роздільником можна використовувати of, як в ітераторах
+                JavaScript
+            </p>
+        </div>
+        <div>
+            <img src="pictures/vue/3/5.png" alt="" width="80%">
+            <img src="pictures/vue/3/6.png" alt="" width="230px">
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div class="columns two">
+        <div>
+            <b>Директива v-for для об’єкта</b>
+            <img src="pictures/vue/3/7.png" alt="" width="90%">
+        </div>
+        <div>
+            <b>Результат</b>
+            <img src="pictures/vue/3/8.png" alt="" width="90%">
+            <p>Порядок ітерації оснований на результаті виклику <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values"
+                target="_blank">Object.values()</a> на об'єкті.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div class="columns two">
+        <div>
+            <b>Директиви v-for і v-if</b>
+            <p style="font-size: 17px;">
+                Коли присутні разом на одному елементі.
+                Проблема тут виникає через те, що ви намагаєтесь отримати доступ до властивості isComplete у межах циклу
+                v-for
+                та умови v-if разом, що може створити деякі проблеми, якщо todos не повністю відображено або має
+                невизначені
+                значення. Тому не рекомендується використовувати v-if та v-for на тому ж самому елементі у зв'язку з їх
+                неявними пріоритетами. Якщо вони співіснують на одному й тому ж вузлі, v-if має вищий пріоритет, аніж
+                v-for. Це означає, що умова v-if не матиме доступу до змінних з області видимості v-for.
+            </p>
+        </div>
+        <img src="pictures/vue/3/9.png" alt="" width="95%">
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div class="columns two">
+        <div>
+            <b>Директиви v-for і v-if</b>
+            <p>
+                Більш надійний спосіб впоратися з цим полягає в тому, щоб переконатися, що масив належним
+                чином
+                повторюється та фільтрується перед рендерингом.
+            </p>
+        </div>
+        <img src="pictures/vue/3/10.png" alt="" width="80%">
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div class="columns two">
+        <div>
+            <b>Директиви v-for і v-if</b>
+            <p>
+                Використання <a href="https://ua.vuejs.org/api/built-in-special-elements.html#template" target="_blank">&lt;template&gt;</a>
+            </p>
+        </div>
+        <img src="pictures/vue/3/11.png" alt="" width="68%">
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Директиви. Застосування директив.</h2>
+    <div style="font-size: 16px">
+        <b>Підтримка стану за допомогою key</b>
+        <p>Коли Vue оновлює список елементів при рендері за допомогою v-for, за замовчуванням використовується стратегія
+            "заміна на місці". Якщо порядок елементів змінився, замість того, щоб переставляти елементи DOM відповідно
+            до нового порядку елементів, Vue замінить кожен елемент на місці, переконавшись, що показується те, що має
+            бути показано за тим чи іншим конкретним індексом.</p>
+        <p>Цей режим по замовчуванню є дієвим, але він лише підходить для ситуацій, коли вихідний результат рендеру
+            списку
+            не залежить від стану дочірнього компонента чи тимчасового стану DOM (як-от значення елементів форми).</p>
+        <p>Щоб підказати Vue, щоб він міг відстежувати ідентичність кожного вузла і таким чином повторно використовувати
+            та змінювати порядок наявних елементів, вам потрібно надати унікальний key атрибут для кожного елементу
+            списку:</p>
+        <img src="pictures/vue/3/12.png" alt="" width="">
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Резюме</h2>
+    <ul>
+        <li>Компоненти — це будівельні блоки, які можна повторно використовувати в усій
+            програмі (<a href="https://ua.vuejs.org/guide/essentials/component-basics.html" target="_blank">Docs</a>).
+        </li>
+        <li> Компоненти створюються за допомогою мови шаблонів Vue.js і можуть
+            використовуватися для створення складних, динамічних інтерфейсів користувача
+        </li>
+        <li>Директиви — це спеціальні атрибути із префіксом v-. (<a
+            href="https://ua.vuejs.org/api/built-in-directives.html" target="_blank">Docs</a>)
+        </li>
+        <li><a href="https://ua.vuejs.org/tutorial/" target="_blank">Tutorial</a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Дякую за увагу!</h2>
+</section>
+
+<footer class="badge">
+    <a href="https://github.com/Computer-Science-Department-ChNU/client-web-systems" target="_blank">Fork me on
+        GitHub</a>
+</footer>
+
+<div class="progress"></div>
+
+<script src="node_modules/@shower/core/dist/index.js"></script>
+</body>
+</html>
