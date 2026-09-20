@@ -24,12 +24,17 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
       /*
+      Асинхронне завантаження компоненту.
       AboutView.vue не завантажується одразу. Спочатку Vue Router отримує функцію:
       А коли користувач переходить /about:
       1 - Router викликає import()
       2 - завантажується About.[hash].js
       3 - AboutView монтується
       Це називається lazy loading / route-level code splitting.
+
+      Асинхронне завантаження доцільно використовувати
+      для другорядних або рідко використовуваних компонентів,
+      щоб оптимізувати продуктивність застосунку.
       Приклад коли є 20 сторінок.
        */
     },
