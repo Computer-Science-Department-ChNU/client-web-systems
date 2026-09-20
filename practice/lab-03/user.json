@@ -1,0 +1,31 @@
+{
+    "id": 1,
+    "gender": "female",
+    "name": {
+        "title": "Mrs",
+        "first": "Emma",
+        "last": "Lampi"
+    },
+    "location": {
+        "street": {
+            "number": 2304,
+            "name": "Siilitie"
+        },
+        "city": "Hausjärvi",
+        "state": "Uusimaa",
+        "country": "Finland",
+        "postcode": 98555,
+        "timezone": {
+            "offset": "+8:00",
+            "description": "Beijing, Perth, Singapore, Hong Kong"
+        }
+    },
+    "email": "emma.lampi@example.com",
+    "dob": {
+        "date": "2001-03-08T01:39:19.084Z",
+        "age": 25
+    },
+    "phone": "02-689-410",
+    "cell": "043-730-12-94",
+    "picture": "https://randomuser.me/api/portraits/women/87.jpg"
+}
