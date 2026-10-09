@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Лекція 6. Vue.js: Основи роботи з компонентами: v-model, forms, slots.</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/index.css">
+    <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="shower list">
+
+<header class="caption">
+    <h1>Лекція 6. Vue.js: Основи роботи з компонентами: v-model, forms, slots.</h1>
+    <p>
+        <a href="index.html">Назад до змісту лекцій</a>
+    </p>
+</header>
+
+<section class="slide">
+    <h2 class="shout">
+        Лекція 6. Vue.js: Основи роботи з компонентами: v-model, forms, slots.
+    </h2>
+</section>
+
+<section class="slide">
+    <h2>План лекції:</h2>
+    <ol>
+        <li>Потік даних між компонентами.</li>
+        <li>v-model на нативних елементах.</li>
+        <li>v-model на компонентах.</li>
+        <li>Форми. Стан форми. Компоненти-поля форми.</li>
+        <li>Що таке слоти?</li>
+        <li>Приклад застосування слотів в компонентах.</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2>Чим для нас, як розробників, добрий Vue?</h2>
+    <ul>
+        <li>
+            Філософія Vue побудована на максимальному повторюванні вже відомих js-розробнику речей або речей які стануть
+            стандартом (наприклад vue-компонента це html атрибути).
+        </li>
+        <li>HTML first підхід</li>
+        <li>
+            Трансклюзія - передача одного компонента в інший
+            <b>(концепція slot-ів)</b> - це частина специфікації web-components. Тобто, базування на стандартах - це
+            круто!
+        </li>
+        <li>
+            Система реактивності, яка перемальовує UI тоді коли треба. Нам не треба думати як буде він
+            перемальовуватися, не думати о проблемах з performance.
+        </li>
+        <li>Computed властивості, watchers (слідкувати за зміною конкретної реактивної властивості).</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Чим для нас, як розробників, добрий Vue?</h2>
+    <ul>
+        <li>Tooling - набір інструментів і утиліт, які спрощують розробку, тестування, відлагодження та збірку проектів
+            на Vue.js.
+        </li>
+        <li>Інтеграція Vue застосунку в готовий проект (опитувальник, графік з інтерактивністю на б.я. сторінці
+            ресурсу).
+        </li>
+        <li>
+            Single-File Component (SFC): template, script and style.
+        </li>
+        <li>Vue devtools (<a href="https://devtools.vuejs.org/" target="_blank">https://devtools.vuejs.org/</a>)</li>
+        <li>Документація <a href="https://ua.vuejs.org/" target="_blank">https://ua.vuejs.org/</a></li>
+        <li>Консистентна (узгоджена) і визначена екосистема.</li>
+        <li>Фреймворк це інструмент бізнесу.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Tooling</h2>
+    <ul>
+        <li>
+            Клієнтські інструменти для налаштування проекту (Vue CLI (in Maintenance Mode), Create vue).
+            <b>Maintenance Mode</b> означає, що більше не буде активного розвитку нових функцій, і фокус переміщено на
+            виправлення критичних помилок і проблем із безпекою.
+            <br>
+            Create vue - використовує Vite (<a href="https://vite.dev/" target="_blank">https://vite.dev/</a>, <a
+            href="https://github.com/vitejs/vite">https://github.com/vitejs/vite - 67.9k stars</a>).
+            <br>
+            Vue CLI - використовує webpack - <a href="https://github.com/webpack/webpack"
+                                                target="_blank">https://github.com/webpack/webpack - 64.6k stars</a>.
+        </li>
+        <li>Лінтинг і форматування коду.</li>
+        <li>Тестування.</li>
+        <li>Розширення для відлагодження (Vue Devtools).</li>
+        <li>Інтеграція з системами управління глобальним станом (Vuex, Pinia).</li>
+        <li>Інструменти для роботи з маршрутами (Vue Router).</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Консистентна і визначена екосистема?</h2>
+    <h3>Консистентність (узгодженість)</h3>
+    <ul>
+        <li>Однотипні API та патерни</li>
+        <li>Офіційні інструменти</li>
+        <li>Стабільність і передбачуваність (підтримка -> оновлення -> сумісність)</li>
+    </ul>
+    <h3>Визначеність (структурованість):</h3>
+    <ul>
+        <li>Єдина архітектура (SFC)</li>
+        <li>Офіційні рішення для ключових завдань (Vue Router, Vuex / Pinia)</li>
+        <li>Чітка документація</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Що нам дає консистентна і визначена екосистема?</h2>
+    <ul>
+        <li><b>Легке навчання і підтримка проектів</b> - чітка структура і взаємодія між інструментами робить Vue
+            доступним для
+            нових розробників і зрозумілим для великих команд.
+        </li>
+        <li><b>Мінімізація помилок і конфліктів</b> - використовуючи офіційні інструменти, розробники рідше стикаються з
+            проблемами сумісності або конфліктів між бібліотеками.
+        </li>
+        <li><b>Прискорена розробка</b> - оскільки багато рішень вже запропоновано і стандартизовано, можна зосередитися
+            на
+            написанні бізнес-логіки, а не на налаштуванні інструментів.
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Чому?</h2>
+    <img src="pictures/vue/6/2.png" alt="" width="700" style="display: block; margin: 0 auto">
+</section>
+
+<section class="slide">
+    <h2>Навіщо нам компоненти?</h2>
+    <div class="columns two">
+        <div><img src="pictures/vue/6/3.png" alt="" width="100%"></div>
+        <div>
+            <img src="pictures/vue/6/4.png" alt="" width="100%">
+            <p style="font-size: 18px;">Тепер у компонентів є звязки і ці зв'язки необхідно описати! Тобто які дані
+                приходять, а які
+                виходять (props, emits) - описуємо інтерфейс компонента.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Навіщо нам компоненти?</h2>
+    <p>
+        Компоненти, були придумані не для того, щоб знизити складність системи. Вони були придумані для того, щоб
+        розділити систему на частини і дати можливість описати інтерфейси цих частин.
+    </p>
+    <p>
+        <b>Інтерфейс</b> - це узгодженість, по якому елементи системи (компоненти), взаємодіють між собою.
+        Відповідно, кожен компонент описує у світі Vue, що у нього на вході і що в нього на виході.
+        Такі інтерфейси роблять систему самодокументованою!
+    </p>
+    <p>
+        Концепція компоненти - спосіб скрити складність.
+    </p>
+    <p>
+        Перевикористання - це інструмент боротьби зі складністю!
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Навіщо нам компоненти?</h2>
+    <p><b>Реальність на проекті:</b></p>
+    <ul>
+        <li>є маленький компонент</li>
+        <li>хтось додав фільтр</li>
+        <li>хтось додав пагінацію</li>
+        <li>хтось додав збереження стану в url</li>
+        <li>хтось завіз новий стан в щось</li>
+        <li>... і все компонент виріс!</li>
+    </ul>
+    <p>
+        <b>Тому важливо:</b> навчитися як розбивати і що розбивати!</p>
+    <p>Умовно кажучи, ми беремо кусочок функціональності і намагаємося її ізолювати.</p>
+</section>
+
+<section class="slide">
+    <h2>Навіщо нам компоненти?</h2>
+    <p>Що необхідно далі:</p>
+    <ul>
+        <li>Дотримуватися консистентності коду по проекту:
+            &lt;SomeComponentName/&gt;
+            - PascalCase,
+            &lt;some-component-name/&gt;
+            - kebab-case
+            <br>
+            Чи існують теги в HTML із 2-х слів? "some-compoment" - коли бачимо ось так, то це завжди користувацький
+            елемент.
+        </li>
+        <li>
+            Привчатись строго типізувати компоненти!
+        </li>
+        <li>
+            Описуйте ваші очікування від подій!
+        </li>
+        <li style="color: orangered">
+            Важливо!
+            Кількість часу яку ви тратите на вирішення б.я. задачі в процесі навчання не є показником! Не треба спішити,
+            треба свідомо все робити! => Навик не допускати
+            помилку більше 2-х разів!
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Потік даних між компонентами</h2>
+    <p>Принцип: props — вниз, події — вгору. Дочірній компонент не змінює props, а повідомляє батька через emit.</p>
+    <img src="pictures/vue/6/5.png" alt="" width="530">
+    <p>Це «двосторонній зв'язок, зібраний вручну»: :count + @update. Перевага — єдине джерело істини, легко
+        відлагоджувати. Мутація prop у дочірньому компоненті дає warning; мутація вкладених полів об'єкта-prop технічно
+        працює, але це антипатерн.</p>
+    <p>v-model - автоматизує цю пару «prop + подія».</p>
+</section>
+
+<section class="slide">
+    <h2>v-model на нативних елементах</h2>
+    <img src="pictures/vue/6/6.png" alt="" width="400">
+    <p>Що саме «під капотом» залежить від елемента:</p>
+    <ul>
+        <li>text, textarea — prop value, подія input;</li>
+        <li>checkbox, radio — prop checked, подія change;</li>
+        <li>select — prop value, подія change.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>v-model на нативних елементах</h2>
+    <img src="pictures/vue/6/7.png" alt="" width="330">
+</section>
+
+<section class="slide">
+    <h2>v-model на компонентах</h2>
+    <img src="pictures/vue/6/8.png" alt="" width="830">
+</section>
+
+<section class="slide">
+    <h2>defineModel() (Vue 3.4+)</h2>
+    <p>Макрос прибирає шаблонний код — повертає ref, який синхронізується з батьком:</p>
+    <img src="pictures/vue/6/9.png" alt="" width="680">
+    <p>Читання model.value дає значення від батька, запис — емітить update:modelValue. Якщо батько не передав v-model,
+        компонент працює з локальним станом.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Приклад: QuantityInput</h2>
+    <img src="pictures/vue/6/10.png" alt="" width="780">
+</section>
+
+<section class="slide">
+    <h2>Стан форми</h2>
+    <p>Один типізований об'єкт замість десятка окремих ref:</p>
+    <img src="pictures/vue/6/11.png" alt="" width="780">
+</section>
+
+<section class="slide">
+    <h2>Submit</h2>
+    <img src="pictures/vue/6/12.png" alt="" width="780">
+    <ul>
+        <li>обробник вішаємо на @submit, а не на @click кнопки — так працює й Enter;</li>
+        <li>.prevent скасовує перезавантаження сторінки;</li>
+        <li>novalidate вимикає нативні підказки браузера, якщо валідуємо самі.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Валідація через computed</h2>
+    <img src="pictures/vue/6/13.png" alt="" width="780">
+    <p>
+        UX-правило: не показувати помилки, поки користувач не взаємодіяв із полем. Для цього зберігають touched
+        (виставляється на blur) і прапорець submitted (після першої спроби відправки).
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Асинхронна відправка</h2>
+    <img src="pictures/vue/6/14.png" alt="" width="380">
+</section>
+
+<section class="slide">
+    <h2>Типові помилки</h2>
+    <ul>
+        <li>v-model на prop: <input v-model="props.title"> — мутація prop. Використовуйте defineModel або локальну
+            копію.
+        </li>
+        <li>v-model на змінну v-for: v-for="item in items" + v-model="item" для примітивів не працює — зв'язуйте з
+            items[i].
+        </li>
+        <li>Забули .prevent на submit — сторінка перезавантажується.</li>
+        <li>Кнопка без type="button" у формі — випадковий submit.</li>
+        <li>Деструктуризація reactive (const { email } = form) — втрата реактивності; використовуйте toRefs або
+            звертайтесь через form.email.
+        </li>
+        <li>Мутація об'єкта в defineModel: для об'єктів і масивів емітьте новий об'єкт, а не змінюйте вкладені поля.
+        </li>
+        <li>Рядок замість числа: без .number або type="number" у моделі лишиться рядок.</li>
+        <li>Дублікати id у повторюваних компонентах — використовуйте useId().</li>
+    </ul>
+</section>
+
+
+<section class="slide">
+    <h2>Що таке слоти?</h2>
+    <p>
+        Slot - ключова особливість Vue. У Vue 3 slot є потужною функцією для
+        створення компонентів і передачі вмісту між
+        ними.
+    </p>
+    <p>
+        Слоти дозволяють визначити заповнювач у
+        шаблоні компонента, який можна заповнити
+        вмістом із батьківського компонента.
+    </p>
+    <p>
+        Слоти є потужною функцією у Vue
+        3, яка дозволяє створювати гнучкі
+        компоненти для багаторазового
+        використання. Вони дозволяють
+        створити більш модульний код і
+        спрощують керування поведінкою
+        складних компонентів.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Що таке слоти?</h2>
+    <p>
+        Ми поговоримо про такі типи слотів:
+    </p>
+    <ul>
+        <li><b>default slot:</b> Cлоти за замовчуванням дозволяють передавати вміст
+            до основної області вмісту компонента.
+        </li>
+        <li><b>named slot:</b> Іменовані слоти дозволяють передавати вміст до
+            певного заповнювача в шаблоні компонента.
+        </li>
+        <li><b>named scoped slot:</b> Іменовані масштабовані слоти дозволяють передавати
+            дані від батьківського компонента до дочірнього
+            компонента за допомогою іменованого слота.
+        </li>
+        <li>
+            <b>dynamic slot name:</b> Динамічні слоти дозволяють використовувати
+            обчислене (динамічне) значення як ім’я слотів
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Що таке слоти?</h2>
+    <p style="text-align: center">
+        <a style="font-size: 200px; font-weight: 700;" href="https://ua.vuejs.org/guide/components/slots.html"
+           target="_blank">Слоти</a>
+    </p>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Дякую за увагу!</h2>
+</section>
+
+<footer class="badge">
+    <a href="https://github.com/Computer-Science-Department-ChNU/client-web-systems" target="_blank">Fork me on
+        GitHub</a>
+</footer>
+
+<div class="progress"></div>
+
+<script src="node_modules/@shower/core/dist/index.js"></script>
+</body>
+</html>
