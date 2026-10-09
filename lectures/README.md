@@ -6,6 +6,8 @@
 - [**Лекція 2.** Знайомство з фреймворком Vue.js](lecture-02.html)
 - [**Лекція 3.** Vue.js: Основи роботи з компонентами. Шаблони. Директиви](lecture-03.html)
 - [**Лекція 4.** Vue.js: Options API vs Composition API. Основи реактивності](lecture-04.html)
+- [**Лекція 5.** Vue.js: Основи роботи з компонентами: props, event handling, watchers](lecture-05.html)
+- [**Лекція 6.** Vue.js: Основи роботи з компонентами: v-model, forms, slots](lecture-06.html)
 
 ## Локальний запуск
 
