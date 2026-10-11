@@ -130,17 +130,47 @@ Diffing, Signals), менеджмент життєвого циклу компо
 - Маршрутизація та поділ коду
 - Антипатерни та підсумки
 
-### Лекція 10.
+### Лекція 10. React: React Fundamentals та ментальна модель React
 
-### Лекція 11.
+- Що таке React і як він відрізняється від Vue та інших frontend-фреймворків?
+- Як побудована компонентна модель React та як створювати UI за допомогою JSX/TSX?
+- Як у React відбувається передача даних між компонентами через props та state?
+- Як працює rendering у React та чому зміна state призводить до оновлення UI?
 
-### Лекція 12.
+### Лекція 11. React: State, Effects та архітектура компонентів
 
-### Лекція 13.
+- Як організувати state у React та правильно визначити, де він повинен зберігатися?
+- Як компоненти обмінюються даними та як вирішувати проблеми shared state і props drilling?
+- Що таке side effects у React і як працює useEffect?
+- Як винести повторно використовувану stateful-логіку за допомогою Custom Hooks?
 
-### Лекція 14.
+### Лекція 12. React: Робота з API та CRUD-застосунками
 
-### Лекція 15. 
+- Як React-застосунок взаємодіє з backend та REST API?
+- Як організувати асинхронну роботу з API та обробку loading/success/error states?
+- Як реалізувати CRUD-операції у React-застосунку?
+- Як організувати API layer та роботу з HTTP-клієнтами, зокрема Axios
+
+### Лекція 13. React: Routing та архітектура React-застосунку
+
+- Навіщо SPA потрібна маршрутизація та як працює React Router?
+- Як реалізувати складну навігацію: route parameters, nested routes, layouts та protected routes?
+- Як організувати структуру React-застосунку та розподілити відповідальність між компонентами?
+- Як використовувати component composition для побудови масштабованого UI?
+
+### Лекція 14. React: Forms, Validation та Authentication
+
+- Як працюють форми в React та чим відрізняються controlled і uncontrolled components?
+- Як реалізувати валідацію та обробку помилок у формах?
+- Як побудувати authentication flow у React-застосунку?
+- Як працюють JWT, authentication state та protected routes на frontend
+
+### Лекція 15. React: State Management та Production React
+
+- Коли useState і Context вже недостатньо та навіщо потрібен глобальний state management?
+- Як використовувати Zustand для управління client state?
+- Чим client state відрізняється від server state та як TanStack Query вирішує проблеми роботи з API-даними?
+- Як масштабувати та оптимізувати React-застосунок за допомогою Custom Hooks, component patterns і performance techniques?
 
 
 
