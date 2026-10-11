@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <title>Лекція 8. Composables, повторне використання логіки зі станом, State manager Pinia</title>
+    <title>Лекція 8. Vue.js: Composables, повторне використання логіки зі станом, State manager Pinia</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/index.css">
@@ -10,7 +10,7 @@
 <body class="shower list">
 
 <header class="caption">
-    <h1>Лекція 8. Composables, повторне використання логіки зі станом, State manager Pinia</h1>
+    <h1>Лекція 8. Vue.js: Composables, повторне використання логіки зі станом, State manager Pinia</h1>
     <p>
         <a href="index.html">Назад до змісту лекцій</a>
     </p>
@@ -18,7 +18,7 @@
 
 <section class="slide">
     <h2 class="shout">
-        Лекція 8. Composables, повторне використання логіки зі станом, State manager Pinia
+        Лекція 8. Vue.js: Composables, повторне використання логіки зі станом, State manager Pinia
     </h2>
 </section>
 
@@ -45,7 +45,7 @@
     </p>
     <p>Дублювання логіки - копіювати блок «loading/error/data» у кожен компонент, який робить запит:</p>
     <div class="columns two">
-        <img src="pictures/vue/08/1.png" alt="" width="90%">
+        <img src="pictures/vue/8/1.png" alt="" width="90%">
         <p>Той самий код з іншим URL з'явиться в UserList.vue, OrderList.vue тощо. Зміна поведінки означає правки в
             кількох місцях.</p>
     </div>
@@ -55,7 +55,7 @@
     <h2>Props drilling</h2>
     <p>Дані потрібні глибоко в дереві, а проміжні компоненти змушені їх «пропускати»:</p>
     <div class="columns two">
-        <img src="pictures/vue/08/2.png" alt="" width="100%">
+        <img src="pictures/vue/8/2.png" alt="" width="100%">
         <div>
             <b>Що з цим можна зробити:</b>
             <ul>
@@ -90,8 +90,8 @@
 <section class="slide">
     <h2>Composables</h2>
     <div class="columns two">
-        <img src="pictures/vue/08/4.png" alt="" width="100%">
-        <img src="pictures/vue/08/3.png" alt="" width="100%">
+        <img src="pictures/vue/8/4.png" alt="" width="100%">
+        <img src="pictures/vue/8/3.png" alt="" width="100%">
     </div>
     <p>Важливо кожен виклик useCounter() створює власний count. Два компоненти з цим composable мають два незалежні
         лічильники.</p>
@@ -118,9 +118,9 @@
 <section class="slide">
     <h2>Composable useFetch з реактивним аргументом</h2>
     <div class="columns two">
-        <img src="pictures/vue/08/5.png" alt="" width="100%">
+        <img src="pictures/vue/8/5.png" alt="" width="100%">
         <div>
-            <img src="pictures/vue/08/6.png" alt="" width="100%">
+            <img src="pictures/vue/8/6.png" alt="" width="100%">
             <div style="font-size: 11px;">
                 <b>Зверніть увагу на три речі:</b>
                 <ul>
@@ -137,7 +137,7 @@
 <section class="slide">
     <h2>Життєвий цикл і прибирання ресурсів</h2>
     <div class="columns two">
-        <img src="pictures/vue/08/7.png" alt="" width="100%">
+        <img src="pictures/vue/8/7.png" alt="" width="100%">
         <ul>
             <li>composable, що підписується на подію, таймер чи WebSocket, зобов'язаний прибрати підписку, інакше буде
                 витік пам'яті;
@@ -150,11 +150,11 @@
 <section class="slide">
     <h2>Спільний стан через composable та його обмеження</h2>
     <div class="columns two">
-        <img src="pictures/vue/08/8.png" alt="" width="105%">
+        <img src="pictures/vue/8/8.png" alt="" width="105%">
         <div>
-            <img src="pictures/vue/08/9.png" alt="" width="100%">
+            <img src="pictures/vue/8/9.png" alt="" width="100%">
             <br>
-            <img src="pictures/vue/08/10.png" alt="" width="100%">
+            <img src="pictures/vue/8/10.png" alt="" width="100%">
         </div>
     </div>
 </section>
