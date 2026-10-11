@@ -8,6 +8,8 @@
 - [**Лекція 4.** Vue.js: Options API vs Composition API. Основи реактивності](lecture-04.html)
 - [**Лекція 5.** Vue.js: Основи роботи з компонентами: props, event handling, watchers](lecture-05.html)
 - [**Лекція 6.** Vue.js: Основи роботи з компонентами: v-model, forms, slots](lecture-06.html)
+- [**Лекція 7.** Vue.js: Маршрутизація у Vue.js](lecture-07.html)
+- [**Лекція 8.** Vue.js: Composables, повторне використання логіки зі станом, State manager Pinia](lecture-08.html)
 
 ## Локальний запуск
 

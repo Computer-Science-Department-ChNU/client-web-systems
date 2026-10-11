@@ -288,7 +288,7 @@
 <section class="slide">
     <h2>Типові помилки</h2>
     <ul>
-        <li>v-model на prop: <input v-model="props.title"> — мутація prop. Використовуйте defineModel або локальну
+        <li>v-model на prop: &lt;input v-model="props.title"&gt; — мутація prop. Використовуйте defineModel або локальну
             копію.
         </li>
         <li>v-model на змінну v-for: v-for="item in items" + v-model="item" для примітивів не працює — зв'язуйте з
@@ -305,7 +305,6 @@
         <li>Дублікати id у повторюваних компонентах — використовуйте useId().</li>
     </ul>
 </section>
-
 
 <section class="slide">
     <h2>Що таке слоти?</h2>
