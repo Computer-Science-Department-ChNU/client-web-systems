@@ -14,6 +14,46 @@ ij_javascript_force_semicolon_style = true
 ij_javascript_enforce_trailing_comma = whenmultiline
 ij_javascript_use_semicolon_after_statement = false
 
+[*.yml]
+indent_size = 2
+
+[{package,tsconfig}.json]
+indent_size = 2
+
+[*.{ts,tsx,vue}]
+max_line_length = 150
+ij_typescript_force_semicolon_style = true
+ij_typescript_spaces_within_object_literal_braces = true
+ij_typescript_if_brace_force = if_multiline
+ij_typescript_for_brace_force = if_multiline
+ij_typescript_enforce_trailing_comma = whenmultiline
+ij_typescript_force_quote_style = true
+ij_typescript_use_double_quotes = false
+ij_typescript_align_imports = false
+ij_typescript_import_sort_members = true
+ij_typescript_import_sort_module_name = true
+ij_typescript_import_use_node_resolution = true
+ij_typescript_blank_lines_after_imports = 1
+ij_typescript_blank_lines_around_class = 1
+ij_typescript_blank_lines_around_field = 1
+ij_typescript_blank_lines_around_field_in_interface = 0
+ij_typescript_blank_lines_around_function = 1
+ij_typescript_blank_lines_around_method = 1
+ij_typescript_blank_lines_around_method_in_interface = 1
+ij_typescript_block_brace_style = end_of_line
+ij_typescript_indent_case_from_switch = true
+ij_typescript_indent_chained_calls = true
+ij_typescript_space_after_colon = true
+ij_typescript_space_after_comma = true
+ij_typescript_space_before_colon = true
+ij_typescript_spaces_within_imports = true
+ij_typescript_use_path_mapping = always
+ij_typescript_use_semicolon_after_statement = true
+ij_typescript_special_else_if_treatment = true
+ij_typescript_keep_simple_methods_in_one_line = true
+ij_typescript_keep_simple_blocks_in_one_line = true
+
+
 [*.md]
 trim_trailing_whitespace = false
 max_line_length = off

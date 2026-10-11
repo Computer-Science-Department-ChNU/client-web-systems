@@ -1,11 +1,11 @@
-import './assets/main.css'
+import './assets/main.css';
 
-import {createApp} from 'vue'
-import {createPinia} from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
 // імпортуємо кореневий компонент програми з одно-файлового компонента.
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
+import router from './router';
 
 /*
 Кожен додаток Vue починається зі створення нового екземпляру додатку
@@ -14,13 +14,13 @@ import router from './router'
 App - обʼєкт, який ми передаємо в createApp є, по суті, компонентом.
 Кожен додаток вимагає "кореневого компонента", який може містити інші дочірні компоненти.
  */
-const app = createApp(App)
-
+const app = createApp(App);
+const pinia = createPinia();
 /*
 Реєстрація додаткових ресурсів
  */
-app.use(createPinia())
-app.use(router)
+app.use(router);
+app.use(pinia);
 
 /*
 Екземпляр додатка не буде нічого рендерити, допоки метод .mount() не буде викликаний.
@@ -34,4 +34,4 @@ DOM елементом або рядком-селектором: <div id="app"><
 Варто зазначити, що він, на відміну від методів реєстрації додаткових ресурсів,
 повертає екземпляр кореневого компонента замість екземпляра додатка.
  */
-app.mount('#app')
+app.mount('#app');
