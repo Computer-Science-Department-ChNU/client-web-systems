@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">fetch vs Axios — порівняння</text>
+
+  <!-- fetch column -->
+  <rect x="20" y="55" width="330" height="310" rx="8" fill="#1a1a2e" stroke="#4a9eff"/>
+  <text x="185" y="80" text-anchor="middle" fill="#4a9eff" font-family="monospace" font-size="15" font-weight="bold">fetch() — вбудований</text>
+  <text x="40" y="110" fill="#51cf66" font-family="monospace" font-size="12">+ Без встановлення (нативний)</text>
+  <text x="40" y="130" fill="#51cf66" font-family="monospace" font-size="12">+ Легкий, нульові залежності</text>
+  <text x="40" y="150" fill="#51cf66" font-family="monospace" font-size="12">+ Підтримка в React Native</text>
+  <text x="40" y="180" fill="#ff6b6b" font-family="monospace" font-size="12">- Не кидає error на 4xx/5xx</text>
+  <text x="40" y="200" fill="#ff6b6b" font-family="monospace" font-size="12">- Ручний JSON.parse()</text>
+  <text x="40" y="220" fill="#ff6b6b" font-family="monospace" font-size="12">- Немає baseURL / interceptors</text>
+  <text x="40" y="240" fill="#ff6b6b" font-family="monospace" font-size="12">- Немає timeout</text>
+  <text x="40" y="260" fill="#ff6b6b" font-family="monospace" font-size="12">- Більш багатослівний код</text>
+  <text x="40" y="295" fill="#888" font-family="monospace" font-size="11">fetch(url)</text>
+  <text x="40" y="312" fill="#888" font-family="monospace" font-size="11">  .then(r =&gt; { if(!r.ok) throw; return r.json() })</text>
+  <text x="40" y="330" fill="#888" font-family="monospace" font-size="11">  .then(data =&gt; ...)</text>
+  <text x="40" y="348" fill="#888" font-family="monospace" font-size="11">  .catch(err =&gt; ...)</text>
+
+  <!-- Axios column -->
+  <rect x="370" y="55" width="330" height="310" rx="8" fill="#1a1a2e" stroke="#d19a66"/>
+  <text x="535" y="80" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="15" font-weight="bold">axios — HTTP-клієнт</text>
+  <text x="390" y="110" fill="#51cf66" font-family="monospace" font-size="12">+ Автоматичний JSON parse</text>
+  <text x="390" y="130" fill="#51cf66" font-family="monospace" font-size="12">+ Кидає error на 4xx/5xx</text>
+  <text x="390" y="150" fill="#51cf66" font-family="monospace" font-size="12">+ baseURL, timeout, headers</text>
+  <text x="390" y="170" fill="#51cf66" font-family="monospace" font-size="12">+ Interceptors (auth, logging)</text>
+  <text x="390" y="190" fill="#51cf66" font-family="monospace" font-size="12">+ Request/Response трансформації</text>
+  <text x="390" y="210" fill="#51cf66" font-family="monospace" font-size="12">+ Скасування запитів (AbortController)</text>
+  <text x="390" y="240" fill="#ff6b6b" font-family="monospace" font-size="12">- Потрібна установка (npm i axios)</text>
+  <text x="390" y="260" fill="#ff6b6b" font-family="monospace" font-size="12">- Зовнішня залежність</text>
+  <text x="390" y="295" fill="#888" font-family="monospace" font-size="11">axios.get(url)</text>
+  <text x="390" y="312" fill="#888" font-family="monospace" font-size="11">  .then(res =&gt; res.data)</text>
+  <text x="390" y="330" fill="#888" font-family="monospace" font-size="11">  .catch(err =&gt; ...)</text>
+  <text x="390" y="348" fill="#888" font-family="monospace" font-size="11">// res.data, res.status, res.headers</text>
+</svg>

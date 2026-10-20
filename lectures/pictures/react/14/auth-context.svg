@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Auth Context — архітектура</text>
+
+  <!-- AuthProvider -->
+  <rect x="40" y="55" width="640" height="290" rx="10" fill="none" stroke="#61DAFB" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="60" y="78" fill="#61DAFB" font-family="monospace" font-size="13" font-weight="bold">AuthProvider (Context.Provider)</text>
+
+  <!-- State -->
+  <rect x="60" y="95" width="280" height="80" rx="8" fill="#4a9eff"/>
+  <text x="200" y="120" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Auth State</text>
+  <text x="200" y="145" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12">user: User | null</text>
+  <text x="200" y="165" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12">isAuthenticated: boolean</text>
+
+  <!-- Methods -->
+  <rect x="360" y="95" width="300" height="80" rx="8" fill="#d19a66"/>
+  <text x="510" y="120" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">Auth Methods</text>
+  <text x="510" y="145" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12">login(email, password)</text>
+  <text x="510" y="165" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12">logout()  register(data)</text>
+
+  <!-- Consumers -->
+  <text x="360" y="205" text-anchor="middle" fill="#888" font-family="monospace" font-size="13">useAuth() &#8212; будь-який компонент всередині Provider</text>
+
+  <rect x="60" y="220" width="180" height="55" rx="8" fill="#51cf66"/>
+  <text x="150" y="245" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">ProtectedRoute</text>
+  <text x="150" y="265" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10">isAuthenticated?</text>
+
+  <rect x="270" y="220" width="180" height="55" rx="8" fill="#51cf66"/>
+  <text x="360" y="245" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">Navbar</text>
+  <text x="360" y="265" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10">show login/logout</text>
+
+  <rect x="480" y="220" width="180" height="55" rx="8" fill="#51cf66"/>
+  <text x="570" y="245" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">API Client</text>
+  <text x="570" y="265" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10">attach Bearer token</text>
+
+  <!-- Note -->
+  <rect x="60" y="295" width="600" height="40" rx="6" fill="#2a2a3e" stroke="#444"/>
+  <text x="360" y="320" text-anchor="middle" fill="#888" font-family="monospace" font-size="12">AuthProvider обгортає весь застосунок &#8212; auth доступний скрізь без props drilling</text>
+</svg>

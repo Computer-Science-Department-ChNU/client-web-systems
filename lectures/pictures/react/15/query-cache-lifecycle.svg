@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 720 400"
+     width="720"
+     height="400">
+
+    <rect width="720" height="400" fill="#1e1e2e"/>
+
+    <!-- Title -->
+    <text x="360" y="35"
+          text-anchor="middle"
+          fill="#61DAFB"
+          font-family="monospace"
+          font-size="18"
+          font-weight="bold">
+        TanStack Query — cache lifecycle
+    </text>
+
+    <!-- Timeline -->
+    <line x1="60" y1="195"
+          x2="660" y2="195"
+          stroke="#444"
+          stroke-width="3"/>
+
+    <!-- t=0 -->
+    <circle cx="90" cy="195" r="9" fill="#4a9eff"/>
+
+    <text x="90" y="168"
+          text-anchor="middle"
+          fill="#4a9eff"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        t=0
+    </text>
+
+    <text x="90" y="220"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="10">
+        useQuery(["users"])
+    </text>
+
+    <text x="90" y="238"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        cache miss → fetch
+    </text>
+
+    <text x="90" y="254"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        pending
+    </text>
+
+    <!-- t=1s -->
+    <circle cx="235" cy="195" r="9" fill="#51cf66"/>
+
+    <text x="235" y="168"
+          text-anchor="middle"
+          fill="#51cf66"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        t=1s
+    </text>
+
+    <text x="235" y="220"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="10">
+        data cached
+    </text>
+
+    <text x="235" y="238"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        staleTime starts
+    </text>
+
+    <!-- t=10s -->
+    <circle cx="380" cy="195" r="9" fill="#d19a66"/>
+
+    <text x="380" y="168"
+          text-anchor="middle"
+          fill="#d19a66"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        t=10s
+    </text>
+
+    <text x="380" y="220"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="10">
+        second useQuery
+    </text>
+
+    <text x="380" y="238"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        same key → cache hit
+    </text>
+
+    <text x="380" y="254"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        no fetch while fresh
+    </text>
+
+    <!-- t=61s -->
+    <circle cx="525" cy="195" r="9" fill="#ff6b6b"/>
+
+    <text x="525" y="168"
+          text-anchor="middle"
+          fill="#ff6b6b"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        t=61s
+    </text>
+
+    <text x="525" y="220"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="10">
+        data becomes stale
+    </text>
+
+    <text x="525" y="238"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        cached data remains
+    </text>
+
+    <text x="525" y="254"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        refetch on a trigger
+    </text>
+
+    <!-- t=62s -->
+    <circle cx="640" cy="195" r="9" fill="#51cf66"/>
+
+    <text x="640" y="168"
+          text-anchor="middle"
+          fill="#51cf66"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        t=62s
+    </text>
+
+    <text x="640" y="220"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="10">
+        fresh data
+    </text>
+
+    <text x="640" y="238"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="10">
+        cache updated
+    </text>
+
+    <!-- Concepts -->
+    <rect x="20" y="290"
+          width="680"
+          height="90"
+          rx="8"
+          fill="#2a2a3e"
+          stroke="#444"/>
+
+    <text x="40" y="315"
+          fill="#61DAFB"
+          font-family="monospace"
+          font-size="13"
+          font-weight="bold">
+        Ключові концепції:
+    </text>
+
+    <text x="40" y="339"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="11">
+        staleTime — how long data stays "fresh"; default: 0
+    </text>
+
+    <text x="40" y="358"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="11">
+        stale ≠ refetch immediately — refetch happens on configured triggers
+    </text>
+
+    <text x="40" y="377"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        gcTime — how long inactive cache remains before garbage collection
+    </text>
+
+</svg>

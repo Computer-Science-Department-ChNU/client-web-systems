@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+
+  <!-- Headers -->
+  <rect x="20" y="55" width="100" height="40" fill="#273c66"/>
+  <text x="70" y="80" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">CRUD</text>
+  <rect x="120" y="55" width="100" height="40" fill="#273c66"/>
+  <text x="170" y="80" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">HTTP</text>
+  <rect x="220" y="55" width="250" height="40" fill="#273c66"/>
+  <text x="345" y="80" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Endpoint</text>
+  <rect x="470" y="55" width="230" height="40" fill="#273c66"/>
+  <text x="585" y="80" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">React action</text>
+
+  <!-- Create -->
+  <rect x="20" y="95" width="100" height="50" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="70" y="125" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="14" font-weight="bold">Create</text>
+  <rect x="120" y="95" width="100" height="50" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="170" y="125" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="13">POST</text>
+  <rect x="220" y="95" width="250" height="50" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="345" y="125" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="13">POST /api/users</text>
+  <rect x="470" y="95" width="230" height="50" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="585" y="125" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="12">form submit &#8594; addItem()</text>
+
+  <!-- Read -->
+  <rect x="20" y="145" width="100" height="50" fill="#2a2a3e" stroke="#4a9eff"/>
+  <text x="70" y="175" text-anchor="middle" fill="#4a9eff" font-family="monospace" font-size="14" font-weight="bold">Read</text>
+  <rect x="120" y="145" width="100" height="50" fill="#2a2a3e" stroke="#4a9eff"/>
+  <text x="170" y="175" text-anchor="middle" fill="#4a9eff" font-family="monospace" font-size="13">GET</text>
+  <rect x="220" y="145" width="250" height="50" fill="#2a2a3e" stroke="#4a9eff"/>
+  <text x="345" y="175" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="13">GET /api/users, GET /:id</text>
+  <rect x="470" y="145" width="230" height="50" fill="#2a2a3e" stroke="#4a9eff"/>
+  <text x="585" y="175" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="12">useEffect &#8594; fetchList()</text>
+
+  <!-- Update -->
+  <rect x="20" y="195" width="100" height="50" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="70" y="225" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="14" font-weight="bold">Update</text>
+  <rect x="120" y="195" width="100" height="50" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="170" y="225" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="13">PUT / PATCH</text>
+  <rect x="220" y="195" width="250" height="50" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="345" y="225" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="13">PUT /api/users/:id</text>
+  <rect x="470" y="195" width="230" height="50" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="585" y="225" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="12">edit form &#8594; updateItem()</text>
+
+  <!-- Delete -->
+  <rect x="20" y="245" width="100" height="50" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="70" y="275" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="14" font-weight="bold">Delete</text>
+  <rect x="120" y="245" width="100" height="50" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="170" y="275" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="13">DELETE</text>
+  <rect x="220" y="245" width="250" height="50" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="345" y="275" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="13">DELETE /api/users/:id</text>
+  <rect x="470" y="245" width="230" height="50" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="585" y="275" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="12">button click &#8594; deleteItem()</text>
+
+  <text x="360" y="335" text-anchor="middle" fill="#aaa" font-family="monospace" font-size="14">CRUD = Create, Read, Update, Delete &#8212; 4 базові операції з даними</text>
+  <text x="360" y="360" text-anchor="middle" fill="#888" font-family="monospace" font-size="12">REST зіставляє CRUD з HTTP-методами, а React зіставляє з UI-діями</text>
+</svg>

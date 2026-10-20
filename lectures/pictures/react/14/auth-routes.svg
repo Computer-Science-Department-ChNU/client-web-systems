@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="720" height="360">
+  <rect width="720" height="360" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Protected Routes + Auth — зв'язок</text>
+
+  <!-- App -->
+  <rect x="270" y="55" width="180" height="50" rx="8" fill="#61DAFB"/>
+  <text x="360" y="85" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">App</text>
+
+  <line x1="360" y1="105" x2="360" y2="135" stroke="#888" stroke-width="2"/>
+
+  <!-- AuthProvider -->
+  <rect x="180" y="135" width="360" height="50" rx="8" fill="#d19a66"/>
+  <text x="360" y="165" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">AuthProvider (Context)</text>
+
+  <line x1="360" y1="185" x2="360" y2="215" stroke="#888" stroke-width="2"/>
+
+  <!-- Router -->
+  <rect x="180" y="215" width="360" height="50" rx="8" fill="#4a9eff"/>
+  <text x="360" y="245" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">RouterProvider</text>
+
+  <line x1="300" y1="265" x2="160" y2="295" stroke="#888" stroke-width="2"/>
+  <line x1="360" y1="265" x2="360" y2="295" stroke="#888" stroke-width="2"/>
+  <line x1="420" y1="265" x2="560" y2="295" stroke="#888" stroke-width="2"/>
+
+  <rect x="40" y="295" width="220" height="50" rx="8" fill="#51cf66"/>
+  <text x="150" y="320" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12" font-weight="bold">/login (public)</text>
+  <text x="150" y="338" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10">LoginForm</text>
+
+  <rect x="280" y="295" width="160" height="50" rx="8" fill="#ff6b6b"/>
+  <text x="360" y="320" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="bold">/dashboard</text>
+  <text x="360" y="338" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10">ProtectedRoute</text>
+
+  <rect x="460" y="295" width="220" height="50" rx="8" fill="#ff6b6b"/>
+  <text x="570" y="320" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="bold">/admin (role: admin)</text>
+  <text x="570" y="338" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10">ProtectedRoute roles</text>
+</svg>

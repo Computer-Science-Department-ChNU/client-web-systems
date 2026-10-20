@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 720 430"
+     width="720"
+     height="430">
+
+    <rect width="720" height="430" fill="#1e1e2e"/>
+
+    <!-- Title -->
+    <text x="360" y="35"
+          text-anchor="middle"
+          fill="#61DAFB"
+          font-family="monospace"
+          font-size="18"
+          font-weight="bold">
+        Client State vs Server State
+    </text>
+
+    <!-- Client State -->
+    <rect x="20" y="55" width="330" height="235"
+          rx="8"
+          fill="#1a1a2e"
+          stroke="#4a9eff"
+          stroke-width="2"/>
+
+    <text x="40" y="80"
+          fill="#4a9eff"
+          font-family="monospace"
+          font-size="15"
+          font-weight="bold">
+        Client State
+    </text>
+
+    <text x="40" y="110"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Lives in browser memory
+    </text>
+
+    <text x="40" y="134"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Synchronous / local updates
+    </text>
+
+    <text x="40" y="158"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Usually UI/session scoped
+    </text>
+
+    <text x="40" y="182"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Owned and changed by the app
+    </text>
+
+    <text x="40" y="206"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        No server cache lifecycle
+    </text>
+
+    <line x1="40" y1="220" x2="330" y2="220"
+          stroke="#333"
+          stroke-width="1"/>
+
+    <text x="40" y="242"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        Examples:
+    </text>
+
+    <text x="40" y="260"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        theme, modal, form draft, filters
+    </text>
+
+    <text x="40" y="280"
+          fill="#4a9eff"
+          font-family="monospace"
+          font-size="11">
+        useState · Zustand · Jotai
+    </text>
+
+    <!-- Server State -->
+    <rect x="370" y="55" width="330" height="235"
+          rx="8"
+          fill="#1a1a2e"
+          stroke="#ff6b6b"
+          stroke-width="2"/>
+
+    <text x="390" y="80"
+          fill="#ff6b6b"
+          font-family="monospace"
+          font-size="15"
+          font-weight="bold">
+        Server State
+    </text>
+
+    <text x="390" y="110"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Lives on the server / DB
+    </text>
+
+    <text x="390" y="134"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Asynchronous / network-based
+    </text>
+
+    <text x="390" y="158"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Shared and potentially changing
+    </text>
+
+    <text x="390" y="182"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Source of truth is the server
+    </text>
+
+    <text x="390" y="206"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Needs cache + sync lifecycle
+    </text>
+
+    <line x1="390" y1="220" x2="680" y2="220"
+          stroke="#333"
+          stroke-width="1"/>
+
+    <text x="390" y="242"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        Examples:
+    </text>
+
+    <text x="390" y="260"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        users, products, orders, profiles
+    </text>
+
+    <text x="390" y="280"
+          fill="#ff6b6b"
+          font-family="monospace"
+          font-size="11">
+        TanStack Query · SWR · RTK Query
+    </text>
+
+    <!-- Why separate -->
+    <rect x="20" y="310" width="680" height="100"
+          rx="8"
+          fill="#2a2a3e"
+          stroke="#61DAFB"/>
+
+    <text x="40" y="335"
+          fill="#61DAFB"
+          font-family="monospace"
+          font-size="14"
+          font-weight="bold">
+        Чому розділяти?
+    </text>
+
+    <text x="40" y="358"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="11">
+        Server data can become stale when another client changes it.
+    </text>
+
+    <text x="40" y="378"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="11">
+        It needs caching, refetching, invalidation, deduplication, pagination.
+    </text>
+
+    <text x="40" y="398"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        Use client-state tools for UI state; use server-state tools for remote data.
+    </text>
+
+</svg>

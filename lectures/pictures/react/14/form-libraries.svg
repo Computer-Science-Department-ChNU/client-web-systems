@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Form libraries — порівняння</text>
+
+  <!-- React Hook Form -->
+  <rect x="20" y="55" width="340" height="200" rx="8" fill="#1a1a2e" stroke="#61DAFB"/>
+  <text x="40" y="80" fill="#61DAFB" font-family="monospace" font-size="14" font-weight="bold">React Hook Form (RHF)</text>
+  <text x="40" y="105" fill="#51cf66" font-family="monospace" font-size="12">+ Performance (uncontrolled by default)</text>
+  <text x="40" y="123" fill="#51cf66" font-family="monospace" font-size="12">+ Minimal re-renders</text>
+  <text x="40" y="141" fill="#51cf66" font-family="monospace" font-size="12">+ Zod/Yup/Joi schema integration</text>
+  <text x="40" y="159" fill="#51cf66" font-family="monospace" font-size="12">+ DevTools, small bundle (~8KB)</text>
+  <text x="40" y="177" fill="#51cf66" font-family="monospace" font-size="12">+ TypeScript-first</text>
+  <text x="40" y="205" fill="#ff6b6b" font-family="monospace" font-size="12">- More boilerplate than Formik</text>
+  <text x="40" y="223" fill="#ff6b6b" font-family="monospace" font-size="12">- register() API to learn</text>
+  <text x="40" y="245" fill="#888" font-family="monospace" font-size="11">&#9989; Recommended for new projects</text>
+
+  <!-- Formik -->
+  <rect x="380" y="55" width="320" height="200" rx="8" fill="#1a1a2e" stroke="#d19a66"/>
+  <text x="400" y="80" fill="#d19a66" font-family="monospace" font-size="14" font-weight="bold">Formik</text>
+  <text x="400" y="105" fill="#51cf66" font-family="monospace" font-size="12">+ Simple mental model</text>
+  <text x="400" y="123" fill="#51cf66" font-family="monospace" font-size="12">+ Lots of tutorials</text>
+  <text x="400" y="141" fill="#51cf66" font-family="monospace" font-size="12">+ Yup integration</text>
+  <text x="400" y="170" fill="#ff6b6b" font-family="monospace" font-size="12">- Controlled = re-renders</text>
+  <text x="400" y="188" fill="#ff6b6b" font-family="monospace" font-size="12">- Slower for large forms</text>
+  <text x="400" y="206" fill="#ff6b6b" font-family="monospace" font-size="12">- Less maintained now</text>
+  <text x="400" y="245" fill="#888" font-family="monospace" font-size="11">Legacy projects</text>
+
+  <!-- Validation libs -->
+  <rect x="20" y="275" width="680" height="90" rx="8" fill="#2a2a3e" stroke="#444"/>
+  <text x="40" y="300" fill="#61DAFB" font-family="monospace" font-size="14" font-weight="bold">Validation schemas:</text>
+  <text x="200" y="300" fill="#ccc" font-family="monospace" font-size="13">Zod (TS-first, recommended)  |  Yup (popular)  |  Joi (server-focused)</text>
+  <text x="40" y="330" fill="#ccc" font-family="monospace" font-size="13">RHF + Zod = modern best practice: schema &#8594; type-safe form + validation in one place</text>
+  <text x="40" y="355" fill="#888" font-family="monospace" font-size="12">zodResolver(schema) connects Zod schema to RHF</text>
+</svg>

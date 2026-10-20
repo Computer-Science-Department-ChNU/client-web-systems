@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="720" height="360">
+  <rect width="720" height="360" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Токен зберігання — варіанти</text>
+
+  <!-- localStorage -->
+  <rect x="20" y="55" width="220" height="200" rx="8" fill="#1a1a2e" stroke="#51cf66"/>
+  <text x="130" y="80" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="14" font-weight="bold">localStorage</text>
+  <text x="40" y="105" fill="#51cf66" font-family="monospace" font-size="12">+ Simple API</text>
+  <text x="40" y="123" fill="#51cf66" font-family="monospace" font-size="12">+ Survives reload</text>
+  <text x="40" y="141" fill="#51cf66" font-family="monospace" font-size="12">+ No expiration auto</text>
+  <text x="40" y="170" fill="#ff6b6b" font-family="monospace" font-size="12">- XSS vulnerable!</text>
+  <text x="40" y="188" fill="#ff6b6b" font-family="monospace" font-size="12">- JS can read it</text>
+  <text x="40" y="220" fill="#888" font-family="monospace" font-size="10">Most common for SPAs</text>
+  <text x="40" y="240" fill="#888" font-family="monospace" font-size="10">with XSS protection</text>
+
+  <!-- sessionStorage -->
+  <rect x="260" y="55" width="200" height="200" rx="8" fill="#1a1a2e" stroke="#d19a66"/>
+  <text x="360" y="80" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="14" font-weight="bold">sessionStorage</text>
+  <text x="280" y="105" fill="#51cf66" font-family="monospace" font-size="12">+ Cleared on tab close</text>
+  <text x="280" y="123" fill="#51cf66" font-family="monospace" font-size="12">+ Per-tab isolation</text>
+  <text x="280" y="150" fill="#ff6b6b" font-family="monospace" font-size="12">- Lost on tab close</text>
+  <text x="280" y="168" fill="#ff6b6b" font-family="monospace" font-size="12">- Still XSS vulnerable</text>
+  <text x="280" y="200" fill="#888" font-family="monospace" font-size="10">Short sessions, "remember</text>
+  <text x="280" y="218" fill="#888" font-family="monospace" font-size="10">me" disabled</text>
+
+  <!-- HttpOnly cookie -->
+  <rect x="480" y="55" width="220" height="200" rx="8" fill="#1a1a2e" stroke="#ff6b6b"/>
+  <text x="590" y="80" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="14" font-weight="bold">HttpOnly Cookie</text>
+  <text x="500" y="105" fill="#51cf66" font-family="monospace" font-size="12">+ No JS access (XSS safe)</text>
+  <text x="500" y="123" fill="#51cf66" font-family="monospace" font-size="12">+ Auto-sent with requests</text>
+  <text x="500" y="141" fill="#51cf66" font-family="monospace" font-size="12">+ Secure, SameSite flags</text>
+  <text x="500" y="170" fill="#ff6b6b" font-family="monospace" font-size="12">- Needs CSRF protection</text>
+  <text x="500" y="188" fill="#ff6b6b" font-family="monospace" font-size="12">- Server must set cookie</text>
+  <text x="500" y="220" fill="#888" font-family="monospace" font-size="10">Most secure, needs</text>
+  <text x="500" y="240" fill="#888" font-family="monospace" font-size="10">backend cooperation</text>
+
+  <!-- Recommendation -->
+  <rect x="20" y="275" width="680" height="70" rx="8" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="40" y="300" fill="#61DAFB" font-family="monospace" font-size="14" font-weight="bold">Recommendation:</text>
+  <text x="180" y="300" fill="#ccc" font-family="monospace" font-size="13">HttpOnly cookie (most secure) &gt; localStorage (common for SPA)</text>
+  <text x="40" y="325" fill="#888" font-family="monospace" font-size="12">If localStorage &#8594; protect from XSS (CSP, sanitize inputs, avoid dangerouslySetInnerHTML)</text>
+</svg>

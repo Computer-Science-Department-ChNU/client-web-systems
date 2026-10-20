@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" width="720" height="340">
+  <rect width="720" height="340" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Security threats — XSS та CSRF</text>
+
+  <!-- XSS -->
+  <rect x="20" y="55" width="340" height="160" rx="8" fill="#1a1a2e" stroke="#ff6b6b"/>
+  <text x="40" y="80" fill="#ff6b6b" font-family="monospace" font-size="14" font-weight="bold">XSS (Cross-Site Scripting)</text>
+  <text x="40" y="105" fill="#ccc" font-family="monospace" font-size="12">Attacker injects JS into your page</text>
+  <text x="40" y="125" fill="#ff6b6b" font-family="monospace" font-size="12">Impact: steals localStorage token</text>
+  <text x="40" y="155" fill="#51cf66" font-family="monospace" font-size="12">Protection:</text>
+  <text x="40" y="175" fill="#ccc" font-family="monospace" font-size="12">+ sanitize user input (DOMPurify)</text>
+  <text x="40" y="193" fill="#ccc" font-family="monospace" font-size="12">+ avoid dangerouslySetInnerHTML</text>
+  <text x="40" y="211" fill="#ccc" font-family="monospace" font-size="12">+ CSP headers, HttpOnly cookie</text>
+
+  <!-- CSRF -->
+  <rect x="380" y="55" width="320" height="160" rx="8" fill="#1a1a2e" stroke="#d19a66"/>
+  <text x="400" y="80" fill="#d19a66" font-family="monospace" font-size="14" font-weight="bold">CSRF (Cross-Site Request Forgery)</text>
+  <text x="400" y="105" fill="#ccc" font-family="monospace" font-size="12">Attacker tricks browser to send request</text>
+  <text x="400" y="125" fill="#ff6b6b" font-family="monospace" font-size="12">Impact: actions on behalf of user</text>
+  <text x="400" y="155" fill="#51cf66" font-family="monospace" font-size="12">Protection:</text>
+  <text x="400" y="175" fill="#ccc" font-family="monospace" font-size="12">+ SameSite cookie attribute</text>
+  <text x="400" y="193" fill="#ccc" font-family="monospace" font-size="12">+ CSRF token from server</text>
+  <text x="400" y="211" fill="#ccc" font-family="monospace" font-size="12">+ JWT in Authorization header (not cookie)</text>
+
+  <!-- Summary -->
+  <rect x="20" y="235" width="680" height="85" rx="8" fill="#2a2a3e" stroke="#444"/>
+  <text x="40" y="260" fill="#61DAFB" font-family="monospace" font-size="14" font-weight="bold">Token strategy:</text>
+  <text x="180" y="260" fill="#ccc" font-family="monospace" font-size="13">JWT in Authorization header &#8594; immune to CSRF (no cookie auto-send)</text>
+  <text x="40" y="285" fill="#ccc" font-family="monospace" font-size="13">BUT vulnerable to XSS if stored in localStorage &#8594; protect from XSS</text>
+  <text x="40" y="310" fill="#888" font-family="monospace" font-size="12">HttpOnly cookie &#8594; immune to XSS but needs CSRF protection (SameSite + token)</text>
+</svg>

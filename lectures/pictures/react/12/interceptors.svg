@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" width="720" height="340">
+  <rect width="720" height="340" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Axios Interceptors — глобальна обробка</text>
+
+  <!-- Request flow -->
+  <rect x="20" y="60" width="120" height="50" rx="8" fill="#2a2a3e" stroke="#4a9eff"/>
+  <text x="80" y="90" text-anchor="middle" fill="#4a9eff" font-family="monospace" font-size="13" font-weight="bold">Request</text>
+
+  <line x1="140" y1="85" x2="200" y2="85" stroke="#888" stroke-width="2" marker-end="url(#i1)"/>
+
+  <rect x="200" y="60" width="160" height="50" rx="8" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="280" y="85" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="12" font-weight="bold">Request Interceptor</text>
+  <text x="280" y="103" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="10">add Auth header</text>
+
+  <line x1="360" y1="85" x2="420" y2="85" stroke="#888" stroke-width="2" marker-end="url(#i1)"/>
+
+  <rect x="420" y="60" width="120" height="50" rx="8" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="480" y="90" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="13" font-weight="bold">Server</text>
+
+  <line x1="540" y1="85" x2="600" y2="85" stroke="#888" stroke-width="2" marker-end="url(#i1)"/>
+
+  <rect x="600" y="60" width="100" height="50" rx="8" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="650" y="85" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="12" font-weight="bold">Response</text>
+  <text x="650" y="103" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="10">data or error</text>
+
+  <!-- Response flow -->
+  <line x1="650" y1="110" x2="650" y2="155" stroke="#888" stroke-width="2" marker-end="url(#i1)"/>
+
+  <rect x="540" y="155" width="160" height="50" rx="8" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="620" y="180" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="12" font-weight="bold">Response Interceptor</text>
+  <text x="620" y="198" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="10">handle 401, errors</text>
+
+  <line x1="540" y1="180" x2="480" y2="180" stroke="#888" stroke-width="2" marker-end="url(#i1)"/>
+
+  <rect x="360" y="155" width="120" height="50" rx="8" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="420" y="185" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="12" font-weight="bold">Component</text>
+
+  <!-- Error path -->
+  <line x1="540" y1="205" x2="540" y2="250" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#i1r)"/>
+  <rect x="460" y="250" width="240" height="50" rx="8" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="580" y="280" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="12" font-weight="bold">401 &#8594; redirect to login</text>
+
+  <!-- Code -->
+  <rect x="20" y="220" width="330" height="110" rx="8" fill="#1a1a2e" stroke="#444"/>
+  <text x="35" y="245" fill="#d19a66" font-family="monospace" font-size="11" font-weight="bold">apiClient.interceptors.request.use((config) =&gt; {</text>
+  <text x="50" y="263" fill="#ccc" font-family="monospace" font-size="11">config.headers.Authorization =</text>
+  <text x="60" y="278" fill="#ccc" font-family="monospace" font-size="11">`Bearer ${token}`</text>
+  <text x="35" y="295" fill="#d19a66" font-family="monospace" font-size="11">return config</text>
+  <text x="35" y="313" fill="#d19a66" font-family="monospace" font-size="11">})</text>
+
+  <defs>
+    <marker id="i1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+    <marker id="i1r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff6b6b"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" width="640" height="380">
+  <rect width="640" height="380" fill="#1e1e2e"/>
+
+  <text x="320" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">React State — два основні рівні</text>
+
+  <!-- Column 1: Local -->
+  <rect x="40" y="60" width="250" height="300" rx="8" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="165" y="90" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="16" font-weight="bold">Local State</text>
+  <text x="60" y="120" fill="#ccc" font-family="monospace" font-size="14">useState</text>
+  <text x="60" y="145" fill="#ccc" font-family="monospace" font-size="14">useReducer</text>
+  <text x="60" y="170" fill="#ccc" font-family="monospace" font-size="14">useRef</text>
+  <text x="60" y="210" fill="#888" font-family="monospace" font-size="13">Один компонент,</text>
+  <text x="60" y="230" fill="#888" font-family="monospace" font-size="13">короткочасний стан</text>
+  <text x="60" y="270" fill="#51cf66" font-family="monospace" font-size="13">form inputs, toggles,</text>
+  <text x="60" y="290" fill="#51cf66" font-family="monospace" font-size="13">counter, modal open</text>
+  <text x="60" y="320" fill="#888" font-family="monospace" font-size="12">+ Lifting State Up для</text>
+  <text x="60" y="340" fill="#888" font-family="monospace" font-size="12">спільного батька</text>
+
+  <!-- Column 2: Shared -->
+  <rect x="320" y="60" width="280" height="300" rx="8" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="460" y="90" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="16" font-weight="bold">Shared State</text>
+  <text x="340" y="120" fill="#ccc" font-family="monospace" font-size="14">useContext</text>
+  <text x="340" y="145" fill="#ccc" font-family="monospace" font-size="14">+ useState / useReducer</text>
+  <text x="340" y="180" fill="#888" font-family="monospace" font-size="13">Кілька компонентів</text>
+  <text x="340" y="200" fill="#888" font-family="monospace" font-size="13">в одному дереві</text>
+  <text x="340" y="240" fill="#d19a66" font-family="monospace" font-size="13">theme, auth, locale,</text>
+  <text x="340" y="260" fill="#d19a66" font-family="monospace" font-size="13">user preferences, cart</text>
+  <text x="340" y="300" fill="#888" font-family="monospace" font-size="12">Стейт-менеджери та server</text>
+  <text x="340" y="320" fill="#888" font-family="monospace" font-size="12">state &#8651; Лекція 6</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420">
+  <rect width="720" height="420" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="18" font-weight="bold">Props Drilling Problem</text>
+
+  <!-- App -->
+  <rect x="280" y="55" width="160" height="55" rx="8" fill="#61DAFB"/>
+  <text x="360" y="88" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">App</text>
+  <text x="360" y="102" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11">user = {...}</text>
+
+  <line x1="360" y1="110" x2="360" y2="145" stroke="#ff6b6b" stroke-width="2"/>
+  <text x="375" y="132" fill="#ff6b6b" font-family="monospace" font-size="11">user</text>
+
+  <!-- Layout -->
+  <rect x="280" y="145" width="160" height="55" rx="8" fill="#4a9eff"/>
+  <text x="360" y="178" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Layout</text>
+  <text x="360" y="192" text-anchor="middle" fill="#ff0000" font-family="monospace" font-size="11">не використовує user</text>
+
+  <line x1="360" y1="200" x2="360" y2="235" stroke="#ff6b6b" stroke-width="2"/>
+  <text x="375" y="222" fill="#ff6b6b" font-family="monospace" font-size="11">user</text>
+
+  <!-- Sidebar -->
+  <rect x="280" y="235" width="160" height="55" rx="8" fill="#4a9eff"/>
+  <text x="360" y="268" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Sidebar</text>
+  <text x="360" y="282" text-anchor="middle" fill="#ff0000" font-family="monospace" font-size="11">не використовує user</text>
+
+  <line x1="360" y1="290" x2="360" y2="325" stroke="#ff6b6b" stroke-width="2"/>
+  <text x="375" y="312" fill="#ff6b6b" font-family="monospace" font-size="11">user</text>
+
+  <!-- UserProfile -->
+  <rect x="280" y="325" width="160" height="55" rx="8" fill="#51cf66"/>
+  <text x="360" y="358" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">UserProfile</text>
+  <text x="360" y="372" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11">використовує user</text>
+
+  <text x="360" y="405" text-anchor="middle" fill="#aaa" font-family="sans-serif" font-size="14">Props проходять через 3 компоненти, що їх не потребують</text>
+</svg>
