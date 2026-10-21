@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420">
+  <rect width="720" height="420" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">API Layer — архітектура</text>
+
+  <!-- UI Layer -->
+  <rect x="180" y="55" width="360" height="55" rx="8" fill="#61DAFB"/>
+  <text x="360" y="85" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="15" font-weight="bold">Components (UI)</text>
+  <text x="360" y="103" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11">useEffect, event handlers, useState</text>
+
+  <line x1="360" y1="110" x2="360" y2="140" stroke="#888" stroke-width="2" marker-end="url(#la)"/>
+
+  <!-- Custom Hooks -->
+  <rect x="180" y="140" width="360" height="55" rx="8" fill="#4a9eff"/>
+  <text x="360" y="170" text-anchor="middle" fill="#fff" font-family="monospace" font-size="15" font-weight="bold">Custom Hooks (data logic)</text>
+  <text x="360" y="188" text-anchor="middle" fill="#fff" font-family="monospace" font-size="11">useUsers, useProduct, useOrders</text>
+
+  <line x1="360" y1="195" x2="360" y2="225" stroke="#888" stroke-width="2" marker-end="url(#la)"/>
+
+  <!-- API Layer -->
+  <rect x="180" y="225" width="360" height="55" rx="8" fill="#d19a66"/>
+  <text x="360" y="255" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="15" font-weight="bold">API Layer (services)</text>
+  <text x="360" y="273" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11">apiClient (axios), endpoints, types</text>
+
+  <line x1="360" y1="280" x2="360" y2="310" stroke="#888" stroke-width="2" marker-end="url(#la)"/>
+
+  <!-- Backend -->
+  <rect x="180" y="310" width="360" height="55" rx="8" fill="#ff6b6b"/>
+  <text x="360" y="340" text-anchor="middle" fill="#fff" font-family="monospace" font-size="15" font-weight="bold">Backend (REST API)</text>
+  <text x="360" y="358" text-anchor="middle" fill="#fff" font-family="monospace" font-size="11">/api/users, /api/products, ...</text>
+
+  <!-- Side notes -->
+  <rect x="560" y="55" width="140" height="55" rx="6" fill="#2a2a3e" stroke="#444"/>
+  <text x="630" y="80" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">renders UI</text>
+  <text x="630" y="97" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">loading/error</text>
+
+  <rect x="560" y="140" width="140" height="55" rx="6" fill="#2a2a3e" stroke="#444"/>
+  <text x="630" y="165" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">manages state</text>
+  <text x="630" y="182" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">calls API layer</text>
+
+  <rect x="560" y="225" width="140" height="55" rx="6" fill="#2a2a3e" stroke="#444"/>
+  <text x="630" y="250" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">HTTP requests</text>
+  <text x="630" y="267" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">baseURL, interceptors</text>
+
+  <text x="360" y="395" text-anchor="middle" fill="#aaa" font-family="sans-serif" font-size="14">Кожен шар має одну відповідальність &#8212; separation of concerns</text>
+
+  <defs>
+    <marker id="la" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

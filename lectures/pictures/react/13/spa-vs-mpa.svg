@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" width="720" height="400">
+  <rect width="720" height="400" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">SPA vs MPA — навігація</text>
+
+  <!-- MPA -->
+  <rect x="20" y="60" width="330" height="160" rx="8" fill="#1a1a2e" stroke="#ff6b6b"/>
+  <text x="40" y="85" fill="#ff6b6b" font-family="monospace" font-size="14" font-weight="bold">MPA (Multi-Page App)</text>
+  <text x="40" y="110" fill="#ccc" font-family="monospace" font-size="12">1. User clicks /about</text>
+  <text x="40" y="128" fill="#ccc" font-family="monospace" font-size="12">2. Browser &#8594; server request</text>
+  <text x="40" y="146" fill="#ccc" font-family="monospace" font-size="12">3. Server returns new HTML page</text>
+  <text x="40" y="164" fill="#ccc" font-family="monospace" font-size="12">4. Browser renders from scratch</text>
+  <text x="40" y="182" fill="#ccc" font-family="monospace" font-size="12">5. CSS, JS re-loaded</text>
+  <text x="40" y="200" fill="#888" font-family="monospace" font-size="11">// page reload, slow UX</text>
+
+  <!-- SPA -->
+  <rect x="370" y="60" width="330" height="160" rx="8" fill="#1a1a2e" stroke="#51cf66"/>
+  <text x="390" y="85" fill="#51cf66" font-family="monospace" font-size="14" font-weight="bold">SPA (Single-Page App)</text>
+  <text x="390" y="110" fill="#ccc" font-family="monospace" font-size="12">1. User clicks /about</text>
+  <text x="390" y="128" fill="#ccc" font-family="monospace" font-size="12">2. JS intercepts click</text>
+  <text x="390" y="146" fill="#ccc" font-family="monospace" font-size="12">3. History API updates URL</text>
+  <text x="390" y="164" fill="#ccc" font-family="monospace" font-size="12">4. React renders new component</text>
+  <text x="390" y="182" fill="#ccc" font-family="monospace" font-size="12">5. No reload, instant UX</text>
+  <text x="390" y="200" fill="#888" font-family="monospace" font-size="11">// client-side routing</text>
+
+  <!-- Bottom -->
+  <rect x="20" y="245" width="680" height="130" rx="8" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="360" y="275" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="15" font-weight="bold">SPA Routing</text>
+  <text x="40" y="305" fill="#ccc" font-family="monospace" font-size="13">URL: /users/42/edit</text>
+  <text x="40" y="330" fill="#d19a66" font-family="monospace" font-size="13">&#8594; Route path="/users/:id/edit"</text>
+  <text x="40" y="355" fill="#51cf66" font-family="monospace" font-size="13">&#8594; &lt;EditUserPage id="42" /&gt; rendered without reload</text>
+</svg>

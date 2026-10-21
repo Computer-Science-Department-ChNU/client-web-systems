@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420">
+  <rect width="720" height="420" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Коли useState + Context недостатньо</text>
+
+  <!-- Simple -->
+  <rect x="20" y="55" width="160" height="80" rx="8" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="100" y="82" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="14" font-weight="bold">useState</text>
+  <text x="100" y="105" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">1 component</text>
+  <text x="100" y="123" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">local state</text>
+
+  <line x1="180" y1="95" x2="220" y2="95" stroke="#888" stroke-width="2" marker-end="url(#g1)"/>
+
+  <!-- Lifted -->
+  <rect x="220" y="55" width="160" height="80" rx="8" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="300" y="82" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="14" font-weight="bold">Lift State</text>
+  <text x="300" y="105" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">shared parent</text>
+  <text x="300" y="123" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">props drilling</text>
+
+  <line x1="380" y1="95" x2="420" y2="95" stroke="#888" stroke-width="2" marker-end="url(#g1)"/>
+
+  <!-- Context -->
+  <rect x="420" y="55" width="160" height="80" rx="8" fill="#2a2a3e" stroke="#4a9eff"/>
+  <text x="500" y="82" text-anchor="middle" fill="#4a9eff" font-family="monospace" font-size="14" font-weight="bold">Context</text>
+  <text x="500" y="105" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">global, no drilling</text>
+  <text x="500" y="123" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">re-render all</text>
+
+  <line x1="580" y1="95" x2="620" y2="95" stroke="#888" stroke-width="2" marker-end="url(#g1)"/>
+
+  <!-- State manager -->
+  <rect x="620" y="55" width="80" height="80" rx="8" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="660" y="82" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="13" font-weight="bold">Zustand</text>
+  <text x="660" y="105" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="10">selective</text>
+  <text x="660" y="120" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="10">subscribe</text>
+
+  <!-- Problems with Context -->
+  <rect x="20" y="160" width="340" height="240" rx="8" fill="#1a1a2e" stroke="#ff6b6b"/>
+  <text x="40" y="185" fill="#ff6b6b" font-family="monospace" font-size="14" font-weight="bold">Проблеми Context:</text>
+  <text x="40" y="210" fill="#ccc" font-family="monospace" font-size="12">&#10060; Any value change &#8594; re-render</text>
+  <text x="50" y="228" fill="#888" font-family="monospace" font-size="11">ALL consumers, even if they use 1 field</text>
+  <text x="40" y="255" fill="#ccc" font-family="monospace" font-size="12">&#10060; No selective subscription</text>
+  <text x="50" y="273" fill="#888" font-family="monospace" font-size="11">can't subscribe to just "user.name"</text>
+  <text x="40" y="300" fill="#ccc" font-family="monospace" font-size="12">&#10060; No middleware, no devtools</text>
+  <text x="50" y="318" fill="#888" font-family="monospace" font-size="11">no time-travel, no persistence built-in</text>
+  <text x="40" y="345" fill="#ccc" font-family="monospace" font-size="12">&#10060; No async actions</text>
+  <text x="50" y="363" fill="#888" font-family="monospace" font-size="11">thunks/saga needed for complex flows</text>
+  <text x="40" y="388" fill="#ccc" font-family="monospace" font-size="12">&#10060; Bundle: context splitting is hard</text>
+
+  <!-- Zustand solutions -->
+  <rect x="380" y="160" width="320" height="240" rx="8" fill="#1a1a2e" stroke="#51cf66"/>
+  <text x="400" y="185" fill="#51cf66" font-family="monospace" font-size="14" font-weight="bold">Zustand рішення:</text>
+  <text x="400" y="210" fill="#ccc" font-family="monospace" font-size="12">&#9989; Selective subscription</text>
+  <text x="410" y="228" fill="#888" font-family="monospace" font-size="11">useStore(s =&gt; s.user.name) only</text>
+  <text x="400" y="255" fill="#ccc" font-family="monospace" font-size="12">&#9989; No Provider needed</text>
+  <text x="410" y="273" fill="#888" font-family="monospace" font-size="11">store is a standalone hook</text>
+  <text x="400" y="300" fill="#ccc" font-family="monospace" font-size="12">&#9989; Middleware: persist, devtools</text>
+  <text x="410" y="318" fill="#888" font-family="monospace" font-size="11">time-travel, localStorage sync</text>
+  <text x="400" y="345" fill="#ccc" font-family="monospace" font-size="12">&#9989; Async actions built-in</text>
+  <text x="410" y="363" fill="#888" font-family="monospace" font-size="11">just call set() in async function</text>
+  <text x="400" y="388" fill="#ccc" font-family="monospace" font-size="12">&#9989; Tiny (~1KB), no boilerplate</text>
+
+  <defs>
+    <marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

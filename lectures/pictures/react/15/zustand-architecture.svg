@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 720 400"
+     width="720"
+     height="400">
+
+    <rect width="720" height="400" fill="#1e1e2e"/>
+
+    <!-- Title -->
+    <text x="360" y="35"
+          text-anchor="middle"
+          fill="#61DAFB"
+          font-family="monospace"
+          font-size="18"
+          font-weight="bold">
+        Zustand — архітектура
+    </text>
+
+    <!-- Store -->
+    <rect x="40" y="55" width="640" height="125"
+          rx="10"
+          fill="#2a2a3e"
+          stroke="#ff6b6b"
+          stroke-width="2"/>
+
+    <text x="60" y="80"
+          fill="#ff6b6b"
+          font-family="monospace"
+          font-size="14"
+          font-weight="bold">
+        Store (outside component tree)
+    </text>
+
+    <!-- Store code -->
+    <text x="60" y="105"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        const useStore = create((set, get) =&gt; ({
+    </text>
+
+    <text x="80" y="125"
+          fill="#d19a66"
+          font-family="monospace"
+          font-size="12">
+        user: null,
+    </text>
+
+    <text x="250" y="125"
+          fill="#d19a66"
+          font-family="monospace"
+          font-size="12">
+        cart: [],
+    </text>
+
+    <text x="380" y="125"
+          fill="#d19a66"
+          font-family="monospace"
+          font-size="12">
+        theme: "light",
+    </text>
+
+    <text x="80" y="145"
+          fill="#d19a66"
+          font-family="monospace"
+          font-size="12">
+        login: (u) =&gt; set({ user: u }),
+    </text>
+
+    <text x="80" y="163"
+          fill="#d19a66"
+          font-family="monospace"
+          font-size="12">
+        addToCart: (item) =&gt; set(s =&gt; ({ cart: [...s.cart, item] }))
+    </text>
+
+    <text x="60" y="177"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        }))
+    </text>
+
+    <!-- Subscription note -->
+    <text x="360" y="202"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="12">
+        Components subscribe selectively (no Provider!)
+    </text>
+
+    <!-- Connectors -->
+    <line x1="150" y1="215" x2="150" y2="235"
+          stroke="#51cf66"
+          stroke-width="2"/>
+
+    <line x1="360" y1="215" x2="360" y2="235"
+          stroke="#d19a66"
+          stroke-width="2"/>
+
+    <line x1="570" y1="215" x2="570" y2="235"
+          stroke="#4a9eff"
+          stroke-width="2"/>
+
+    <!-- Navbar -->
+    <rect x="40" y="235" width="220" height="60"
+          rx="8"
+          fill="#51cf66"/>
+
+    <text x="150" y="259"
+          text-anchor="middle"
+          fill="#1e1e2e"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        Navbar
+    </text>
+
+    <text x="150" y="278"
+          text-anchor="middle"
+          fill="#1e1e2e"
+          font-family="monospace"
+          font-size="10">
+        useStore(s =&gt; s.user)
+    </text>
+
+    <!-- Cart -->
+    <rect x="250" y="235" width="220" height="60"
+          rx="8"
+          fill="#d19a66"/>
+
+    <text x="360" y="259"
+          text-anchor="middle"
+          fill="#1e1e2e"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        CartIcon
+    </text>
+
+    <text x="360" y="278"
+          text-anchor="middle"
+          fill="#1e1e2e"
+          font-family="monospace"
+          font-size="10">
+        useStore(s =&gt; s.cart.length)
+    </text>
+
+    <!-- Theme -->
+    <rect x="460" y="235" width="220" height="60"
+          rx="8"
+          fill="#4a9eff"/>
+
+    <text x="570" y="259"
+          text-anchor="middle"
+          fill="#fff"
+          font-family="monospace"
+          font-size="12"
+          font-weight="bold">
+        ThemeToggle
+    </text>
+
+    <text x="570" y="278"
+          text-anchor="middle"
+          fill="#fff"
+          font-family="monospace"
+          font-size="10">
+        useStore(s =&gt; s.theme)
+    </text>
+
+    <!-- Re-render note -->
+    <rect x="40" y="315" width="640" height="65"
+          rx="8"
+          fill="#2a2a3e"
+          stroke="#444"/>
+
+    <text x="360" y="340"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="12">
+        Only components subscribed to changed state update
+    </text>
+
+    <text x="360" y="360"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        cart change → CartIcon updates; Navbar &amp; ThemeToggle — NOT
+    </text>
+
+</svg>

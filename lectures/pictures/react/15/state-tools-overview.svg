@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 720 380"
+     width="720"
+     height="380">
+
+    <rect width="720" height="380" fill="#1e1e2e"/>
+
+    <!-- Title -->
+    <text x="360" y="35"
+          text-anchor="middle"
+          fill="#61DAFB"
+          font-family="monospace"
+          font-size="18"
+          font-weight="bold">
+        State Management — огляд інструментів
+    </text>
+
+    <!-- Table header -->
+    <rect x="20" y="55" width="160" height="40" fill="#273c66"/>
+    <rect x="180" y="55" width="140" height="40" fill="#273c66"/>
+    <rect x="320" y="55" width="180" height="40" fill="#273c66"/>
+    <rect x="500" y="55" width="200" height="40" fill="#273c66"/>
+
+    <text x="100" y="80"
+          text-anchor="middle"
+          fill="#fff"
+          font-family="monospace"
+          font-size="14"
+          font-weight="bold">
+        Tool
+    </text>
+
+    <text x="250" y="80"
+          text-anchor="middle"
+          fill="#fff"
+          font-family="monospace"
+          font-size="14"
+          font-weight="bold">
+        Type
+    </text>
+
+    <text x="410" y="80"
+          text-anchor="middle"
+          fill="#fff"
+          font-family="monospace"
+          font-size="14"
+          font-weight="bold">
+        Size
+    </text>
+
+    <text x="600" y="80"
+          text-anchor="middle"
+          fill="#fff"
+          font-family="monospace"
+          font-size="14"
+          font-weight="bold">
+        Best for
+    </text>
+
+    <!-- useState -->
+    <rect x="20" y="95" width="160" height="45"
+          fill="#2a2a3e" stroke="#51cf66"/>
+
+    <rect x="180" y="95" width="140" height="45"
+          fill="#2a2a3e" stroke="#51cf66"/>
+
+    <rect x="320" y="95" width="180" height="45"
+          fill="#2a2a3e" stroke="#51cf66"/>
+
+    <rect x="500" y="95" width="200" height="45"
+          fill="#2a2a3e" stroke="#51cf66"/>
+
+    <text x="100" y="123"
+          text-anchor="middle"
+          fill="#51cf66"
+          font-family="monospace"
+          font-size="13"
+          font-weight="bold">
+        useState
+    </text>
+
+    <text x="250" y="123"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Local
+    </text>
+
+    <text x="410" y="123"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        0 KB (built-in)
+    </text>
+
+    <text x="600" y="123"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Simple local state
+    </text>
+
+    <!-- Context -->
+    <rect x="20" y="140" width="160" height="45"
+          fill="#2a2a3e" stroke="#4a9eff"/>
+
+    <rect x="180" y="140" width="140" height="45"
+          fill="#2a2a3e" stroke="#4a9eff"/>
+
+    <rect x="320" y="140" width="180" height="45"
+          fill="#2a2a3e" stroke="#4a9eff"/>
+
+    <rect x="500" y="140" width="200" height="45"
+          fill="#2a2a3e" stroke="#4a9eff"/>
+
+    <text x="100" y="168"
+          text-anchor="middle"
+          fill="#4a9eff"
+          font-family="monospace"
+          font-size="13"
+          font-weight="bold">
+        Context
+    </text>
+
+    <text x="250" y="168"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Shared
+    </text>
+
+    <text x="410" y="168"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        0 KB (built-in)
+    </text>
+
+    <text x="600" y="168"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Theme, auth, locale
+    </text>
+
+    <!-- Zustand -->
+    <rect x="20" y="185" width="160" height="45"
+          fill="#2a2a3e" stroke="#d19a66"/>
+
+    <rect x="180" y="185" width="140" height="45"
+          fill="#2a2a3e" stroke="#d19a66"/>
+
+    <rect x="320" y="185" width="180" height="45"
+          fill="#2a2a3e" stroke="#d19a66"/>
+
+    <rect x="500" y="185" width="200" height="45"
+          fill="#2a2a3e" stroke="#d19a66"/>
+
+    <text x="100" y="213"
+          text-anchor="middle"
+          fill="#d19a66"
+          font-family="monospace"
+          font-size="13"
+          font-weight="bold">
+        Zustand
+    </text>
+
+    <text x="250" y="213"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Global
+    </text>
+
+    <text x="410" y="213"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        ~1 KB
+    </text>
+
+    <text x="600" y="213"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Cart, UI, app state
+    </text>
+
+    <!-- TanStack Query -->
+    <rect x="20" y="230" width="160" height="45"
+          fill="#2a2a3e" stroke="#ff6b6b"/>
+
+    <rect x="180" y="230" width="140" height="45"
+          fill="#2a2a3e" stroke="#ff6b6b"/>
+
+    <rect x="320" y="230" width="180" height="45"
+          fill="#2a2a3e" stroke="#ff6b6b"/>
+
+    <rect x="500" y="230" width="200" height="45"
+          fill="#2a2a3e" stroke="#ff6b6b"/>
+
+    <text x="100" y="258"
+          text-anchor="middle"
+          fill="#ff6b6b"
+          font-family="monospace"
+          font-size="13"
+          font-weight="bold">
+        TanStack Query
+    </text>
+
+    <text x="250" y="258"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Server
+    </text>
+
+    <text x="410" y="258"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        ~13 KB
+    </text>
+
+    <text x="600" y="258"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        API data, cache
+    </text>
+
+    <!-- Redux Toolkit -->
+    <rect x="20" y="275" width="160" height="45"
+          fill="#2a2a3e" stroke="#a78bfa"/>
+
+    <rect x="180" y="275" width="140" height="45"
+          fill="#2a2a3e" stroke="#a78bfa"/>
+
+    <rect x="320" y="275" width="180" height="45"
+          fill="#2a2a3e" stroke="#a78bfa"/>
+
+    <rect x="500" y="275" width="200" height="45"
+          fill="#2a2a3e" stroke="#a78bfa"/>
+
+    <text x="100" y="303"
+          text-anchor="middle"
+          fill="#a78bfa"
+          font-family="monospace"
+          font-size="13"
+          font-weight="bold">
+        Redux Toolkit
+    </text>
+
+    <text x="250" y="303"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Global
+    </text>
+
+    <text x="410" y="303"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        ~15 KB
+    </text>
+
+    <text x="600" y="303"
+          text-anchor="middle"
+          fill="#ccc"
+          font-family="monospace"
+          font-size="13">
+        Large enterprise
+    </text>
+
+    <!-- Footer -->
+    <rect x="20" y="335" width="680" height="30"
+          rx="6"
+          fill="#2a2a3e"
+          stroke="#444"/>
+
+    <text x="360" y="355"
+          text-anchor="middle"
+          fill="#888"
+          font-family="monospace"
+          font-size="11">
+        Start simple → global state → server state
+    </text>
+
+</svg>

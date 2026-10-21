@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" width="720" height="480">
+  <rect width="720" height="480" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="16" font-weight="bold">useEffect — життєвий цикл</text>
+
+  <!-- Mount -->
+  <rect x="40" y="60" width="180" height="130" rx="8" fill="#2a2a3e" stroke="#51cf66"/>
+  <text x="130" y="85" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="12" font-weight="bold">MOUNT</text>
+  <text x="55" y="110" fill="#ccc" font-family="monospace" font-size="10">component renders</text>
+  <text x="55" y="130" fill="#ccc" font-family="monospace" font-size="10">DOM is painted</text>
+  <text x="55" y="150" fill="#51cf66" font-family="monospace" font-size="10">useEffect runs</text>
+  <text x="55" y="170" fill="#888" font-family="monospace" font-size="11">(empty deps [])</text>
+
+  <!-- Update -->
+  <rect x="270" y="60" width="180" height="130" rx="8" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="360" y="85" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="12" font-weight="bold">UPDATE</text>
+  <text x="285" y="110" fill="#ccc" font-family="monospace" font-size="10">state/props change</text>
+  <text x="285" y="130" fill="#ccc" font-family="monospace" font-size="10">component re-renders</text>
+  <text x="285" y="150" fill="#d19a66" font-family="monospace" font-size="10">useEffect runs</text>
+  <text x="285" y="170" fill="#888" font-family="monospace" font-size="11">(if deps changed)</text>
+
+  <!-- Unmount -->
+  <rect x="500" y="60" width="180" height="130" rx="8" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="590" y="85" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="12" font-weight="bold">UNMOUNT</text>
+  <text x="515" y="110" fill="#ccc" font-family="monospace" font-size="10">component removed</text>
+  <text x="515" y="130" fill="#ccc" font-family="monospace" font-size="10">from DOM</text>
+  <text x="515" y="150" fill="#ff6b6b" font-family="monospace" font-size="10">cleanup runs</text>
+  <text x="515" y="170" fill="#888" font-family="monospace" font-size="11">(return function)</text>
+
+  <!-- Code example -->
+  <rect x="40" y="210" width="640" height="250" rx="8" fill="#1a1a2e" stroke="#444"/>
+  <text x="60" y="235" fill="#61DAFB" font-family="monospace" font-size="13" font-weight="bold">useEffect(() =&gt; {</text>
+  <text x="80" y="255" fill="#ccc" font-family="monospace" font-size="13">// side effect: fetch, subscription, DOM...</text>
+  <text x="80" y="275" fill="#ccc" font-family="monospace" font-size="13">const id = setInterval(() =&gt; tick(), 1000);</text>
+  <text x="60" y="295" fill="#ccc" font-family="monospace" font-size="13"></text>
+  <text x="80" y="315" fill="#ff6b6b" font-family="monospace" font-size="13">return () =&gt; {</text>
+  <text x="100" y="335" fill="#ccc" font-family="monospace" font-size="13">// cleanup: runs before next effect</text>
+  <text x="100" y="355" fill="#ccc" font-family="monospace" font-size="13">// or on unmount</text>
+  <text x="100" y="375" fill="#ccc" font-family="monospace" font-size="13">clearInterval(id);</text>
+  <text x="80" y="395" fill="#ff6b6b" font-family="monospace" font-size="13">};</text>
+  <text x="60" y="415" fill="#61DAFB" font-family="monospace" font-size="13">}, [deps]);</text>
+  <text x="60" y="445" fill="#888" font-family="monospace" font-size="10">// [] - run once on mount | [a,b] - run when a or b change | no deps - run every render</text>
+</svg>

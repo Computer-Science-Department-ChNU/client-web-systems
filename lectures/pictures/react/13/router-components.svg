@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" width="720" height="460">
+  <rect width="720" height="460" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">React Router — компонентна модель</text>
+
+  <!-- Browser URL bar -->
+  <rect x="40" y="55" width="640" height="35" rx="6" fill="#2a2a3e" stroke="#888"/>
+  <text x="60" y="78" fill="#ccc" font-family="monospace" font-size="13">https://app.com/users/42/edit</text>
+
+  <line x1="360" y1="90" x2="360" y2="120" stroke="#888" stroke-width="2" marker-end="url(#r1)"/>
+
+  <!-- BrowserRouter -->
+  <rect x="120" y="120" width="480" height="45" rx="8" fill="#61DAFB"/>
+  <text x="360" y="148" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">&lt;BrowserRouter&gt;</text>
+
+  <line x1="360" y1="165" x2="360" y2="195" stroke="#888" stroke-width="2" marker-end="url(#r1)"/>
+
+  <!-- Routes -->
+  <rect x="120" y="195" width="480" height="45" rx="8" fill="#4a9eff"/>
+  <text x="360" y="223" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">&lt;Routes&gt;</text>
+
+  <line x1="200" y1="240" x2="160" y2="270" stroke="#888" stroke-width="2"/>
+  <line x1="320" y1="240" x2="320" y2="270" stroke="#888" stroke-width="2"/>
+  <line x1="440" y1="240" x2="480" y2="270" stroke="#888" stroke-width="2"/>
+  <line x1="560" y1="240" x2="600" y2="270" stroke="#888" stroke-width="2"/>
+
+  <!-- Route 1 -->
+  <rect x="60" y="270" width="160" height="40" rx="6" fill="#d19a66"/>
+  <text x="140" y="295" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11" font-weight="bold">path="/" &#8594; Home</text>
+
+  <!-- Route 2 -->
+  <rect x="240" y="270" width="160" height="40" rx="6" fill="#d19a66"/>
+  <text x="320" y="295" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11" font-weight="bold">path="/users" &#8594; List</text>
+
+  <!-- Route 3 (highlighted) -->
+  <rect x="420" y="270" width="160" height="40" rx="6" fill="#51cf66"/>
+  <text x="500" y="295" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11" font-weight="bold">path="/users/:id/edit" &#9989;</text>
+
+  <!-- Route 4 -->
+  <rect x="600" y="270" width="100" height="40" rx="6" fill="#d19a66"/>
+  <text x="650" y="295" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="11" font-weight="bold">path="*" &#8594; 404</text>
+
+  <line x1="500" y1="310" x2="500" y2="345" stroke="#51cf66" stroke-width="2" marker-end="url(#r1g)"/>
+
+  <!-- Matched component -->
+  <rect x="320" y="345" width="360" height="50" rx="8" fill="#51cf66"/>
+  <text x="500" y="375" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">&lt;EditUserPage id="42" /&gt;</text>
+
+  <line x1="500" y1="395" x2="500" y2="425" stroke="#51cf66" stroke-width="2" marker-end="url(#r1g)"/>
+
+  <text x="500" y="445" text-anchor="middle" fill="#aaa" font-family="monospace" font-size="12">rendered into &lt;Outlet /&gt; of layout</text>
+
+  <defs>
+    <marker id="r1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+    <marker id="r1g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#51cf66"/>
+    </marker>
+  </defs>
+</svg>

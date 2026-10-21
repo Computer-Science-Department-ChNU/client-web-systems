@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">React &#8596; REST API — як це працює</text>
+
+  <!-- Browser / React -->
+  <rect x="20" y="60" width="240" height="260" rx="10" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="140" y="90" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="15" font-weight="bold">Browser (React App)</text>
+  <text x="40" y="120" fill="#ccc" font-family="monospace" font-size="13">Component triggers</text>
+  <text x="40" y="140" fill="#ccc" font-family="monospace" font-size="13">useEffect / event handler</text>
+  <text x="40" y="170" fill="#d19a66" font-family="monospace" font-size="13">fetch() / axios.get()</text>
+  <text x="40" y="200" fill="#ccc" font-family="monospace" font-size="13">waiting...</text>
+  <text x="40" y="220" fill="#51cf66" font-family="monospace" font-size="13">response received</text>
+  <text x="40" y="250" fill="#ccc" font-family="monospace" font-size="13">setState(data)</text>
+  <text x="40" y="280" fill="#ccc" font-family="monospace" font-size="13">re-render UI</text>
+  <text x="40" y="310" fill="#888" font-family="monospace" font-size="12">JSON &#8594; React state</text>
+
+  <!-- Arrows -->
+  <line x1="260" y1="130" x2="340" y2="130" stroke="#d19a66" stroke-width="3" marker-end="url(#a3)"/>
+  <text x="280" y="120" fill="#d19a66" font-family="monospace" font-size="11">HTTP GET</text>
+  <line x1="340" y1="200" x2="260" y2="200" stroke="#51cf66" stroke-width="3" marker-end="url(#a3g)"/>
+  <text x="280" y="195" fill="#51cf66" font-family="monospace" font-size="11">JSON</text>
+
+  <!-- Server -->
+  <rect x="340" y="60" width="360" height="260" rx="10" fill="#2a2a3e" stroke="#ff6b6b"/>
+  <text x="520" y="90" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="15" font-weight="bold">Backend (REST API)</text>
+  <text x="360" y="120" fill="#ccc" font-family="monospace" font-size="13">GET    /api/users</text>
+  <text x="360" y="140" fill="#ccc" font-family="monospace" font-size="13">POST   /api/users</text>
+  <text x="360" y="160" fill="#ccc" font-family="monospace" font-size="13">GET    /api/users/:id</text>
+  <text x="360" y="180" fill="#ccc" font-family="monospace" font-size="13">PUT    /api/users/:id</text>
+  <text x="360" y="200" fill="#ccc" font-family="monospace" font-size="13">DELETE /api/users/:id</text>
+  <text x="360" y="230" fill="#888" font-family="monospace" font-size="12">Stateless, JSON, HTTP verbs</text>
+  <text x="360" y="260" fill="#888" font-family="monospace" font-size="12">CRUD &#8594; POST/GET/PUT/DELETE</text>
+  <text x="360" y="290" fill="#888" font-family="monospace" font-size="12">Status codes:</text>
+  <text x="360" y="310" fill="#888" font-family="monospace" font-size="12">200 OK | 201 Created | 400 | 404 | 500</text>
+
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d19a66"/>
+    </marker>
+    <marker id="a3g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#51cf66"/>
+    </marker>
+  </defs>
+</svg>

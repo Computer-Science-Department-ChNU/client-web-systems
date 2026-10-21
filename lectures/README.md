@@ -12,6 +12,12 @@
 - [**Лекція 8.** Vue.js: Composables, повторне використання логіки зі станом, State manager Pinia](lecture-08.html)
 - [**Лекція 9.** Vue.js: Архітектурне проєктування клієнтських вебзастосунків - компонентна модель, шарова
   організація та модульна структура](lecture-09.html)
+- [**Лекція 10. React:** React Fundamentals та ментальна модель React](lecture-10.html)
+- [**Лекція 11. React:** State, Effects та архітектура компонентів](lecture-11.html)
+- [**Лекція 12. React:** Робота з API та CRUD-застосунками](lecture-12.html)
+- [**Лекція 13. React:** Routing та архітектура React-застосунку](lecture-13.html)
+- [**Лекція 14. React:** Forms, Validation та Authentication](lecture-14.html)
+- [**Лекція 15. React:** State Management та Production React](lecture-15.html)
 
 ## Локальний запуск
 

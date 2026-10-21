@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Лекція 13. React: Routing та архітектура React-застосунку</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/index.css">
+    <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="shower list">
+
+<header class="caption">
+    <h1>Лекція 13. React: Routing та архітектура React-застосунку</h1>
+    <p>
+        <a href="index.html">Назад до змісту лекцій</a>
+    </p>
+</header>
+
+<section class="slide">
+    <h2 class="shout">
+        Лекція 13. React: Routing та архітектура React-застосунку
+    </h2>
+</section>
+
+<section class="slide">
+    <h2>План лекції:</h2>
+    <ol>
+        <li>Навіщо SPA потрібна маршрутизація та як працює React Router?</li>
+        <li>Як реалізувати складну навігацію: route parameters, nested routes, layouts та protected routes?</li>
+        <li>Як організувати структуру React-застосунку та розподілити відповідальність між компонентами?</li>
+        <li>Як використовувати component composition для побудови масштабованого UI?</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2 class="shout">SPA та маршрутизація</h2>
+</section>
+
+<section class="slide">
+    <h2>SPA vs MPA — навігація</h2>
+    <img src="pictures/react/13/spa-vs-mpa.svg" alt="" style="display: block; margin: 0 auto; width: 80%;">
+</section>
+
+<section class="slide">
+    <h2>Що таке SPA-маршрутизація?</h2>
+    <div style="font-size: 18px;">
+        <p><b>SPA (Single-Page Application)</b> — застосунок завантажується
+            один раз, далі навігація відбувається <b>без перезавантаження сторінки</b>.</p>
+        <p><b>Маршрутизація (routing)</b> — механізм, що зіставляє URL-адресу
+            з відповідним компонентом для відображення.</p>
+        <p><b>Як це працює:</b></p>
+        <ul>
+            <li>Клік по посиланню перехоплюється JavaScript;</li>
+            <li>URL оновлюється через <b>History API</b> (<code>pushState</code>);</li>
+            <li>React визначає, який компонент відповідає URL;</li>
+            <li>Рендерить його — <b>без перезавантаження</b> сторінки.</li>
+        </ul>
+        <p>React не має вбудованого роутера. Для маршрутизації можна використовувати
+            <b>React Router</b> або routing, який надає React framework.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Навіщо роутинг у SPA?</h2>
+    <ul style="font-size: 18px;">
+        <li><b>Bookmarkable URLs</b> — користувач може зберегти посилання на конкретну сторінку;</li>
+        <li><b>Shareable</b> — відправити посилання колезі, він побачить те саме;</li>
+        <li><b>Back/Forward</b> — кнопки браузера працюють природньо;</li>
+        <li><b>SEO</b> — окремі URL допомагають адресувати сторінки; для SEO важливі також
+            SSR/SSG/prerendering та коректний HTML-контент;</li>
+        <li><b>Організація коду</b> — розділення застосунку на логічні сторінки;</li>
+        <li><b>Code splitting</b> — завантаження коду сторінки on-demand (lazy loading);</li>
+        <li><b>Аналітика</b> — відстеження переглядів сторінок (pageviews).</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>URL як джерело стану</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// &#10060; State в компоненті
+const [page, setPage] = useState(1);
+const [filter, setFilter] = useState("all");
+const [tab, setTab] = useState("details");
+
+// втрачається при reload, не ділиться</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// &#9989; State в URL (router)
+/products?page=2&amp;filter=active
+/users/42?tab=details
+
+// shareable, bookmarkable, survives reload</pre>
+    </div>
+    <p style="font-size: 16px; margin-top: 15px;"><b>Коли URL добре підходить для state:</b></p>
+    <ul style="font-size: 15px;">
+        <li><b>Bookmarkable</b> — можна зберегти посилання з точним станом;</li>
+        <li><b>Shareable</b> — відправити колезі, він побачить те ж;</li>
+        <li><b>Back/Forward</b> кнопки браузера працюють природньо;</li>
+        <li><b>Survives reload</b> — стан не втрачається.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>React Router — компонентна модель</h2>
+    <img src="pictures/react/13/router-components.svg" alt="" style="display: block; margin: 0 auto; width: 70%;">
+</section>
+
+<section class="slide">
+    <h2>React Router — базові компоненти</h2>
+    <div style="font-size: 18px;">
+        <p><b>React Router</b> — маршрутизатор для React з кількома режимами.</p>
+        <ul>
+            <li><b>Declarative</b> — базове зіставлення URL та UI;</li>
+            <li><b>Data</b> — routes, loaders/actions та стани навігації;</li>
+            <li><b>Framework</b> — route modules, data loading, code splitting та інші можливості.</li>
+        </ul>
+        <ul>
+            <li><code>&lt;BrowserRouter&gt;</code> — обгортає застосунок, використовує HTML5 History API;</li>
+            <li><code>&lt;Routes&gt;</code> — контейнер для списку маршрутів;</li>
+            <li><code>&lt;Route&gt;</code> — зіставляє URL-шлях з компонентом;</li>
+            <li><code>&lt;Link&gt;</code> — посилання без перезавантаження (renders <code>&lt;a&gt;</code>);</li>
+            <li><code>&lt;Outlet&gt;</code> — місце, де рендеряться дочірні маршрути (nested);</li>
+            <li><code>&lt;Navigate&gt;</code> — програмний редирект.</li>
+        </ul>
+        <p><b>Встановлення:</b> <code>npm install react-router</code></p>
+        <p><b>React Router v8</b> — актуальна major-версія станом на 2026.</p>
+        <p>У Data mode <code>RouterProvider</code> імпортується з <code>react-router/dom</code>.</p>
+        <p>У цьому курсі починаємо з <b>Declarative mode</b>, а Data/Framework mode розглянемо як наступний рівень.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>React Router — базова конфігурація</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// JSX-стиль (декларативний)
+import &#123; BrowserRouter, Routes, Route, Link &#125;
+  from "react-router";
+
+function App() &#123;
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;nav&gt;
+        &lt;Link to="/"&gt;Home&lt;/Link&gt;
+        &lt;Link to="/users"&gt;Users&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/users" element={&lt;UserList /&gt;} /&gt;
+        &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+&#125;</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Data mode
+import &#123; createBrowserRouter &#125; from "react-router";
+import &#123; RouterProvider &#125; from "react-router/dom";
+
+const router = createBrowserRouter([
+  &#123; path: "/", element: &lt;Home /&gt; &#125;,
+  &#123; path: "/users", element: &lt;UserList /&gt;,
+    loader: usersLoader // data fetching
+  &#125;,
+  &#123; path: "*", element: &lt;NotFound /&gt; &#125;,
+]);
+
+function App() &#123;
+  return &lt;RouterProvider router=&#123;router&#125; /&gt;;
+&#125;
+
+// Data mode додає:
+// - loader/action для route data
+// - navigation/pending states
+// - useFetcher та інші data APIs</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Router hooks — навігація в коді</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// useParams — params з URL
+function UserDetail() {
+  const { id } = useParams();
+  // URL: /users/42  &#8594; id="42"
+  const { data } = useUser(id);
+}
+
+// useSearchParams — query params
+function ProductList() {
+  const [params, setParams]
+    = useSearchParams();
+  const page = params.get("page") ?? "1";
+  // URL: /products?page=3
+}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// useNavigate — програмна навігація
+function LoginForm() {
+  const navigate = useNavigate();
+  const handleSubmit = async () => {
+    await login(...);
+    navigate("/dashboard");
+  };
+}
+
+// &lt;Link&gt; — декларативна навігація
+&lt;Link to="/users"&gt;Users&lt;/Link&gt;
+&lt;Link to={`/users/${id}`}&gt;
+  View profile
+&lt;/Link&gt;
+// renders &lt;a href&gt; without reload</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Складна навігація</h2>
+</section>
+
+<section class="slide">
+    <h2>Route Parameters — динамічні шляхи</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Конфігурація маршруту з параметром
+&lt;Route path="/users/:id"
+  element=&#123;&lt;UserDetail /&gt;&#125; /&gt;
+
+// Отримання параметра в компоненті
+import &#123; useParams &#125; from "react-router";
+
+function UserDetail() &#123;
+  const &#123; id &#125; = useParams();
+  // URL: /users/42  &#8594;  id = "42"
+
+  const &#123; data, loading &#125; =
+    useUser(id);
+
+  if (loading) return &lt;Spinner /&gt;;
+  return &lt;div&gt;&#123;data.name&#125;&lt;/div&gt;;
+&#125;</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Route params</b> — динамічні сегменти URL,
+                що стають доступні через <code>useParams()</code>.</p>
+            <p><b>Синтаксис:</b> <code>:paramName</code> в шляху.</p>
+            <p><b>Приклади:</b></p>
+            <ul>
+                <li><code>/users/:id</code> &#8594; /users/42</li>
+                <li><code>/posts/:slug</code> &#8594; /posts/hello-world</li>
+                <li><code>/products/:category/:id</code> &#8594; /products/electronics/5</li>
+            </ul>
+            <p><b>Optional segments</b> — до сегмента можна додати <code>?</code>:</p>
+            <p><code>/posts/:id?</code> &#8594; /posts, /posts/42</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Query Parameters — useSearchParams</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">import &#123; useSearchParams &#125; from "react-router";
+
+function ProductList() &#123;
+  const [params, setParams] =
+    useSearchParams();
+
+  const page = parseInt(params.get("page") ?? "1");
+  const filter = params.get("filter") ?? "all";
+
+  const goToPage = (p: number) =&gt; &#123;
+    setParams(&#123; page: String(p), filter &#125;);
+  &#125;;
+
+  // URL: /products?page=3&amp;filter=active
+  return (
+    &lt;&gt;
+      &lt;Filter value=&#123;filter&#125; /&gt;
+      &lt;List page=&#123;page&#125; /&gt;
+      &lt;Pagination current=&#123;page&#125; onPageChange=&#123;goToPage&#125; /&gt;
+    &lt;/&gt;
+  );
+&#125;</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Query params</b> — параметри після <code>?</code> в URL.</p>
+            <p><b>Призначення:</b></p>
+            <ul>
+                <li>pagination (<code>?page=3</code>);</li>
+                <li>filtering (<code>?category=books</code>);</li>
+                <li>sorting (<code>?sort=price</code>);</li>
+                <li>search (<code>?q=react</code>);</li>
+                <li>utm-мітки для аналітики.</li>
+            </ul>
+            <p><b>useSearchParams</b> повертає
+                <code>URLSearchParams</code>-об'єкт + setter.</p>
+            <p>Зміна query &#8594; URL оновлюється,
+                компонент перерендериться.</p>
+            <p><b>Перевага:</b> стан фільтра в URL —
+                bookmarkable + shareable.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Nested Routes та Layouts</h2>
+    <img src="pictures/react/13/nested-routes.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>Nested Routes — Declarative та Data mode</h2>
+    <div style="display: flex; gap: 16px;">
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Declarative mode</b> — дерево маршрутів описуємо через JSX.</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">&lt;Routes&gt;
+  &lt;Route path="/dashboard" element=&#123;&lt;Dashboard /&gt;&#125;&gt;
+    &lt;Route index element=&#123;&lt;DashboardHome /&gt;&#125; /&gt;
+    &lt;Route path="settings"
+      element=&#123;&lt;Settings /&gt;&#125; /&gt;
+    &lt;Route path="profile"
+      element=&#123;&lt;Profile /&gt;&#125; /&gt;
+  &lt;/Route&gt;
+&lt;/Routes&gt;</pre>
+        </div>
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Data mode</b> — те саме дерево задаємо як route objects.</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">const router = createBrowserRouter([
+  &#123;
+    path: "/dashboard",
+    Component: Dashboard,
+    children: [
+      &#123; index: true, Component: DashboardHome &#125;,
+      &#123; path: "settings", Component: Settings &#125;,
+      &#123; path: "profile", Component: Profile &#125;
+    ]
+  &#125;
+]);
+
+&lt;RouterProvider router=&#123;router&#125; /&gt;</pre>
+        </div>
+    </div>
+    <p style="font-size: 16px; margin-top: 10px;">
+        В обох підходах дочірній маршрут рендериться через <code>&lt;Outlet /&gt;</code> у батьківському компоненті.
+        У <b>Data mode</b> до маршруту можна додати <code>loader</code>, <code>action</code>,
+        стани навігації та інші Data APIs.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Nested Routes — глибше вкладення</h2>
+    <div style="font-size: 17px;">
+        <pre style="margin: 12px 0; font-size: 10px; white-space: pre;">// Declarative
+&lt;Route path="/dashboard" element=&#123;&lt;DashboardLayout /&gt;&#125;&gt;
+  &lt;Route path="users" element=&#123;&lt;UsersLayout /&gt;&#125;&gt;
+    &lt;Route path=":id" element=&#123;&lt;UserDetail /&gt;&#125; /&gt;
+  &lt;/Route&gt;
+&lt;/Route&gt;
+
+// Data mode → children: [ ... ]</pre>
+        <p>В обох підходах дочірній route рендериться через <code>&lt;Outlet /&gt;</code>.</p>
+        <p><b>Повний приклад Declarative + Data + protection:</b>
+            <a href="examples/react/13/routing-data-and-protection.tsx" target="_blank">examples/react/13/routing-data-and-protection.tsx</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Protected Routes — auth flow</h2>
+    <img src="pictures/react/13/protected-routes.svg" alt="" style="display: block; margin: 0 auto; width: 85%;">
+</section>
+
+<section class="slide">
+    <h2>Protected Routes — Declarative vs Data mode</h2>
+    <div style="display: flex;">
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Declarative mode</b> — перевірка через wrapper-компонент.</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">function ProtectedRoute(&#123; children &#125;) &#123;
+  const &#123; isAuthenticated &#125; = useAuth();
+
+  if (!isAuthenticated)
+    return &lt;Navigate to="/login" replace /&gt;;
+
+  return children;
+&#125;
+
+&lt;Route path="/dashboard" element=&#123;
+  &lt;ProtectedRoute&gt;
+    &lt;DashboardLayout /&gt;
+  &lt;/ProtectedRoute&gt;
+&#125; /&gt;</pre>
+        </div>
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Data mode</b> — перевірка в <code>loader</code> до рендеру route.</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">import &#123; redirect &#125; from "react-router";
+
+async function requireUser(&#123; request &#125;) &#123;
+  const user = await getCurrentUser(request);
+
+  if (!user) &#123;
+    const url = new URL(request.url);
+    const from = url.pathname + url.search;
+    throw redirect(
+      "/login?redirectTo=" +
+      encodeURIComponent(from)
+    );
+  &#125;
+
+  return user;
+&#125;</pre>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">const router = createBrowserRouter([
+  &#123;
+    path: "/dashboard",
+    loader: requireUser,
+    Component: DashboardLayout,
+    children: [
+      &#123; index: true, Component: DashboardHome &#125;,
+      &#123; path: "users", Component: UserList &#125;,
+      &#123; path: "settings", Component: Settings &#125;
+    ]
+  &#125;
+]);</pre>
+
+        </div>
+    </div>
+    <p style="font-size: 14px; margin-top: -8px;">
+        У Data mode перевірка відбувається на рівні route, тому окремий
+        <code>ProtectedRoute</code>-wrapper не потрібен. Після login можна перейти за
+        <code>redirectTo</code>. Для складнішого auth React Router також має route middleware.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Role-based Routes — Data mode</h2>
+    <pre style="margin: 0; font-size: 9px; white-space: pre;">async function requireRole(&#123; request &#125;, roles: string[]) &#123;
+  const user = await requireUser(&#123; request &#125;);
+
+  if (!roles.includes(user.role)) &#123;
+    throw redirect("/forbidden");
+  &#125;
+
+  return user;
+&#125;
+
+const requireAdmin = (args: LoaderFunctionArgs) =&gt;
+  requireRole(args, ["admin"]);
+
+const router = createBrowserRouter([
+  &#123;
+    path: "/admin",
+    loader: requireAdmin,
+    Component: AdminPanel
+  &#125;,
+  &#123;
+    path: "/editor",
+    loader: (args) =&gt;
+      requireRole(args, ["admin", "editor"]),
+    Component: EditorPanel
+  &#125;
+]);</pre>
+    <div style="font-size: 16px;">
+        <p><b>Ідея:</b> auth та permissions перевіряються до рендеру сторінки.</p>
+        <p><b>Перевага:</b> одну функцію перевірки можна повторно використовувати для різних route.</p>
+        <p><b>Важливо:</b> route guard не замінює перевірку прав на API/backend — сервер також має перевіряти доступ.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Lazy Loading Routes — Declarative vs Data mode</h2>
+    <div style="display: flex; gap: 16px;">
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Declarative mode</b> — <code>React.lazy()</code> для компонентів.</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">const Settings = lazy(
+  () =&gt; import("./pages/Settings")
+);
+
+&lt;Suspense fallback=&#123;&lt;PageLoader /&gt;&#125;&gt;
+  &lt;Routes&gt;...&lt;/Routes&gt;
+&lt;/Suspense&gt;</pre>
+        </div>
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Data mode</b> — <code>route.lazy</code> завантажує route module.</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">const router = createBrowserRouter([
+  &#123;
+    path: "/settings",
+    lazy: async () =&gt; &#123;
+      const module = await import(
+        "./pages/Settings"
+      );
+      return &#123; Component: module.Settings &#125;;
+    &#125;
+  &#125;
+]);</pre>
+        </div>
+    </div>
+    <p style="font-size: 16px; margin-top: 10px;">
+        У Data mode <code>route.lazy</code> може завантажувати не лише компонент,
+        а й <code>loader</code> або <code>action</code>. Це дозволяє тримати UI та логіку маршруту разом.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Lazy Loading Routes — Data mode: компонент + loader</h2>
+    <pre style="margin: 0; font-size: 9px; white-space: pre;">const router = createBrowserRouter([
+  &#123;
+    path: "/users/:id",
+    lazy: async () =&gt; &#123;
+      const [page, data] = await Promise.all([
+        import("./pages/UserDetails"),
+        import("./pages/userLoader")
+      ]);
+
+      return &#123;
+        Component: page.UserDetails,
+        loader: data.userLoader
+      &#125;;
+    &#125;
+  &#125;
+]);</pre>
+    <div style="font-size: 16px;">
+        <p><b>route.lazy</b> — code splitting для route configuration.</p>
+        <p>Router завантажує модуль перед відображенням цього маршруту.</p>
+        <p>Для Declarative mode використовується <code>React.lazy</code> + <code>Suspense</code>;
+            для Data mode — <code>route.lazy</code> + route data APIs.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>404 сторінка — Declarative та Data mode</h2>
+    <div style="display: flex; gap: 16px;">
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Declarative mode</b>:</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">&lt;Route path="*" element=&#123;&lt;NotFound /&gt;&#125; /&gt;</pre>
+        </div>
+        <div style="flex: 1;">
+            <p style="font-size: 15px;"><b>Data mode</b>:</p>
+            <pre style="margin: 0; font-size: 8px; white-space: pre;">const router = createBrowserRouter([
+  &#123; path: "/", Component: Home &#125;,
+  &#123; path: "/users", Component: UserList &#125;,
+  &#123; path: "*", Component: NotFound &#125;
+]);</pre>
+        </div>
+    </div>
+    <div style="font-size: 16px; margin-top: 12px;">
+        <p><code>path="*"</code> — catch-all: спрацьовує, якщо жоден більш специфічний маршрут не збігся.
+            React Router використовує ranking маршрутів.</p>
+        <p><b>Важливо:</b> це 404 <i>для UI</i>. У SPA сервер може все одно віддавати
+            <code>index.html</code> з HTTP <code>200</code>. Для справжнього HTTP <code>404</code>
+            потрібне налаштування сервера/CDN.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Архітектура застосунку</h2>
+</section>
+
+<section class="slide">
+    <h2>Структура React-застосунку</h2>
+    <img src="pictures/react/13/app-structure.svg" alt="" style="display: block; margin: 0 auto; width: 75%;">
+</section>
+
+<section class="slide">
+    <h2>Шари відповідальності</h2>
+    <table style="font-size: 17px; width: 100%; border-collapse: collapse; margin-left: 0; ">
+        <thead>
+            <tr style="background: var(--brand-color-prinmary); color: #fff;">
+                <th style="padding: 8px; text-align: left;">Шар</th>
+                <th style="padding: 8px; text-align: left;">Відповідальність</th>
+                <th style="padding: 8px; text-align: left;">Приклад</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 6px;"><b>App</b></td>
+                <td style="padding: 6px;">Глобальна конфігурація, провайдери</td>
+                <td style="padding: 6px;">RouterProvider, ThemeContext, ErrorBoundary</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Layout</b></td>
+                <td style="padding: 6px;">Спільна оболонка сторінок</td>
+                <td style="padding: 6px;">Header, Nav, Footer + Outlet</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Pages</b></td>
+                <td style="padding: 6px;">Сторінки, маршрути</td>
+                <td style="padding: 6px;">HomePage, UserListPage, SettingsPage</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Features</b></td>
+                <td style="padding: 6px;">Доменна логіка (feature-first)</td>
+                <td style="padding: 6px;">auth/, products/, orders/</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Components</b></td>
+                <td style="padding: 6px;">Перевикористовуваний UI</td>
+                <td style="padding: 6px;">Button, Modal, Input, Card</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Hooks</b></td>
+                <td style="padding: 6px;">Спільна stateful-логіка</td>
+                <td style="padding: 6px;">useUsers, useDebounce, useAuth</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>API</b></td>
+                <td style="padding: 6px;">HTTP-клієнт, endpoint-функції</td>
+                <td style="padding: 6px;">apiClient, usersApi, productsApi</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Types</b></td>
+                <td style="padding: 6px;">TypeScript-типи, DTO</td>
+                <td style="padding: 6px;">User, Product, CreateUserDTO</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="slide">
+    <h2>Feature-first структура — практичний варіант</h2>
+    <pre style="margin: 0; font-size: 10px; white-space: pre;">src/
+├── app/                    // глобальна конфігурація
+│   ├── router.tsx
+│   └── providers.tsx
+├── pages/                  // route-level UI
+├── features/               // функціональні модулі
+└── shared/                 // справді спільний код
+    ├── ui/
+    ├── lib/
+    └── types/</pre>
+    <p style="font-size: 16px;">
+        <b>Feature-first</b> — групуємо код за функціональністю.
+        Для навчального проєкту достатньо цієї спрощеної схеми; повний FSD тут не потрібен.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Feature-first vs Type-first</h2>
+    <div class="columns two">
+        <div style="font-size: 17px;">
+            <p><b>Type-first (за типом файлу):</b></p>
+            <pre style="margin: 0; font-size: 10px; white-space: pre;">src/
+├── components/
+│   ├── LoginForm.tsx
+│   ├── ProductList.tsx
+│   └── ProductDetail.tsx
+├── hooks/
+│   ├── useAuth.ts
+│   └── useProducts.ts
+├── api/
+│   ├── authApi.ts
+│   └── productsApi.ts</pre>
+            <p style="margin-top: 10px;">Файли одного домена розкидані.</p>
+            <p>Підходить для <b>невеликих</b> проєктів.</p>
+        </div>
+        <div style="font-size: 17px;">
+            <p><b>Feature-first (за доменом):</b></p>
+            <pre style="margin: 0; font-size: 10px; white-space: pre;">src/
+├── features/
+│   ├── auth/
+│   │   ├── LoginForm.tsx
+│   │   ├── useAuth.ts
+│   │   └── authApi.ts
+│   └── products/
+│       ├── ProductList.tsx
+│       ├── ProductDetail.tsx
+│       ├── useProducts.ts
+│       └── productsApi.ts</pre>
+            <p style="margin-top: 10px;">Все для домена — в одній папці.</p>
+            <p>Підходить для <b>середніх/великих</b> проєктів.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Container vs Presentational — класичний підхід</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 9px; white-space: pre;">// Container — логіка всередині компонента
+function UserListContainer() &#123;
+  const [users, setUsers] = useState&lt;User[]&gt;([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState&lt;string | null&gt;(null);
+
+  useEffect(() =&gt; &#123;
+    usersApi.list()
+      .then(setUsers)
+      .catch(() =&gt; setError("Load failed"))
+      .finally(() =&gt; setLoading(false));
+  &#125;, []);
+
+  const handleDelete = async (id: string) =&gt; &#123;
+    await usersApi.delete(id);
+    setUsers(prev =&gt; prev.filter(u =&gt; u.id !== id));
+  &#125;;
+
+  if (loading) return &lt;Spinner /&gt;;
+  if (error) return &lt;ErrorView /&gt;;
+
+  return (
+    &lt;UserListView
+      users=&#123;users&#125;
+      onDelete=&#123;handleDelete&#125;
+    /&gt;
+  );
+&#125;</pre>
+        <pre style="flex: 1; margin: 0; font-size: 9px; white-space: pre;">// Presentational — тільки UI
+function UserListView(props: &#123;
+  users: User[];
+  onDelete: (id: string) =&gt; void;
+&#125;) &#123;
+  return (
+    &lt;ul&gt;
+      &#123;props.users.map(user =&gt; (
+        &lt;li key=&#123;user.id&#125;&gt;
+          &#123;user.name&#125;
+          &lt;button onClick=&#123;() =&gt; props.onDelete(user.id)&#125;&gt;
+            Delete
+          &lt;/button&gt;
+        &lt;/li&gt;
+      ))&#125;
+    &lt;/ul&gt;
+  );
+&#125;</pre>
+    </div>
+    <p style="font-size: 15px; margin-top: -8px;">
+        <b>Ідея:</b> Container знає про state, API та бізнес-логіку, а Presentational-компонент
+        отримує готові дані та callbacks і відповідає за UI.
+    </p>
+    <p style="font-size: 14px;">
+        Це класичний патерн. У сучасному React цю логіку часто виносять у <b>Custom Hook</b> —
+        саме це покажемо на наступному слайді.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Сучасний підхід: логіка в Custom Hook</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 9px; white-space: pre;">// 1. Логіку з Container виносимо в Hook
+export function useUsers() &#123;
+  const [users, setUsers] = useState&lt;User[]&gt;([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState&lt;string | null&gt;(null);
+
+  useEffect(() =&gt; &#123;
+    usersApi.list()
+      .then(setUsers)
+      .catch(() =&gt; setError("Load failed"))
+      .finally(() =&gt; setLoading(false));
+  &#125;, []);
+
+  const remove = async (id: string) =&gt; &#123;
+    await usersApi.delete(id);
+    setUsers(prev =&gt; prev.filter(u =&gt; u.id !== id));
+  &#125;;
+
+  return &#123; users, loading, error, remove &#125;;
+&#125;</pre>
+        <pre style="flex: 1; margin: 0; font-size: 9px; white-space: pre;">// 2. Page/компонент використовує Hook
+function UserListPage() &#123;
+  const &#123; users, loading, error, remove &#125; =
+    useUsers();
+
+  if (loading) return &lt;Spinner /&gt;;
+  if (error) return &lt;ErrorView /&gt;;
+
+  return (
+    &lt;UserListView
+      users=&#123;users&#125;
+      onDelete=&#123;remove&#125;
+    /&gt;
+  );
+&#125;
+
+// UI залишається окремим
+function UserListView(&#123; users, onDelete &#125;) &#123;
+  return /* тільки UI */;
+&#125;</pre>
+    </div>
+    <p style="font-size: 16px; margin-top: 12px;">
+        Тепер <b>state + effect + API + логіка</b> не прив'язані до конкретного Container-компонента.
+        Їх можна повторно використати в іншому компоненті, який викликає <code>useUsers()</code>.
+    </p>
+    <pre style="margin: 8px 0 0; font-size: 9px; white-space: pre;">UserListPage ──┐
+               ├── useUsers() ── users / loading / remove
+UserStatistics ┘</pre>
+    <p style="font-size: 14px;">
+        <b>Головна різниця:</b> не «Container перейменували на Page», а
+        <b>логіку винесли з UI-компонента в окремий Hook</b>.
+    </p>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Component Composition</h2>
+</section>
+
+<section class="slide">
+    <h2>Component Composition — патерни</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// 1. children prop
+&lt;Card&gt;
+  &lt;h2&gt;Title&lt;/h2&gt;
+  &lt;p&gt;Content&lt;/p&gt;
+&lt;/Card&gt;
+// Card = layout wrapper
+
+// 4. HOC (legacy)
+function withAuth(Component) {
+  return props =&gt; {
+    if (!auth) return &lt;Login /&gt;;
+    return &lt;Component {...props} /&gt;;
+  }}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// 2. render props
+&lt;DataProvider render={data =&gt;
+  &lt;List items={data} /&gt;
+} /&gt;
+// function as child
+
+// 5. Custom Hooks (modern)
+function Page() {
+  const { data, loading } =
+    useAuth();
+  if (!data) return &lt;Login /&gt;;
+}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// 3. compound components
+&lt;Tabs&gt;
+  &lt;Tabs.List&gt;...&lt;/Tabs.List&gt;
+  &lt;Tabs.Panel&gt;...&lt;/Tabs.Panel&gt;
+&lt;/Tabs&gt;
+// shared state implicitly
+
+// 6. slot props
+&lt;Layout
+  header={&lt;Header /&gt;}
+  sidebar={&lt;Nav /&gt;}
+&gt;
+  {children}&lt;/Layout&gt;</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>1. children — базовий патерн</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Card — універсальна обгортка
+function Card(&#123; children, title &#125;: &#123;
+  children: ReactNode;
+  title: string;
+&#125;) &#123;
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;&#123;title&#125;&lt;/h2&gt;
+      &lt;div className="card-body"&gt;
+        &#123;children&#125;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+&#125;
+
+// Використання
+&lt;Card title="Profile"&gt;
+  &lt;p&gt;Name: Anna&lt;/p&gt;
+  &lt;p&gt;Age: 25&lt;/p&gt;
+&lt;/Card&gt;</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>children</b> — вбудований проп, передає
+                дочірні елементи.</p>
+            <p><b>Призначення:</b></p>
+            <ul>
+                <li>Layout-обгортки (Card, Panel, Modal);</li>
+                <li>Композиція без props drilling;</li>
+                <li>Реюзабельні UI-оболонки.</li>
+            </ul>
+            <p><b>Перевага:</b> Card не знає, що всередині —
+                повна роздільність.</p>
+            <p>Аналог у Vue — <code>&lt;slot&gt;</code>.</p>
+            <p><b> TypeScript:</b> <code>children: ReactNode</code>
+                (не <code>JSX.Element</code>).</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>2. Compound Components — складені</h2>
+    <div style="font-size: 18px;">
+        <pre style="margin: 12px 0; font-size: 11px; white-space: pre;">&lt;Tabs&gt;
+  &lt;Tabs.List&gt;...&lt;/Tabs.List&gt;
+  &lt;Tabs.Panel index=&#123;0&#125;&gt;...&lt;/Tabs.Panel&gt;
+&lt;/Tabs&gt;</pre>
+        <p><b>Compound Components</b> — кілька компонентів, які працюють разом
+            через спільний state/Context і дають декларативний API.</p>
+        <p><b>Повний приклад:</b>
+            <a href="examples/react/13/architecture-composition.tsx" target="_blank">examples/react/13/architecture-composition.tsx</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>3. Render Props — функція як child</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Компонент приймає функцію-рендерер
+function DataList&lt;T&gt;(&#123;
+  items, renderItem
+&#125;: &#123;
+  items: T[];
+  renderItem: (item: T) =&gt; ReactNode;
+&#125;) &#123;
+  return (
+    &lt;ul&gt;
+      &#123;items.map((item, i) =&gt; (
+        &lt;li key=&#123;i&#125;&gt;&#123;renderItem(item)&#125;&lt;/li&gt;
+      ))&#125;
+    &lt;/ul&gt;
+  );
+&#125;
+
+// Використання — callback як prop
+&lt;DataList
+  items=&#123;users&#125;
+  renderItem=&#123;(user) =&gt; (
+    &lt;div&gt;
+      &lt;h3&gt;&#123;user.name&#125;&lt;/h3&gt;
+      &lt;p&gt;&#123;user.email&#125;&lt;/p&gt;
+    &lt;/div&gt;
+  )&#125;
+/&gt;</pre>
+        <div style="flex: 1; font-size: 16px;">
+            <p><b>Render prop</b> — проп-функція, що повертає JSX.</p>
+            <p>Компонент делегує рендер викликучу.</p>
+            <p><b>Призначення:</b></p>
+            <ul>
+                <li>Універсальні списки/таблиці;</li>
+                <li>Абстракція над data fetching;</li>
+                <li>Кастомізація рендеру.</li>
+            </ul>
+            <p><b>Варіація — function as child:</b></p>
+            <pre style="margin: 0; font-size: 10px; white-space: pre;">&lt;DataProvider&gt;
+  &#123;(data) =&gt; &lt;List items=&#123;data&#125; /&gt;&#125;
+&lt;/DataProvider&gt;</pre>
+            <p><b>Зауваження:</b> у сучасному React частіше
+                замінюють на <b>Custom Hooks</b>.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>4. Slot Props — кілька «слотів»</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Layout приймає кілька "слотів" через props
+function PageLayout(&#123;
+  header, sidebar, children
+&#125;: &#123;
+  header: ReactNode;
+  sidebar: ReactNode;
+  children: ReactNode;
+&#125;) &#123;
+  return (
+    &lt;div&gt;
+      &#123;header&#125;
+      &lt;div className="flex"&gt;
+        &#123;sidebar&#125;
+        &lt;main&gt;&#123;children&#125;&lt;/main&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+&#125;
+
+// Використання — передаємо готові елементи
+&lt;PageLayout
+  header=&#123;&lt;AppHeader /&gt;&#125;
+  sidebar=&#123;&lt;NavMenu /&gt;&#125;
+&gt;
+  &lt;UserListPage /&gt;  // children
+&lt;/PageLayout&gt;</pre>
+        <div style="flex: 1; font-size: 14px;">
+            <p><b>Slot props</b> — кілька «слотів» через
+                окремі props типу <code>ReactNode</code>.</p>
+            <p><b>Призначення:</b></p>
+            <ul>
+                <li>Складні layouts з кількома зонами;</li>
+                <li>Композиція без props drilling;</li>
+                <li>Page-specific контент у спільній оболонці.</li>
+            </ul>
+            <p><b>Перевага над children:</b> можна передати
+                кілька окремих ділянок.</p>
+            <p>Аналог у Vue —
+                <code>&lt;slot name="header"&gt;</code>,
+                <code>&lt;slot name="sidebar"&gt;</code>.</p>
+            <p><b>В React Router</b> <code>&lt;Outlet&gt;</code> —
+                аналог slot для активного маршруту.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>5. HOC (Higher-Order Component) — legacy</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// HOC — функція, що приймає компонент і повертає новий
+function withAuth&lt;P&gt;(
+  Component: ComponentType&lt;P&gt;
+) &#123;
+  return function Protected(props: P) &#123;
+    const &#123; isAuthenticated &#125; = useAuth();
+    if (!isAuthenticated)
+      return &lt;Navigate to="/login" /&gt;;
+    return &lt;Component &#123;...props&#125; /&gt;;
+  &#125;;
+&#125;
+
+// Використання
+export default withAuth(DashboardPage);</pre>
+        <div style="flex: 1; font-size: 14px; gap: 0;">
+            <p style="margin-bottom: 8px;"><b>HOC</b> — функція
+                <code>(Component) =&gt; NewComponent</code>.</p>
+            <p style="margin-bottom: 8px;"><b>Історично:</b> був основним патерном до Hooks
+                (React &lt; 16.8).</p>
+            <p style="margin-bottom: 8px;"><b>Зараз:</b> для нового прикладного коду частіше використовують Hooks
+                та wrapper-компоненти. HOC все ще зустрічаються в бібліотеках та legacy-коді.</p>
+            <p style="margin-bottom: 8px;"><b>Типові альтернативи:</b></p>
+            <ul>
+                <li><b>Custom Hooks</b> — для логіки;</li>
+                <li><b>Wrapper components</b> — для UI;</li>
+                <li><b>ProtectedRoute</b> — для auth.</li>
+            </ul>
+            <p style="margin-bottom: 8px;"><b>Мінуси HOC:</b></p>
+            <ul>
+                <li>втрата TypeScript-типізації props;</li>
+                <li>«wrapper hell» — вкладені HOC;</li>
+                <li>складно відлагоджувати (DevTools).</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Порівняння патернів — коли використовувати</h2>
+    <table style="font-size: 16px; width: 100%; border-collapse: collapse; margin-left: 0; ">
+        <thead>
+            <tr style="background: var(--brand-color-prinmary); color: #fff;">
+                <th style="padding: 8px; text-align: left;">Патерн</th>
+                <th style="padding: 8px; text-align: left;">Коли використовувати</th>
+                <th style="padding: 8px; text-align: left;">Аналог Vue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 6px;"><b>children</b></td>
+                <td style="padding: 6px;">Обгортки, Layout, Card</td>
+                <td style="padding: 6px;"><code>&lt;slot&gt;</code></td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Slot props</b></td>
+                <td style="padding: 6px;">Кілька зон (header, sidebar, main)</td>
+                <td style="padding: 6px;"><code>&lt;slot name="..."&gt;</code></td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Compound</b></td>
+                <td style="padding: 6px;">Tabs, Select, Accordion, Form</td>
+                <td style="padding: 6px;">provide/inject + slots</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Render props</b></td>
+                <td style="padding: 6px;">Універсальні списки, data renderers</td>
+                <td style="padding: 6px;">scoped slot <code>v-slot</code></td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Custom Hooks</b></td>
+                <td style="padding: 6px;">Перевикористання stateful-логіки (сучасний)</td>
+                <td style="padding: 6px;">Composables</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>HOC</b></td>
+                <td style="padding: 6px;">Legacy — не рекомендується</td>
+                <td style="padding: 6px;">—</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Wrapper component</b></td>
+                <td style="padding: 6px;">Auth, Error Boundary, ProtectedRoute</td>
+                <td style="padding: 6px;">wrapper component</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="slide">
+    <h2>Composition — вирішення props drilling</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// &#10060; Props drilling
+&lt;App user=&#123;user&#125;&gt;
+  &lt;Layout user=&#123;user&#125;&gt;          // не потрібен
+    &lt;Sidebar user=&#123;user&#125;&gt;       // не потрібен
+      &lt;UserProfile user=&#123;user&#125; /&gt;
+    &lt;/Sidebar&gt;
+  &lt;/Layout&gt;
+&lt;/App&gt;
+
+// &#9989; Composition — передаємо готовий елемент
+&lt;App&gt;
+  &lt;Layout
+    sidebar=&#123;
+      &lt;UserProfile user=&#123;user&#125; /&gt;
+    &#125;
+  /&gt;
+&lt;/App&gt;
+// Layout не знає про user взагалі!</pre>
+        <div style="flex: 1; font-size: 16px;">
+            <p><b>Композиція замість props drilling:</b></p>
+            <p>Замість прокидання <code>user</code> через
+                Layout і Sidebar — <b>передаємо готовий елемент</b>
+                <code>&lt;UserProfile&gt;</code> через slot prop.</p>
+            <p><b>Переваги:</b></p>
+            <ul>
+                <li>Layout залишається агностичним;</li>
+                <li>Немає зайвих props;</li>
+                <li>Немає зайвих re-render;</li>
+                <li>Зрозуміло, де дані використовуються.</li>
+            </ul>
+            <p>Альтернатива — <b>Context API</b> (Лекція 11),
+                якщо user потрібен у багатьох місцях.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Архітектурні принципи — підсумок</h2>
+    <ul style="font-size: 18px;">
+        <li><b>Single Responsibility</b> — кожен компонент має одну відповідальність;</li>
+        <li><b>Separation of Concerns</b> — UI, логіка, data — окремі шари;</li>
+        <li><b>DRY</b> — перевикористання через Custom Hooks + composition;</li>
+        <li><b>Composition over Inheritance</b> — композиція є основним способом
+            будувати повторно використовуваний UI;</li>
+        <li><b>Data-aware vs presentational</b> — pages/features можуть працювати з data,
+            а універсальні UI-компоненти краще тримати простими;</li>
+        <li><b>Feature-first</b> — групування за доменом, не за типом файлу;</li>
+        <li><b>URL як state</b> — клади в URL navigation state, який має бути
+            shareable/bookmarkable; ephemeral UI state залишай у <code>useState</code>;</li>
+        <li><b>Lazy loading</b> — code splitting для великих застосунків.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Типові помилки архітектури</h2>
+    <ul style="font-size: 18px;">
+        <li><b>Все в одному компоненті</b> — 500-рядковий компонент з логікою, стилями, fetch. Рішення: розділити на Page + Hook + UI;</li>
+        <li><b>API-виклики в UI-компонентах</b> — Button викликає axios. Рішення: Button лише emit подію, батько викликає API;</li>
+        <li><b>Props drilling через 5 рівнів</b> — рішення: Context, composition, або lifting state;</li>
+        <li><b>Універсальний компонент «на всі випадки»</b> — 50 props з умовами. Рішення: розділити на几个 спеціалізованих;</li>
+        <li><b>Навігаційний state в useState</b> — якщо pagination/filter мають бути
+            shareable/bookmarkable, збережи їх у URL через <code>useSearchParams</code>;</li>
+        <li><b>Занадто великий initial bundle</b> — code splitting може зменшити початкове завантаження;</li>
+        <li><b>Без Error Boundary</b> — одна помилка ламає весь застосунок. Рішення: ErrorBoundary per route/section.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Підсумок</h2>
+    <ul style="font-size: 18px;">
+        <li><b>SPA-маршрутизація</b> — навігація без перезавантаження через History API. React Router — стандарт.</li>
+        <li><b>React Router</b>: <code>BrowserRouter</code>, <code>Routes</code>, <code>Route</code>, <code>Link</code>, <code>Outlet</code>, <code>Navigate</code>. Hooks: <code>useParams</code>, <code>useNavigate</code>, <code>useSearchParams</code>, <code>useLocation</code>.</li>
+        <li><b>Route params</b> (<code>:id</code>) + <b>query params</b> (<code>?page=2</code>) — URL як джерело правди.</li>
+        <li><b>Nested routes</b> + <code>&lt;Outlet&gt;</code> — спільні layouts, ієрархія UI.</li>
+        <li><b>Protected routes</b> — Declarative: <code>&lt;ProtectedRoute&gt;</code>; Data: route <code>loader</code> + <code>redirect</code>.</li>
+        <li><b>Lazy loading</b> — Declarative: <code>React.lazy</code> + <code>Suspense</code>; Data: <code>route.lazy</code>.</li>
+        <li><b>Role-based routes</b> — перевірка ролі на рівні route loader.</li>
+        <li><b>404</b> — catch-all route <code>path="*"</code>; HTTP 404 окремо налаштовується на сервері/CDN.</li>
+        <li><b>Архітектура</b>: App &#8594; Layouts &#8594; Pages &#8594; Features &#8594; Components. Feature-first структура.</li>
+        <li><b>Composition патерни</b>: children, slot props, compound components, render props. HOC — legacy.</li>
+        <li><b>Custom Hooks</b> замість Container-компонентів — сучасний підхід до розділення логіки та UI.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Корисні ресурси</h2>
+    <ul style="font-size: 18px;">
+        <li><a href="examples/react/13/" target="_blank">Повні приклади коду до лекції 13</a></li>
+        <li><a href="https://reactrouter.com/" target="_blank">React Router — офіційна документація</a></li>
+        <li><a href="https://reactrouter.com/start/modes" target="_blank">React Router: Picking a Mode (Declarative / Data / Framework)</a></li>
+        <li><a href="https://reactrouter.com/api/hooks" target="_blank">React Router Hooks API</a></li>
+        <li><a href="https://react.dev/reference/react/lazy" target="_blank">React.lazy + Suspense</a></li>
+        <li><a href="https://react.dev/reference/react/Suspense" target="_blank">React Suspense</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API" target="_blank">MDN: History API</a></li>
+        <li><a href="https://www.patterns.dev/" target="_blank">patterns.dev — патерни React</a></li>
+        <li><a href="https://nextjs.org/docs/app" target="_blank">Next.js App Router (file-based routing)</a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Дякую за увагу!</h2>
+</section>
+
+<footer class="badge">
+    <a href="https://github.com/Computer-Science-Department-ChNU/client-web-systems" target="_blank">Fork me on
+        GitHub</a>
+</footer>
+
+<div class="progress"></div>
+
+<script src="node_modules/@shower/core/dist/index.js"></script>
+</body>
+</html>

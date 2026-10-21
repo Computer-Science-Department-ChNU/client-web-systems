@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Лекція 10. React: React Fundamentals та ментальна модель React</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/index.css">
+    <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="shower list">
+
+<header class="caption">
+    <h1>Лекція 10. React: React Fundamentals та ментальна модель React</h1>
+    <p>
+        <a href="index.html">Назад до змісту лекцій</a>
+    </p>
+</header>
+
+<section class="slide">
+    <h2 class="shout">
+        Лекція 10. React: React Fundamentals та ментальна модель React
+    </h2>
+</section>
+
+<section class="slide">
+    <h2>План лекції:</h2>
+    <ol>
+        <li>Що таке React і як він відрізняється від Vue та інших frontend-фреймворків?</li>
+        <li>Як побудована компонентна модель React та як створювати UI за допомогою JSX/TSX?</li>
+        <li>Як у React відбувається передача даних між компонентами через props та state?</li>
+        <li>Як працює rendering у React та чому зміна state призводить до оновлення UI?</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2>Що таке React?</h2>
+    <div style="display: flex; align-items: center; gap: 30px;">
+        <div style="font-size: 19px;">
+            <p><b>React</b> — це JavaScript-бібліотека з відкритим кодом
+                для розробки користувацьких інтерфейсів,
+                створена командою Facebook (Meta) у 2013 році.</p>
+            <p>React дозволяє будувати UI з невеликих ізольованих
+                частин — <b>компонентів</b>, які описують стан
+                інтерфейсу, а React автоматично оновлює DOM
+                при зміні цього стану.</p>
+            <p>React є основою для екосистеми: React Native
+                (мобільні застосунки), Next.js (SSR/фреймворк),
+                Remix, Astro та ін.</p>
+        </div>
+        <img src="pictures/react/10/logo.svg" style="flex-shrink: 0" width="160" alt="React logo">
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Історія створення React</h2>
+    <div style="font-size: 18px;">
+        <p>React був створений <b>Jordan Walke</b> — інженером Facebook —
+            у 2011 році. На той час команді Facebook потрібен був інструмент
+            для ефективного управління складним UI з великим обсягом
+            інтерактивних елементів (списки новин, чат, сповіщення).</p>
+        <p>Перше використання React відбулося у <b>Facebook Ads</b> (2011),
+            а згодом — у <b>Instagram</b> (2012). У траві <b>2013</b> року
+            React був відкритий на JSConf US.</p>
+        <p>React ввів у масову свідомість такі концепції як
+            <b>Virtual DOM</b>, <b>компонентна архітектура</b>,
+            <b>односторонній потік даних</b> та <b>JSX</b>.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Історія розвитку React</h2>
+    <img src="pictures/react/10/history.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>React — це бібліотека, а не фреймворк</h2>
+    <div class="columns two">
+        <div>
+            <p style="font-size: 18px;"><b>React позиціонується як бібліотека</b>
+                для побудови UI, а не повноцінний фреймворк.</p>
+            <p style="font-size: 18px;">React відповідає лише за
+                <b>rendering</b> — перетворення стану на UI.
+                Роутинг, управління станом, валідація форм,
+                HTTP-клієнти — все це розробник обирає сам.</p>
+            <p style="font-size: 18px;">Це дає <b>гнучкість</b>: ви
+                можете комбінувати React з будь-якими
+                інструментами.</p>
+        </div>
+        <div>
+            <p style="font-size: 18px;">Фреймворки (Vue, Angular, Svelte)
+                дають більше «з коробки»: роутер, стейт-менеджер,
+                директиви, форми тощо.</p>
+            <p style="font-size: 18px;">React натомість пропонує
+                <b>екосистему</b>: React Router, Redux/Zustand,
+                React Hook Form, TanStack Query та інші.</p>
+            <p style="font-size: 18px;">Для повноцінних застосунків
+                використовують мета-фреймворки: <b>Next.js</b>,
+                <b>Remix</b>.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>React vs Vue — порівняння підходів</h2>
+    <img src="pictures/react/10/vue-vs-react.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>React vs Vue — ключові відмінності</h2>
+    <table style="font-size: 16px; width: 100%; border-collapse: collapse; margin-left: 0; ">
+        <thead>
+            <tr style="background: var(--brand-color-prinmary); color: #fff;">
+                <th style="padding: 8px; text-align: left;">Аспект</th>
+                <th style="padding: 8px; text-align: left;">React</th>
+                <th style="padding: 8px; text-align: left;">Vue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 6px;"><b>Синтаксис UI</b></td>
+                <td style="padding: 6px;">JSX / TSX (JS-подібний)</td>
+                <td style="padding: 6px;">Шаблони (HTML-подібні)</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Реактивність</b></td>
+                <td style="padding: 6px;">setState &#8594; re-render (явний)</td>
+                <td style="padding: 6px;">Проксі-реактивність (автоматична)</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Потік даних</b></td>
+                <td style="padding: 6px;">Односторонній (top-down)</td>
+                <td style="padding: 6px;">Односторонній + v-model (двостороннє)</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Оновлення DOM</b></td>
+                <td style="padding: 6px;">Virtual DOM + Reconciliation</td>
+                <td style="padding: 6px;">Реактивні залежності (точково)</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Стан компонента</b></td>
+                <td style="padding: 6px;">Hooks: useState, useReducer</td>
+                <td style="padding: 6px;">ref(), reactive(), data()</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Типізація</b></td>
+                <td style="padding: 6px;">TSX — нативна підтримка</td>
+                <td style="padding: 6px;">defineProps&lt;T&gt;, vue-tsc</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Позиціонування</b></td>
+                <td style="padding: 6px;">Бібліотека (UI only)</td>
+                <td style="padding: 6px;">Прогресивний фреймворк</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="slide">
+    <h2>Що спільного у React та Vue?</h2>
+    <ul style="font-size: 19px;">
+        <li><b>Компонентна архітектура</b> — UI розбивається на багаторазові, самодостатні блоки.</li>
+        <li><b>Декларативний підхід</b> — описуємо «що» відобразити, а не «як» маніпулювати DOM.</li>
+        <li><b>Virtual DOM</b> — обидва використовують проміжне дерево для оптимізації оновлень.</li>
+        <li><b>Односторонній потік даних</b> — props передаються вниз, події піднімаються вгору.</li>
+        <li><b>Підтримка TypeScript</b> — обидва мають інструменти для статичної типізації.</li>
+        <li><b>Екосистема та спільнота</b> — багата кількість плагінів, інструментів, навчальних матеріалів.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Компонентна модель та JSX</h2>
+</section>
+
+<section class="slide">
+    <h2>Компонентна модель React</h2>
+    <div style="font-size: 19px;">
+        <p><b>Компонент</b> у React — це звичайна <b>JavaScript-функція</b>,
+            яка приймає об'єкт пропсів і повертає опис UI (JSX).</p>
+        <p>Компоненти можна <b>компонувати</b>: один компонент може
+            рендерити інші компоненти, утворюючи дерево.</p>
+        <p>Кожен компонент — це <b>ізольована одиниця</b> зі своїм
+            станом, логікою та UI. Це дозволяє:</p>
+        <ul>
+            <li>повторно використовувати код (DRY);</li>
+            <li>тестувати компоненти окремо;</li>
+            <li>розділити роботу між розробниками.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Дерево компонентів React</h2>
+    <img src="pictures/react/10/components.svg" alt="" style="display: block; margin: 0 auto; width: 85%;">
+</section>
+
+<section class="slide">
+    <h2>JSX — синтаксис для опису UI</h2>
+    <div style="font-size: 19px;">
+        <p><b>JSX</b> (JavaScript XML) — це розширення синтаксису JavaScript,
+            яке дозволяє описувати UI у знайомому HTML-подібному синтаксисі.</p>
+        <p>JSX <b>не є</b> шаблонною мовою. Сучасний JSX transform компілює JSX
+            у виклики React runtime API без потреби імпортувати <code>React</code>
+            лише заради JSX.</p>
+        <p>На відміну від Vue-шаблонів (HTML-подібних), JSX — це
+            <b>повноцінний JavaScript</b>: ви можете використовувати
+            будь-які JS-вирази всередині фігурних дужок <code>&#123;&#125;</code>.</p>
+        <p><b>TSX</b> — це JSX з підтримкою TypeScript-типів.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>JSX ⇔ React.createElement</h2>
+    <div style="font-size: 18px;">
+        <pre style="margin: 12px 0; font-size: 11px; white-space: pre;">const el = (
+  &lt;div className="card"&gt;
+    &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;p&gt;&#123;name&#125;&lt;/p&gt;
+  &lt;/div&gt;
+);
+
+// Концептуально це створення element:
+React.createElement("div", &#123; className: "card" &#125;, ...);</pre>
+        <p>JSX — сучасний спосіб описувати React UI. <code>createElement</code> допомагає зрозуміти,
+            як JSX пов'язаний з React elements, але в прикладному коді зазвичай пишемо JSX.</p>
+        <p><b>Повний приклад:</b>
+            <a href="examples/react/10/jsx-and-components.tsx" target="_blank">examples/react/10/jsx-and-components.tsx</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>JSX — приклад компонента</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">function Welcome(props) {
+  return (
+    &lt;div className="greeting"&gt;
+      &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;
+      &lt;p&gt;Welcome to React.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// TSX з типами
+function Welcome(props: {
+  name: string;
+}) {
+  return (
+    &lt;div className="greeting"&gt;
+      &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+    </div>
+    <p style="font-size: 17px; margin-top: 15px;">
+        <b>Правила JSX:</b>
+        компонент починається з великої літери &#8594;
+        один кореневий елемент (або Fragment <code>&lt;&gt;...&lt;/&gt;</code>) &#8594;
+        <code>className</code> замість <code>class</code> &#8594;
+        вирази у <code>&#123;&#125;</code>.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>JSX — умовний рендеринг та списки</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Умовний рендеринг
+function Greeting(props) {
+  return (
+    &lt;div&gt;
+      {props.isLoggedIn
+        ? &lt;p&gt;Welcome back!&lt;/p&gt;
+        : &lt;p&gt;Please log in.&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Рендеринг списків
+function ItemList(props) {
+  return (
+    &lt;ul&gt;
+      {props.items.map(item =&gt; (
+        &lt;li key={item.id}&gt;
+          {item.name}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</pre>
+    </div>
+    <p style="font-size: 17px; margin-top: 15px;">
+        У Vue для цього є директиви <code>v-if</code> та <code>v-for</code>.
+        У React — це <b>звичайні JS-вирази</b> (тернарний оператор, <code>&amp;&amp;</code>, <code>.map()</code>).
+        Атрибут <code>key</code> обов'язковий для елементів списку.
+    </p>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Props та State</h2>
+</section>
+
+<section class="slide">
+    <h2>Ментальна модель React: UI = f(state)</h2>
+    <img src="pictures/react/10/mental-model.svg" alt="" style="display: block; margin: 0 auto; width: 85%;">
+    <p style="text-align: center; font-size: 14px; margin-top: -10px;">
+        <b>UI — це функція від стану.</b> Змінив state &#8594; React перераховує UI.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Props — передача даних вниз</h2>
+    <div style="font-size: 19px;">
+        <p><b>Props</b> (properties) — це дані, які батьківський компонент
+            передає дочірньому через атрибути JSX.</p>
+        <p>Props — <b>read-only</b> (тільки для читання). Дочірній компонент
+            не повинен змінювати свої props — це контракт React.</p>
+        <p>Потік даних у React завжди <b>односторонній</b> (top-down):
+            батько &#8594; дочірній компонент через props.</p>
+        <p>Щоб передати подію вгору, батько передає <b>callback-функцію</b>
+            через props, а дочірній компонент викликає її.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Props та callbacks — потоки даних</h2>
+    <img src="pictures/react/10/props-state.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>Props — приклад</h2>
+    <pre style="margin: 0; font-size: 10px; white-space: pre;">// Батьківський компонент
+function App() {
+  const [name, setName] = useState("Anna");
+
+  return (
+    &lt;div&gt;
+      &lt;Profile name={name} age={25} /&gt;
+      &lt;Profile name={"Oleg"} age={30} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Дочірній компонент (TSX)
+function Profile(props: { name: string; age: number }) {
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{props.name}&lt;/h2&gt;
+      &lt;p&gt;Age: {props.age}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+    <p style="font-size: 17px; margin-top: 10px;">
+        Кожен виклик <code>&lt;Profile /&gt;</code> — це окремий екземпляр
+        з власними props. Props можна типізувати через TypeScript-інтерфейси.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>State — внутрішній стан компонента</h2>
+    <div style="font-size: 19px;">
+        <p><b>State</b> — це дані, які компонент зберігає всередині себе
+            і які можуть <b>змінюватися</b> з часом.</p>
+        <p>Коли state змінюється &#8594; React <b>автоматично</b>
+            перерендерить компонент і його дочірні елементи.</p>
+        <p>State — це <b>приватне</b> для конкретного екземпляра компонента.
+            На відміну від props, state створюється і управляється
+            самим компонентом.</p>
+        <p>У сучасному React state керується через <b>Hooks</b>:
+            <code>useState</code>, <code>useReducer</code>,
+            <code>useRef</code>.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>useState — приклад</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] =
+    useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button
+        onClick={() =&gt; setCount(count + 1)}
+      &gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+        <div style="flex: 1; font-size: 16px;">
+            <p><b>useState(initialValue)</b> повертає пару:</p>
+            <ul>
+                <li><code>count</code> — поточне значення</li>
+                <li><code>setCount</code> — функція-оновлювач</li>
+            </ul>
+            <p><b>Важливо:</b></p>
+            <ul>
+                <li>state не змінюється напряму
+                    (<code>count = 5</code> &#10007;)</li>
+                <li>лише через setter:
+                    <code>setCount(5)</code> &#10003;</li>
+                <li>оновлення state — <b>асинхронні</b>
+                    (батчинг)</li>
+                <li>state може бути об'єктом,
+                    масивом, примітивом</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>React 19 — <code>ref</code> як prop</h2>
+    <div style="font-size: 18px;">
+        <pre style="margin: 12px 0; font-size: 12px; white-space: pre;">function TextInput(&#123; ref &#125;: &#123;
+  ref?: Ref&lt;HTMLInputElement&gt;
+&#125;) &#123;
+  return &lt;input ref=&#123;ref&#125; /&gt;;
+&#125;
+
+const inputRef = useRef&lt;HTMLInputElement&gt;(null);
+&lt;TextInput ref=&#123;inputRef&#125; /&gt;;</pre>
+        <p>У React 19 <code>ref</code> можна передавати як звичайний prop.</p>
+        <p><b>Повний приклад:</b>
+            <a href="examples/react/10/refs-and-modern-react.tsx" target="_blank">examples/react/10/refs-and-modern-react.tsx</a></p>
+    </div>
+</section>
+<section class="slide">
+    <h2>Props vs State — порівняння</h2>
+    <table style="font-size: 17px; width: 100%; border-collapse: collapse; margin-left: 0; ">
+        <thead>
+            <tr style="background: var(--brand-color-prinmary); color: #fff;">
+                <th style="padding: 8px; text-align: left;">Властивість</th>
+                <th style="padding: 8px; text-align: left;">Props</th>
+                <th style="padding: 8px; text-align: left;">State</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 6px;"><b>Джерело</b></td>
+                <td style="padding: 6px;">Передаються від батька</td>
+                <td style="padding: 6px;">Створюються в компоненті</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Мутація</b></td>
+                <td style="padding: 6px;">Read-only</td>
+                <td style="padding: 6px;">Можна змінювати (через setter)</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Доступ</b></td>
+                <td style="padding: 6px;">Через аргумент функції</td>
+                <td style="padding: 6px;">Через useState / useReducer</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Тригер re-render</b></td>
+                <td style="padding: 6px;">Зміна props у батька</td>
+                <td style="padding: 6px;">Виклик setter-функції</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;"><b>Аналог у Vue</b></td>
+                <td style="padding: 6px;">defineProps / props</td>
+                <td style="padding: 6px;">ref() / reactive() / data()</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="slide">
+    <h2>Підняття стану (Lifting State Up)</h2>
+    <div style="font-size: 18px;">
+        <p>Якщо два дочірніх компоненти потребують доступ до одних даних &#8594;
+            <b>стан піднімається до спільного батька</b>, а дочірні отримують
+            його через props.</p>
+        <p>Це ключовий принцип React: <b>стан живе в найближчому спільному предку</b>
+            компонентів, які його використовують.</p>
+        <p>Для складних застосунків з глобальним станом використовують
+            контекст (<code>useContext</code>) або стейт-менеджери
+            (<code>Redux</code>, <code>Zustand</code>, <code>Jotai</code>).</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Rendering у React</h2>
+</section>
+
+<section class="slide">
+    <h2>Як працює rendering у React</h2>
+    <img src="pictures/react/10/rendering.svg" alt="" style="display: block; margin: 0 auto; width: 75%;">
+</section>
+
+<section class="slide">
+    <h2>Rendering — крок за кроком</h2>
+    <ol style="font-size: 19px;">
+        <li><b>setState / dispatch</b> — компонент викликає функцію-оновлювач,
+            повідомляючи React, що state змінився.</li>
+        <li><b>Re-render</b> — React заново викликає функцію компонента,
+            отримує нове JSX-дерево (новий Virtual DOM).</li>
+        <li><b>Reconciliation (примирення)</b> — React порівнює нове
+            Virtual DOM-дерево з попереднім (diffing алгоритм) і
+            визначає, що саме змінилося.</li>
+        <li><b>Commit</b> — React застосовує лише <b>змінені</b> вузли
+            до реального DOM (мінімум DOM-операцій).</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2>Чому зміна state призводить до оновлення UI?</h2>
+    <div style="font-size: 19px;">
+        <p>React побудований на принципі <b>UI = f(state)</b>.
+            UI — це функція від стану: якщо state змінюється,
+            то результат функції (UI) також змінюється.</p>
+        <p>Тому React <b>автоматично</b> перерендерить компонент
+            при кожному виклику <code>setState</code> — щоб
+            переконатися, що UI відповідає новому стану.</p>
+        <p>Це фундаментальна відмінність від Vue, де реактивність
+            відстежує залежності автоматично (через Proxy) і оновлює
+            лише конкретні DOM-вузли. У React — <b>перерендериться весь
+            компонент</b>, а Virtual DOM вже оптимізує оновлення.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Virtual DOM та Reconciliation</h2>
+    <div style="font-size: 19px;">
+        <p><b>Virtual DOM</b> — легковагне JavaScript-представлення
+            реального DOM. Кожен компонент повертає дерево
+            <code>ReactElement</code>-об'єктів.</p>
+        <p><b>Diffing алгоритм</b> — React порівнює старе і нове
+            VDOM-дерева за <b>трьома евристиками</b>:</p>
+        <ul>
+            <li>Різні типи елементів &#8594; усе піддерево замінюється;</li>
+            <li>Однакові типи &#8594; оновлюються лише атрибути;</li>
+            <li>Списки &#8594; ключі (<code>key</code>) допомагають
+                ідентифікувати елементи при перестановках.</li>
+        </ul>
+        <p>Результат diffing — мінімальний набір DOM-операцій
+            (<b>commit phase</b>).</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>React Fiber — архітектура рендеринга</h2>
+    <div style="font-size: 19px;">
+        <p>Починаючи з React 16, внутрішній алгоритм рендеринга
+            називається <b>Fiber</b>. Це переписаний reconciliation-движок.</p>
+        <p><b>Fiber</b> дозволяє:</p>
+        <ul>
+            <li><b>Припиняти і відновлювати</b> рендеринг
+                (incremental rendering) — React може розбити
+                велику роботу на частини;</li>
+            <li><b>Пріоритезувати</b> оновлення — UI-оновлення
+                мають вищий пріоритет ніж data-fetching;</li>
+            <li><b>Concurrent rendering</b> (React 18+) —
+                <code>useTransition</code>, <code>useDeferredValue</code>,
+                <code>Suspense</code>.</li>
+        </ul>
+        <p>Fiber-дерево — це ланцюг «робочих одиниць» (units of work),
+            які React обробляє частинами.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Батчинг оновлень (Batching)</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Без батчингу — 2 re-render
+function Bad() {
+  const [a, setA] = useState(0);
+  const [b, setB] = useState(0);
+
+  const handle = () =&gt; {
+    setA(1); // re-render 1
+    setB(1); // re-render 2
+  };
+}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// З батчингом — 1 re-render
+function Good() {
+  const [a, setA] = useState(0);
+  const [b, setB] = useState(0);
+
+  const handle = () =&gt; {
+    setA(1);
+    setB(1);
+    // React 18+ автоматично
+    // батчить обидва виклики
+  };
+}</pre>
+    </div>
+    <p style="font-size: 17px; margin-top: 15px;">
+        <b>React 18+</b> автоматично батчить оновлення навіть у
+        промісах, setTimeout та event-хендлерах. Це зменшує
+        кількість re-render і підвищує продуктивність.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>React 19.x: сучасний React та Server Components</h2>
+    <div style="font-size: 18px;">
+        <p><b>React 19.x</b> зберігає фундаментальну модель components + JSX + state,
+            але додає нові API для форм, async flows та роботи з даними.</p>
+        <ul>
+            <li><code>useActionState</code> — стан і результат Action, зокрема для форм;</li>
+            <li><code>useOptimistic</code> — оптимістичний UI під час async-операцій;</li>
+            <li><code>useFormStatus</code> — стан батьківської форми зсередини її піддерева;</li>
+            <li><code>use()</code> — читання Promise або Context у дозволених сценаріях;</li>
+            <li><b>ref як звичайний prop</b> для function components.</li>
+        </ul>
+        <p><b>Server Components (RSC)</b> виконуються на сервері й можуть читати дані
+            на серверній стороні. Вони не є автоматичною частиною звичайного Vite SPA:</p>
+        <ul>
+            <li>для RSC потрібна відповідна server/framework інтеграція;</li>
+            <li>для навчального client-side Vite-проєкту RSC не є обов’язковими;</li>
+            <li>React рекомендує framework, коли застосунку потрібні SSR/RSC.</li>
+        </ul>
+        <p>Документація: <a href="https://react.dev/blog/2024/12/05/react-19" target="_blank">React 19</a>.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Налаштування середовища для React</h2>
+    <ul style="font-size: 19px;">
+        <li>
+            <a href="https://react.dev/learn/start-a-new-react-project" target="_blank">Створення нового React-проєкту</a>
+        </li>
+        <li>Швидко спробувати React у пісочницях:
+            <ul>
+                <li><a href="https://codesandbox.io/p/sandbox/new?utm_source=react.dev" target="_blank">CodeSandbox</a></li>
+                <li><a href="https://stackblitz.com/edit/react-18-typescript" target="_blank">StackBlitz</a></li>
+                <li><a href="https://playcode.io/react" target="_blank">PlayCode</a></li>
+            </ul>
+        </li>
+        <li>Створення локального застосунку:
+            <ul>
+                <li><b>Vite + React</b> (рекомендовано): <code>npm create vite@latest my-app -- --template react-ts</code></li>
+                <li><b>Next.js</b> (для SSR/RSC): <code>npx create-next-app@latest</code></li>
+                <li><b>create-react-app</b> — deprecated, не рекомендується</li>
+            </ul>
+        </li>
+        <li>Передумови: Node.js 20.19+ або 22.12+, знання HTML/CSS/JS/TS.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Структура React-застосунку (Vite)</h2>
+    <div style="display: flex; gap: 30px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">
+my-app/
+├── src/
+│   ├── components/
+│   │   ├── Button.tsx
+│   │   └── Header.tsx
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── public/
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>main.tsx</b> — точка входу, монтує
+                React-застосунок у DOM.</p>
+            <p><b>App.tsx</b> — кореневий компонент.</p>
+            <p><b>components/</b> — папка для
+                багаторазових компонентів.</p>
+            <p><b>index.html</b> — HTML-шаблон з
+                <code>&lt;div id="root"&gt;</code>.</p>
+            <p>React монтується в один DOM-вузол —
+                <b>single root</b> (на відміну від Vue,
+                де може бути кілька app-інстансів).</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Життєвий цикл компонента (Hooks)</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">import { useState, useEffect } from "react";
+
+function DataFetcher() {
+  const [data, setData] =
+    useState(null);
+
+  useEffect(() =&gt; {
+    fetch("/api/data")
+      .then(r =&gt; r.json())
+      .then(setData);
+
+    // cleanup (unmount)
+    return () =&gt; cleanup();
+  }, []); // deps
+
+  return &lt;div&gt;{data}&lt;/div&gt;;
+}</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Основні Hooks:</b></p>
+            <ul>
+                <li><code>useState</code> — локальний стан</li>
+                <li><code>useEffect</code> — побічні ефекти
+                    (fetch, підписки, DOM)</li>
+                <li><code>useRef</code> — мутабельне значення
+                    без re-render</li>
+                <li><code>useMemo</code> — мемоізація значення</li>
+                <li><code>useCallback</code> — мемоізація функції</li>
+                <li><code>useContext</code> — доступ до контексту</li>
+                <li><code>useReducer</code> — складний стан
+                    (як Redux локально)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Підсумок: ментальна модель React</h2>
+    <ul style="font-size: 19px;">
+        <li><b>UI = f(state)</b> — інтерфейс є функцією від стану. Змінив state &#8594; отримав новий UI.</li>
+        <li><b>Односторонній потік даних</b> — props вниз, події (callbacks) вгору.</li>
+        <li><b>Компоненти — це функції</b> (не класи в сучасному React), які повертають JSX.</li>
+        <li><b>JSX = JS</b> — вирази, а не шаблони. Уся логіка — це JavaScript.</li>
+        <li><b>Virtual DOM + Reconciliation</b> — React порівнює дерева і оновлює лише змінене в DOM.</li>
+        <li><b>Hooks</b> — API для стану, контексту, refs, effects та інших можливостей React.</li>
+        <li><b>React — бібліотека</b>, а не фреймворк. Гнучкість + екосистема.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Корисні ресурси</h2>
+    <ul style="font-size: 19px;">
+        <li><a href="examples/react/10/" target="_blank">Повні приклади коду до лекції 10</a></li>
+        <li><a href="https://react.dev" target="_blank">react.dev — офіційна документація (новий інтерактивний туторіал)</a></li>
+        <li><a href="https://react.dev/learn" target="_blank">React Learn — інтерактивний курс</a></li>
+        <li><a href="https://react.dev/reference/react" target="_blank">React API Reference</a></li>
+        <li><a href="https://www.typescriptlang.org/docs/handbook/react.html" target="_blank">TypeScript + React</a></li>
+        <li><a href="https://vitejs.dev/guide/" target="_blank">Vite — інструмент збірки</a></li>
+        <li><a href="https://nextjs.org/docs" target="_blank">Next.js — React фреймворк</a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Дякую за увагу!</h2>
+</section>
+
+<footer class="badge">
+    <a href="https://github.com/Computer-Science-Department-ChNU/client-web-systems" target="_blank">Fork me on
+        GitHub</a>
+</footer>
+
+<div class="progress"></div>
+
+<script src="node_modules/@shower/core/dist/index.js"></script>
+</body>
+</html>

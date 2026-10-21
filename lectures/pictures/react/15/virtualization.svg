@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" width="720" height="340">
+  <rect width="720" height="340" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">List Virtualization — render only visible</text>
+
+  <!-- Without -->
+  <rect x="20" y="55" width="330" height="130" rx="8" fill="#1a1a2e" stroke="#ff6b6b"/>
+  <text x="40" y="80" fill="#ff6b6b" font-family="monospace" font-size="14" font-weight="bold">Без virtualization</text>
+  <text x="40" y="105" fill="#ccc" font-family="monospace" font-size="12">&lt;ul&gt;{items.map(i =&gt; &lt;Item /&gt;)}&lt;/ul&gt;</text>
+  <text x="40" y="130" fill="#ff6b6b" font-family="monospace" font-size="12">10,000 items &#8594; 10,000 DOM nodes</text>
+  <text x="40" y="150" fill="#ff6b6b" font-family="monospace" font-size="12">Browser: slow scroll, high memory</text>
+  <text x="40" y="170" fill="#888" font-family="monospace" font-size="11">DOM: ~200KB for 10k items</text>
+
+  <!-- With -->
+  <rect x="370" y="55" width="330" height="130" rx="8" fill="#1a1a2e" stroke="#51cf66"/>
+  <text x="390" y="80" fill="#51cf66" font-family="monospace" font-size="14" font-weight="bold">З virtualization (react-window)</text>
+  <text x="390" y="105" fill="#ccc" font-family="monospace" font-size="12">&lt;FixedSizeList</text>
+  <text x="405" y="123" fill="#d19a66" font-family="monospace" font-size="11">height={600}</text>
+  <text x="405" y="140" fill="#d19a66" font-family="monospace" font-size="11">itemCount={items.length}</text>
+  <text x="405" y="157" fill="#d19a66" font-family="monospace" font-size="11">itemSize={50}</text>
+  <text x="390" y="175" fill="#ccc" font-family="monospace" font-size="12">&gt;</text>
+
+  <!-- Visualization -->
+  <rect x="20" y="205" width="680" height="120" rx="8" fill="#2a2a3e" stroke="#444"/>
+  <text x="360" y="230" text-anchor="middle" fill="#aaa" font-family="monospace" font-size="13">Virtualization: only ~12 visible items rendered, rest = empty space</text>
+
+  <rect x="100" y="245" width="100" height="30" rx="4" fill="#4a9eff"/>
+  <text x="150" y="265" text-anchor="middle" fill="#fff" font-family="monospace" font-size="11">Item 0</text>
+  <rect x="100" y="278" width="100" height="30" rx="4" fill="#4a9eff"/>
+  <text x="150" y="298" text-anchor="middle" fill="#fff" font-family="monospace" font-size="11">Item 1</text>
+  <rect x="100" y="311" width="100" height="12" rx="4" fill="#2a2a3e" stroke="#444"/>
+
+  <text x="210" y="275" fill="#888" font-family="monospace" font-size="13">visible (rendered)</text>
+
+  <rect x="500" y="245" width="100" height="30" rx="4" fill="#333" stroke="#444"/>
+  <text x="550" y="265" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">Item 5000</text>
+  <rect x="500" y="278" width="100" height="30" rx="4" fill="#333" stroke="#444"/>
+  <text x="550" y="298" text-anchor="middle" fill="#888" font-family="monospace" font-size="11">Item 5001</text>
+  <text x="610" y="275" fill="#888" font-family="monospace" font-size="13">virtual</text>
+</svg>

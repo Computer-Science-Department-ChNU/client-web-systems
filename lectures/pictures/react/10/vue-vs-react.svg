@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <!-- Vue column -->
+  <text x="180" y="30" text-anchor="middle" fill="#41B883" font-family="monospace" font-size="20" font-weight="bold">Vue</text>
+  <rect x="40" y="50" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#41B883"/>
+  <text x="60" y="80" fill="#ccc" font-family="monospace" font-size="13">Підхід: реактивні проксі</text>
+  <rect x="40" y="110" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#41B883"/>
+  <text x="60" y="140" fill="#ccc" font-family="monospace" font-size="13">Шаблони (HTML-based)</text>
+  <rect x="40" y="170" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#41B883"/>
+  <text x="60" y="200" fill="#ccc" font-family="monospace" font-size="13">Двостороннє зв'язування</text>
+  <rect x="40" y="230" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#41B883"/>
+  <text x="60" y="260" fill="#ccc" font-family="monospace" font-size="13">Оновлення: точково по ефекту</text>
+  <rect x="40" y="290" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#41B883"/>
+  <text x="60" y="320" fill="#ccc" font-family="monospace" font-size="13">Compile-time оптимізації</text>
+
+  <!-- React column -->
+  <text x="540" y="30" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="20" font-weight="bold">React</text>
+  <rect x="400" y="50" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="420" y="80" fill="#ccc" font-family="monospace" font-size="13">Підхід: setState &#8594; re-render</text>
+  <rect x="400" y="110" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="420" y="140" fill="#ccc" font-family="monospace" font-size="13">JSX (JS-based синтаксис)</text>
+  <rect x="400" y="170" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="420" y="200" fill="#ccc" font-family="monospace" font-size="13">Односторонній потік даних</text>
+  <rect x="400" y="230" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="420" y="260" fill="#ccc" font-family="monospace" font-size="13">Оновлення: Virtual DOM diff</text>
+  <rect x="400" y="290" width="280" height="50" rx="6" fill="#2a2a3e" stroke="#61DAFB"/>
+  <text x="420" y="320" fill="#ccc" font-family="monospace" font-size="13">Runtime + компілятор (RSC)</text>
+</svg>

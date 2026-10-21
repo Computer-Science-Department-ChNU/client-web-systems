@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420">
+  <rect width="720" height="420" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Структура React-застосунку</text>
+
+  <!-- Tree -->
+  <rect x="270" y="55" width="180" height="50" rx="8" fill="#61DAFB"/>
+  <text x="360" y="85" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">App</text>
+
+  <line x1="300" y1="105" x2="140" y2="135" stroke="#888" stroke-width="2"/>
+  <line x1="360" y1="105" x2="360" y2="135" stroke="#888" stroke-width="2"/>
+  <line x1="420" y1="105" x2="580" y2="135" stroke="#888" stroke-width="2"/>
+
+  <rect x="60" y="135" width="160" height="45" rx="8" fill="#4a9eff"/>
+  <text x="140" y="163" text-anchor="middle" fill="#fff" font-family="monospace" font-size="13" font-weight="bold">RouterProvider</text>
+
+  <rect x="280" y="135" width="160" height="45" rx="8" fill="#4a9eff"/>
+  <text x="360" y="163" text-anchor="middle" fill="#fff" font-family="monospace" font-size="13" font-weight="bold">Providers</text>
+
+  <rect x="500" y="135" width="160" height="45" rx="8" fill="#4a9eff"/>
+  <text x="580" y="163" text-anchor="middle" fill="#fff" font-family="monospace" font-size="13" font-weight="bold">ErrorBoundary</text>
+
+  <line x1="140" y1="180" x2="140" y2="210" stroke="#888" stroke-width="2"/>
+  <line x1="360" y1="180" x2="360" y2="210" stroke="#888" stroke-width="2"/>
+  <line x1="580" y1="180" x2="580" y2="210" stroke="#888" stroke-width="2"/>
+
+  <rect x="40" y="210" width="200" height="45" rx="8" fill="#d19a66"/>
+  <text x="140" y="238" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">Layout (Header + Outlet)</text>
+
+  <rect x="260" y="210" width="200" height="45" rx="8" fill="#d19a66"/>
+  <text x="360" y="238" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">ThemeContext</text>
+
+  <rect x="480" y="210" width="200" height="45" rx="8" fill="#d19a66"/>
+  <text x="580" y="238" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">AuthContext</text>
+
+  <line x1="140" y1="255" x2="140" y2="285" stroke="#888" stroke-width="2"/>
+
+  <rect x="20" y="285" width="240" height="45" rx="8" fill="#51cf66"/>
+  <text x="140" y="313" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12" font-weight="bold">Pages (Home, Users, Settings)</text>
+
+  <line x1="140" y1="330" x2="140" y2="360" stroke="#888" stroke-width="2"/>
+
+  <rect x="20" y="360" width="240" height="45" rx="8" fill="#ff6b6b"/>
+  <text x="140" y="388" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="bold">Features / Components / Hooks</text>
+
+  <text x="500" y="320" text-anchor="middle" fill="#888" font-family="monospace" font-size="13">Global concerns at top</text>
+  <text x="500" y="345" text-anchor="middle" fill="#888" font-family="monospace" font-size="13">Domain logic at bottom</text>
+  <text x="500" y="385" text-anchor="middle" fill="#888" font-family="monospace" font-size="13">Each layer has one job</text>
+</svg>

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Лекція 12. React: Робота з API та CRUD-застосунками</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/index.css">
+    <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="shower list">
+
+<header class="caption">
+    <h1>Лекція 12. React: Робота з API та CRUD-застосунками</h1>
+    <p>
+        <a href="index.html">Назад до змісту лекцій</a>
+    </p>
+</header>
+
+<section class="slide">
+    <h2 class="shout">
+        Лекція 12. React: Робота з API та CRUD-застосунками
+    </h2>
+</section>
+
+<section class="slide">
+    <h2>План лекції:</h2>
+    <ol>
+        <li>Як React-застосунок взаємодіє з backend та REST API?</li>
+        <li>Як організувати асинхронну роботу з API та обробку loading/success/error states?</li>
+        <li>Як реалізувати CRUD-операції у React-застосунку?</li>
+        <li>Як організувати API layer та роботу з HTTP-клієнтами, зокрема Axios?</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2 class="shout">React &#8596; REST API</h2>
+</section>
+
+<section class="slide">
+    <h2>Як React взаємодіє з backend</h2>
+    <img src="pictures/react/12/react-rest-api.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>REST API — основи</h2>
+    <div style="font-size: 19px;">
+        <p><b>REST</b> (Representational State Transfer) — стиль організації
+            веб-API навколо ресурсів та стандартних HTTP-механізмів. Основні ідеї:</p>
+        <ul>
+            <li><b>Stateless</b> — сервер не покладається на стан попередніх запитів;
+                кожен запит має містити потрібний контекст;</li>
+            <li><b>Resource-oriented</b> — URL ідентифікує ресурс
+                (<code>/api/users</code>, <code>/api/products/42</code>);</li>
+            <li><b>HTTP-методи</b> визначають операцію:
+                GET (read), POST (create), PUT/PATCH (update), DELETE (delete);</li>
+            <li><b>Формат даних</b> — зазвичай JSON;</li>
+            <li><b>HTTP status codes</b> — 200 OK, 201 Created, 400 Bad Request,
+                401 Unauthorized, 404 Not Found, 500 Server Error.</li>
+        </ul>
+        <p>React не має вбудованого API-клієнта — використовується
+            <code>fetch()</code> або сторонні бібліотеки (Axios, ky).</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Де живе API-логіка в React</h2>
+    <div style="font-size: 19px;">
+        <p>У невеликому компоненті прямий <code>fetch()</code> можливий.
+            Але коли API використовується в кількох місцях, краще винести HTTP-логіку окремо,
+            щоб UI не залежав від деталей запиту:</p>
+        <ol>
+            <li><b>API Layer</b> (<code>api/client.ts</code>, <code>api/users.ts</code>) —
+                HTTP-клієнт, endpoint-функції, типи запитів/відповідей;</li>
+            <li><b>Custom Hooks</b> (<code>hooks/useUsers.ts</code>) —
+                управління станом запиту (loading/error/data), виклик API Layer;</li>
+            <li><b>Components</b> — лише споживають дані з hooks, відображають UI.</li>
+        </ol>
+        <p>Компонент може знати про <code>useUsers()</code>, а hook — про API layer.
+            Так UI не залежить від URL, headers та деталей HTTP-запиту.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>API Layer — архітектура</h2>
+    <div style="font-size: 18px;">
+        <pre style="margin: 12px 0; font-size: 11px; white-space: pre;">Component
+    ↓
+Repository
+    ↓
+API / HTTP client
+    ↓
+REST API</pre>
+        <p><b>Repository</b> приховує endpoint-и та mapping DTO → domain model від UI.</p>
+        <p><b>Повний приклад:</b>
+            <a href="examples/react/12/api-repository-crud.ts" target="_blank">examples/react/12/api-repository-crud.ts</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Перший запит: fetch()</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">import { useState, useEffect } from "react";
+
+type User = { id: number; name: string };
+
+function UserList() {
+  const [users, setUsers] =
+    useState&lt;User[]&gt;([]);
+
+  useEffect(() =&gt; {
+    fetch("https://api.example.com/users")
+      .then(r =&gt; {
+        if (!r.ok)
+          throw new Error("Failed");
+        return r.json() as Promise&lt;User[]&gt;;
+      })
+      .then(setUsers)
+      .catch(err =&gt; console.error(err));
+  }, []);
+
+  return (
+    &lt;ul&gt;
+      {users.map(u =&gt; (
+        &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>fetch()</b> — нативний браузерний API.</p>
+            <p><b>Особливості fetch:</b></p>
+            <ul>
+                <li>не кидає error на 4xx/5xx — треба перевіряти <code>res.ok</code>;</li>
+                <li>потрібен ручний <code>.json()</code> парсинг;</li>
+                <li>повертає Promise (then/catch або await);</li>
+                <li>підтримує <code>AbortController</code> для скасування.</li>
+            </ul>
+            <p><b>Мінус:</b> багатослівний — для кожного запиту
+                треба писати перевірки, headers, error handling.</p>
+            <p><b>Навчальний контекст:</b> тут показуємо базовий client-side flow.
+                У production часто використовують framework data APIs або query library,
+                щоб не будувати cache/refetch/invalidation вручну.</p>
+            <p>&#8594; тому використовують <b>Axios</b> або
+                API Layer-абстракції.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Асинхронні стани</h2>
+</section>
+
+<section class="slide">
+    <h2>Стан запиту: idle &#8594; loading &#8594; success / error</h2>
+    <img src="pictures/react/12/async-states.svg" alt="" style="display: block; margin: 0 auto; width: 75%;">
+</section>
+
+<section class="slide">
+    <h2>Чому потрібен status-стан?</h2>
+    <div style="font-size: 19px;">
+        <p><b>Для простого запиту зручно розрізняти чотири стани:</b></p>
+        <ul>
+            <li><b>idle</b> — запит ще не запускався;</li>
+            <li><b>loading</b> — запит триває, показуємо spinner / skeleton;</li>
+            <li><b>success</b> — дані отримано, показуємо контент або Empty State;</li>
+            <li><b>error</b> — запит не вдався, показуємо повідомлення + retry.</li>
+        </ul>
+        <p><b>Проблема лише з <code>isLoading</code>:</b> boolean не описує, чому даних немає.
+            «Ще не завантажували», «список порожній» і «запит завершився помилкою» — різні ситуації.</p>
+        <p><b>Правильно:</b> окремо <code>status</code> + <code>data</code> + <code>error</code>,
+            або об'єднати в один стан через <code>useReducer</code>.</p>
+        <p>Pattern: <code>"idle" | "loading" | "success" | "error"</code> —
+            <b>один status описує фазу запиту</b>, а <code>data</code> та <code>error</code>
+            містять його результат.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Обробка станів — приклад з useReducer</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">type State&lt;T&gt; = {
+  status: "idle" | "loading"
+        | "success" | "error";
+  data: T | null;
+  error: string | null;
+};
+
+type Action&lt;T&gt; =
+  | { type: "start" }
+  | { type: "success"; data: T }
+  | { type: "error"; error: string };
+
+function reducer&lt;T&gt;(
+  state: State&lt;T&gt;,
+  action: Action&lt;T&gt;
+): State&lt;T&gt; {
+  switch (action.type) {
+    case "start":
+      return { status: "loading", data: null, error: null };
+    case "success":
+      return { status: "success", data: action.data, error: null };
+    case "error":
+      return { status: "error", data: null, error: action.error };
+  }
+}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Custom Hook з useReducer
+export function useAsync&lt;T&gt;(fn: () =&gt; Promise&lt;T&gt;, deps: DependencyList = []) {
+  const [state, dispatch] =
+    useReducer(reducer&lt;T&gt;, {
+      status: "idle", data: null, error: null
+    });
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+    dispatch({ type: "start" });
+
+    fn()
+      .then(data =&gt; {
+        if (!cancelled)
+          dispatch({ type: "success", data });
+      })
+      .catch(err =&gt; {
+        if (!cancelled)
+          dispatch({ type: "error", error: err.message });
+      });
+
+    return () =&gt; { cancelled = true; };
+  }, deps);
+
+  return state;
+}</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>UI-патерни для асинхронних станів</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">function UserList() {
+  const { status, data, error } =
+    useAsync(() =&gt; api.getUsers(), []);
+
+  if (status === "loading")
+    return &lt;Spinner /&gt;;
+
+  if (status === "error")
+    return (
+      &lt;ErrorView
+        message={error}
+        onRetry={refetch}
+      /&gt;
+    );
+
+  if (status === "success" &amp;&amp; data.length === 0)
+    return &lt;EmptyState /&gt;;
+
+  return (
+    &lt;ul&gt;
+      {data.map(u =&gt; (
+        &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Шаблони UI для станів:</b></p>
+            <ul>
+                <li><b>Spinner</b> — простий індикатор завантаження;</li>
+                <li><b>Skeleton</b> — «каркас» майбутнього контенту;</li>
+                <li><b>Error view</b> — повідомження + кнопка retry;</li>
+                <li><b>Empty state</b> — «поки що немає даних»;</li>
+                <li><b>Error boundary</b> — на рівні дерева (React 16+);</li>
+                <li><b>Toast / notification</b> — для помилок мутацій.</li>
+            </ul>
+            <p><b>Важливо:</b> показувати користувачу не просто «Error»,
+                а <b>зрозуміле повідомлення</b> + спосіб виправити
+                (retry, перевірити з'єднання).</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Error Boundaries — межа ізоляції помилок UI</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">import { Component, type ErrorInfo, type ReactNode } from "react";
+
+type Props = { fallback: ReactNode; children: ReactNode };
+type State = { hasError: boolean };
+
+class ErrorBoundary extends Component<Props, State> {
+  state: State = { hasError: false };
+
+  static getDerivedStateFromError(): State {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error(error, info);
+    // logging / monitoring...
+  }
+
+  render() {
+    if (this.state.hasError)
+      return this.props.fallback;
+    return this.props.children;
+  }
+}
+
+// Використання
+&lt;ErrorBoundary fallback={&lt;ErrorView /&gt;}&gt;
+  &lt;UserList /&gt;
+&lt;/ErrorBoundary&gt;</pre>
+        <div style="flex: 1; font-size: 18px;">
+            <p><b>Error Boundary</b> — компонент, який показує fallback, якщо під час render
+                виникла помилка в дочірньому React-дереві.</p>
+            <p><b>Ловить:</b> помилки під час render у дочірньому React-дереві.</p>
+            <p><b>НЕ ловить:</b> помилки в event handlers, асинхронних callback,
+                <code>setTimeout</code> та коді поза React — там потрібні власні <code>try/catch</code>.</p>
+            <p><b>Важливо:</b> Error Boundary не є аналогом <code>try/catch</code> для звичайного JavaScript-коду.</p>
+            <p>У React Error Boundary реалізують через class-компонент;
+                для зручнішого API можна використати <code>react-error-boundary</code>.</p>
+            <p>Їх ставлять навколо <b>частини UI</b>: якщо дочірній компонент впаде,
+                boundary покаже fallback, а інші незалежні частини інтерфейсу можуть продовжити працювати.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">CRUD-операції</h2>
+</section>
+
+<section class="slide">
+    <h2>CRUD &#8594; HTTP verbs &#8594; REST endpoints</h2>
+    <img src="pictures/react/12/crud-table.svg" alt="" style="display: block; margin: 0 auto; width: 80%;">
+</section>
+
+<section class="slide">
+    <h2>CRUD App — архітектура</h2>
+    <img src="pictures/react/12/crud-architecture.svg" alt="" style="display: block; margin: 0 auto; width: 85%;">
+</section>
+
+<section class="slide">
+    <h2>Read — список + детальна сторінка</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// hooks/useUsers.ts
+export function useUsers() {
+  const [state, setState] = useState&lt;
+    { users: User[]; loading: boolean; error: string | null }
+  &gt;({ users: [], loading: true, error: null });
+
+  const refetch = useCallback(async () =&gt; {
+    setState(s =&gt; ({ ...s, loading: true, error: null }));
+    try {
+      const users = await api.getUsers();
+      setState({ users, loading: false, error: null });
+    } catch (e) {
+      setState({ users: [], loading: false, error: (e as Error).message });
+    }
+  }, []);
+
+  useEffect(() =&gt; { refetch(); }, [refetch]);
+
+  return { ...state, refetch };
+}</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Використання
+function UserListPage() {
+  const { users, loading, error, refetch } =
+    useUsers();
+
+  if (loading) return &lt;Spinner /&gt;;
+  if (error) return (
+    &lt;ErrorView msg={error}
+      onRetry={refetch} /&gt;
+  );
+
+  return (
+    &lt;ul&gt;
+      {users.map(u =&gt; (
+        &lt;li key={u.id}&gt;
+          {u.name}
+          &lt;Link to={`/users/${u.id}`}&gt;View&lt;/Link&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Create — додавання через форму</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 8px; white-space: pre;">function CreateUserForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e: FormEvent) =&gt; {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+    try {
+      await api.createUser({ name, email });
+      // redirect або refetch list
+      navigate("/users");
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input value={name} onChange={...} /&gt;
+      &lt;input value={email} onChange={...} /&gt;
+      &lt;button disabled={saving}&gt;
+        {saving ? "Saving..." : "Create"}
+      &lt;/button&gt;
+      {error &amp;&amp; &lt;p className="error"&gt;{error}&lt;/p&gt;}
+    &lt;/form&gt;
+  );
+}</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Стани форми Create:</b></p>
+            <ul>
+                <li><b>idle</b> — форма порожня, кнопка активна;</li>
+                <li><b>saving</b> — запит триває, кнопка disabled,
+                    текст «Saving...»;</li>
+                <li><b>success</b> — редирект на список або детальну;</li>
+                <li><b>error</b> — показуємо помилку, форма залишається.</li>
+            </ul>
+            <p><b>Після успішного створення:</b></p>
+            <ul>
+                <li>редирект на список (<code>navigate</code>);</li>
+                <li>або refetch списку;</li>
+                <li>або додати в локальний state
+                    (optimistic).</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Update — редагування існуючого</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 8px; white-space: pre;">function EditUserPage(&#123; id &#125;: &#123; id: string &#125;) {
+  const { data: user, loading } =
+    useAsync(() =&gt; api.getUser(id), [id]);
+
+  const [form, setForm] = useState(null);
+  const [saving, setSaving] = useState(false);
+
+  // Заповнити форму коли дані завантажено
+  useEffect(() =&gt; {
+    if (user) setForm(user);
+  }, [user]);
+
+  const handleSave = async () =&gt; {
+    setSaving(true);
+    try {
+      await api.updateUser(id, form);
+      navigate(`/users/${id}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return &lt;Spinner /&gt;;
+  if (!form) return null;
+  return &lt;UserForm value={form}
+    onChange={setForm}
+    onSubmit={handleSave}
+    saving={saving} /&gt;;
+}</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Особливості Update:</b></p>
+            <ul>
+                <li>Спочатку <b>завантажити</b> поточні дані (GET /:id);</li>
+                <li>Заповнити форму початковими значеннями;</li>
+                <li>На submit &#8594; PUT/PATCH з оновленими даними;</li>
+                <li>Після успіху &#8594; редирект або оновлення;</li>
+                <li><b>PATCH</b> — часткове оновлення (лише змінені поля);</li>
+                <li><b>PUT</b> — повне заміщення ресурсу.</li>
+            </ul>
+            <p><b>Важливо:</b> не копіювати prop у state
+                напряму (anti-pattern). Використовувати
+                <code>key=&#123;id&#125;</code> для скидання форми
+                при зміні id, або controlled form.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Delete — з підтвердженням</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">function DeleteButton(&#123; id, onDeleted &#125;: &#123;
+  id: string;
+  onDeleted: () =&gt; void;
+&#125;) {
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDelete = async () =&gt; {
+    if (!confirm("Delete this user?")) return;
+    setDeleting(true);
+    try {
+      await api.deleteUser(id);
+      onDeleted(); // refetch або navigate
+    } catch (e) {
+      alert("Failed to delete");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  return (
+    &lt;button onClick={handleDelete}
+      disabled={deleting}&gt;
+      {deleting ? "Deleting..." : "Delete"}
+    &lt;/button&gt;
+  );
+}</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Особливості Delete:</b></p>
+            <ul>
+                <li><b>Підтвердження</b> — <code>confirm()</code> або
+                    модальне вікно (небезпечна операція);</li>
+                <li>Кнопка <b>disabled</b> під час запиту;</li>
+                <li>Після успіху:
+                    <ul>
+                        <li><code>refetch()</code> списку, або</li>
+                        <li>видалити з локального state, або</li>
+                        <li>редирект на список;</li>
+                    </ul>
+                </li>
+                <li>Обробка помилок &#8594; toast/notification.</li>
+            </ul>
+            <p><b>Підтвердження</b> можна замінити на модальне вікно
+                з текстом «Are you sure?» + кнопки Yes/No.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>CRUD-проблеми та рішення</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// &#10060; 1. Stale list (список не оновлюється)
+// create item
+await axios.post("/api/users", data)
+// &#10007; list still shows old data!
+
+// &#9989; refetch after mutation:
+await create(); await refetchList()
+
+// &#10060; 3. Корзина помилок без UI
+axios.post(...) // без .catch
+// unhandled rejection
+
+// &#9989; try/catch + setError + UI toast</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// &#10060; 2. Race condition (запит-перегонка)
+// user types "a" then "ab"
+fetch("a") // slow
+fetch("ab") // fast, returns first
+// "a" response overwrites!
+
+// &#9989; AbortController / cancel flag
+
+// &#10060; 4. Подвійний fetch (StrictMode)
+// useEffect runs twice in dev
+useEffect(() =&gt; fetch(), [])
+// 2 API calls in dev mode
+
+// &#9989; зробити Effect стійким до повторного setup
+// React 18+ у StrictMode повторює setup + cleanup у dev
+// для перевірки коректності cleanup</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>AbortController — скасування запитів</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// &#10060; Без скасування (race condition)
+useEffect(() =&gt; {
+  fetch(`/api?q=${query}`)
+    .then(setData)
+}, [query])
+// старий запит може перезаписати новий</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// &#9989; З AbortController
+useEffect(() =&gt; {
+  const ctrl = new AbortController();
+  fetch(url, { signal: ctrl.signal })
+    .then(r =&gt; r.json())
+    .then(setData)
+    .catch(err =&gt; {
+      if (err.name !== "AbortError") setError(err);
+    });
+  return () =&gt; ctrl.abort();
+}, [query]);</pre>
+    </div>
+    <p style="font-size: 16px;"><b>Axios варіант:</b></p>
+    <pre style="margin: 0; font-size: 10px; white-space: pre;">useEffect(() =&gt; {
+  const ctrl = new AbortController()
+  axios.get("/api/users", { signal: ctrl.signal })
+    .then(res =&gt; setUsers(res.data))
+    .catch(err =&gt; { if (!axios.isCancel(err)) setError(err) })
+  return () =&gt; ctrl.abort()
+}, [])</pre>
+</section>
+
+<section class="slide">
+    <h2>Оптимістичні оновлення (Optimistic UI)</h2>
+    <div style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+            <p style="font-size: 16px;"><b>Песимістичний (звичайний)</b></p>
+            <ol style="font-size: 15px;">
+                <li>User clicks "Delete"</li>
+                <li>Show spinner</li>
+                <li>Wait for server response...</li>
+                <li>Remove item from list</li>
+            </ol>
+            <p style="font-size: 15px;">UI затримується на час запиту.</p>
+        </div>
+        <div style="flex: 1;">
+            <p style="font-size: 16px;"><b>Оптимістичний (швидкий UX)</b></p>
+            <ol style="font-size: 15px;">
+                <li>User clicks "Delete"</li>
+                <li>Remove item from list INSTANTLY</li>
+                <li>Send request in background</li>
+                <li>If error &#8594; rollback (restore item)</li>
+            </ol>
+            <p style="font-size: 15px;">UI миттєво реагує; при помилці потрібен rollback або повторна синхронізація.</p>
+    <p style="font-size: 14px; margin-top: 8px;">
+        У React 19 є <code>useOptimistic</code> для optimistic UI у межах Action;
+        тут спочатку розбираємо базовий flow вручну.
+    </p>
+        </div>
+    </div>
+    <pre style="margin: 0; font-size: 10px; white-space: pre;">const deleteOptimistic = async (id: string) =&gt; {
+  const prev = items;                    // 1. save snapshot
+  setItems(items.filter(i =&gt; i.id !== id)); // 2. update UI now
+  try { await api.deleteUser(id); }       // 3. send request
+  catch (e) { setItems(prev); showError(); } // 4. rollback on error
+}</pre>
+</section>
+
+<section class="slide">
+    <h2>Коли використовувати оптимістичні оновлення?</h2>
+    <div class="columns two">
+        <div style="font-size: 18px;">
+            <p><b>Підходить:</b></p>
+            <ul>
+                <li>Delete — видалення зі списку (миттєво зникає);</li>
+                <li>Toggle (like / favorite) — швидка взаємодія;</li>
+                <li>Drag-and-drop reorder — порядок змінюється одразу;</li>
+                <li>Checkbox в таблиці — позначити виконано.</li>
+            </ul>
+            <p>Сервер зазвичай підтверджує без помилок &#8594;
+                користувач не чекає.</p>
+        </div>
+        <div style="font-size: 18px;">
+            <p><b>Не підходить:</b></p>
+            <ul>
+                <li>Create зі складною серверною відповіддю — потрібен rollback / temporary id;</li>
+                <li>Платежі, транзакції та критичні операції — потрібне підтвердження;</li>
+                <li>Form submit зі складною валідацією;</li>
+                <li>Операції, де rollback складний або небезпечний.</li>
+            </ul>
+            <p>Тут зазвичай обирають <b>песимістичний</b> підхід або обережний optimistic flow
+                з надійним rollback.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">API Layer та Axios</h2>
+</section>
+
+<section class="slide">
+    <h2>fetch vs Axios — порівняння</h2>
+    <img src="pictures/react/12/fetch-vs-axios.svg" alt="" style="display: block; margin: 0 auto; width: 80%;">
+</section>
+
+<section class="slide">
+    <h2>Axios — налаштування instance</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// api/client.ts
+import axios from "axios";
+
+export const apiClient = axios.create({
+  baseURL: "https://api.example.com",
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  },
+});
+
+// Використання
+const res = await apiClient.get("/users");
+// res.data     &#8594; JSON-відповідь (авто-parsed)
+// res.status   &#8594; 200
+// res.headers  &#8594; response headers
+
+// POST
+await apiClient.post("/users", body);
+// PUT
+await apiClient.put(`/users/${id}`, body);
+// DELETE
+await apiClient.delete(`/users/${id}`);</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Переваги Axios instance:</b></p>
+            <ul>
+                <li><b>baseURL</b> — не повторюємо домен;</li>
+                <li><b>timeout</b> — запит не «висить» вічно;</li>
+                <li><b>headers</b> — за замовчуванням для всіх запитів;</li>
+                <li><b>Авто JSON</b> — не треба <code>.json()</code>;</li>
+                <li>за замовчуванням reject для HTTP-відповідей поза 2xx;</li>
+                <li>Можна створити кілька instance
+                    (API v1, v2, third-party).</li>
+            </ul>
+            <p><b>Встановлення:</b>
+                <code>npm install axios</code></p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Axios Interceptors — глобальна обробка</h2>
+    <img src="pictures/react/12/interceptors.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>Axios Interceptors — приклад</h2>
+    <pre style="margin: 0; font-size: 8px; white-space: pre;">// api/client.ts — interceptors
+import axios from "axios";
+
+export const apiClient = axios.create(&#123; baseURL: "https://api.example.com" &#125;);
+
+// Request interceptor — додаємо auth token
+apiClient.interceptors.request.use((config) =&gt; {
+  const token = getAccessToken();
+  if (token) &#123;
+    config.headers.Authorization = `Bearer ${token}`;
+  &#125;
+  return config;
+&#125;);
+
+// Response interceptor — обробка помилок
+apiClient.interceptors.response.use(
+  (response) =&gt; response, // success — пропускаємо
+  (error) =&gt; &#123;
+    if (error.response?.status === 401) &#123;
+      // token expired → redirect to login
+      clearSession();
+      window.location.href = "/login";
+    &#125;
+    if (error.response?.status &gt;= 500) &#123;
+      // server error → show toast
+      showToast("Server error. Try later.");
+    &#125;
+    return Promise.reject(error);
+  &#125;
+);</pre>
+    <p style="font-size: 16px;">
+        <b>Interceptors</b> — глобальні «фільтри» для всіх запитів/відповідей.
+        Призначення: auth headers, error handling, logging, retry, metrics.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>API Layer — endpoint-функції</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 8px; white-space: pre;">// types/api.ts
+export type User = &#123;
+  id: string;
+  name: string;
+  email: string;
+&#125;;
+
+export type CreateUserDTO = &#123;
+  name: string;
+  email: string;
+&#125;;
+
+// api/users.ts
+import &#123; apiClient &#125; from "./client";
+import type &#123; User, CreateUserDTO &#125; from "../types/api";
+
+export const usersApi = &#123;
+  list: () =&gt;
+    apiClient.get&lt;User[]&gt;("/users").then(r =&gt; r.data),
+
+  getById: (id: string) =&gt;
+    apiClient.get&lt;User&gt;(`/users/${id}`).then(r =&gt; r.data),
+
+  create: (data: CreateUserDTO) =&gt;
+    apiClient.post&lt;User&gt;("/users", data).then(r =&gt; r.data),
+
+  update: (id: string, data: Partial&lt;CreateUserDTO&gt;) =&gt;
+    apiClient.put&lt;User&gt;(`/users/${id}`, data).then(r =&gt; r.data),
+
+  delete: (id: string) =&gt;
+    apiClient.delete(`/users/${id}`),
+&#125;;</pre>
+        <div style="flex: 1; font-size: 17px;">
+            <p><b>Переваги endpoint-функцій:</b></p>
+            <ul>
+                <li>Один <b>джерело правди</b> для всіх API-викликів;</li>
+                <li>Типізовані запити та відповіді (TS-дженерики);</li>
+                <li>Легко знайти всі місця використання endpoint;</li>
+                <li>Можна підмінити реалізацію (mock, test);</li>
+                <li>DTO-типи окремо від entity-типів.</li>
+            </ul>
+            <p><b>DTO</b> (Data Transfer Object) —
+                тип для передачі даних у API-виклик
+                (напр. <code>CreateUserDTO</code> без <code>id</code>).</p>
+            <p>У hooks викликаємо <code>usersApi.list()</code>,
+                а не <code>apiClient.get(...)</code> напряму.</p>
+        </div>
+    </div>
+</section>
+
+
+<section class="slide">
+    <h2>Repository — коли API-модель не збігається з UI-моделлю</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 9px; white-space: pre;">// API DTO
+type ApiTodo = {
+  id: number;
+  todo: string;
+  completed: boolean;
+  userId: number;
+};
+
+// UI/domain model
+type Task = {
+  id: string;
+  title: string;
+  completed: boolean;
+};
+
+// Repository hides API details
+const taskRepository = {
+  list: async (): Promise&lt;Task[]&gt; =&gt; {
+    const todos = await todosApi.list();
+    return todos.map(t =&gt; ({
+      id: String(t.id),
+      title: t.todo,
+      completed: t.completed,
+    }));
+  },
+};</pre>
+        <div style="flex: 1; font-size: 16px;">
+            <p><b>Repository</b> — додатковий шар між API та доменною моделлю.</p>
+            <p>Він корисний, коли формат API відрізняється від моделі, яку використовує UI.</p>
+            <p>Для простого CRUD окремий Repository не є обов'язковим; у Лабораторній №10
+                він використовується саме для такого розділення відповідальностей.</p>
+        </div>
+    </div>
+</section>
+<section class="slide">
+    <h2>Структура API-папки проєкту</h2>
+    <pre style="margin: 0; font-size: 10px; white-space: pre;">src/
+├── api/
+│   ├── client.ts        // axios instance
+│   ├── users.ts         // CRUD endpoints
+│   ├── products.ts      // CRUD endpoints
+│   └── index.ts         // re-export
+├── hooks/
+│   ├── useUsers.ts      // data + state
+│   └── useProducts.ts   // data + state
+├── types/
+│   └── api.ts           // User, Product, DTOs
+└── components/</pre>
+</section>
+
+<section class="slide">
+    <h2>Повний CRUD-флоу — зв'язки шарів</h2>
+    <div style="font-size: 18px;">
+        <pre style="margin: 12px 0; font-size: 11px; white-space: pre;">UI
+  → Repository
+  → HTTP API
+  → DTO
+  → Domain model
+  → UI</pre>
+        <p><b>Архітектурна ідея:</b> кожен шар відповідає за свою частину flow.</p>
+        <p><b>Повний приклад:</b>
+            <a href="examples/react/12/api-repository-crud.ts" target="_blank">examples/react/12/api-repository-crud.ts</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Типові помилки при роботі з API</h2>
+    <ul style="font-size: 18px;">
+        <li><b>API-виклики в компонентах</b> — замість API Layer. Ознака:
+            компонент імпортує <code>axios</code> напряму &#8594; винести в <code>api/</code>;</li>
+        <li><b>Без cleanup в useEffect</b> — старий запит може завершитися після нового.
+            Рішення: <code>AbortController</code> і/або перевірка актуальності результату;</li>
+        <li><b>Без обробки error</b> — <code>fetch().then()</code> без <code>.catch</code>.
+            Користувач не бачить, що щось зламалось;</li>
+        <li><b>Дублювання baseURL</b> — в кожному виклику <code>"https://api..."</code>.
+            Рішення: axios instance з <code>baseURL</code>;</li>
+        <li><b>Без типізації відповідей</b> — <code>any</code> замість дженериків.
+            Рішення: <code>apiClient.get&lt;User[]&gt;()</code>;</li>
+        <li><b>Забули refetch після мутації</b> — список не оновлюється
+            після create/update/delete.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Server state vs Client state</h2>
+    <div class="columns two">
+        <div style="font-size: 18px;">
+            <p><b>Server state (дані з API):</b></p>
+            <ul>
+                <li>асинхронний (fetch);</li>
+                <li>має caching, invalidation;</li>
+                <li>може бути stale (застарілим);</li>
+                <li>кілька компонентів можуть використовувати ті ж дані;</li>
+                <li>потрібен retry, refetch, optimistic.</li>
+            </ul>
+            <p>&#8594; <b>TanStack Query, SWR</b> (Лекція 15)</p>
+        </div>
+        <div style="font-size: 18px;">
+            <p><b>Client state (UI state):</b></p>
+            <ul>
+                <li>синхронний;</li>
+                <li>короткочасний (form, toggle);</li>
+                <li>належить компоненту;</li>
+                <li>не потребує invalidation;</li>
+                <li>зникає при unmount / reload.</li>
+            </ul>
+            <p>&#8594; <b>useState, useReducer, Context</b></p>
+        </div>
+    </div>
+    <p style="font-size: 18px; margin-top: 15px;">
+        <b>На цьому етапі</b> ми керуємо server state вручну (useEffect + fetch + useState).
+        В <b>Лекції 15</b> розглянемо TanStack Query — інструмент, що автоматизує
+        caching, refetch, invalidation, optimistic updates.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Підсумок</h2>
+    <ul style="font-size: 19px;">
+        <li><b>React взаємодіє з backend через HTTP-запити</b> (fetch/axios) —
+            немає вбудованого API-клієнта.</li>
+        <li><b>Асинхронні стани</b> — <code>loading / success / error</code> (status enum),
+            не просто boolean. UI: spinner, error view, empty state.</li>
+        <li><b>CRUD</b> = Create (POST), Read (GET), Update (PUT/PATCH), Delete (DELETE).
+            Кожна операція — окремий UI-флоу з own states.</li>
+        <li><b>API Layer</b>: <code>api/client.ts</code> (instance) &#8594;
+            <code>api/users.ts</code> (endpoints) &#8594;
+            <code>hooks/useUsers.ts</code> (state) &#8594;
+            <code>components/</code> (UI).</li>
+        <li><b>Axios</b> — зручний HTTP-клієнт із instance, interceptors, timeout та автообробкою JSON.
+            Це альтернатива <code>fetch</code>, а не обов'язково «кращий» варіант.</li>
+        <li><b>Interceptors</b> — глобальна обробка: auth token, 401 redirect, error toast.</li>
+        <li><b>AbortController</b> — дозволяє скасувати fetch під час cleanup;
+            для stale response важливий також контроль актуальності результату.</li>
+        <li><b>Оптимістичні оновлення</b> — миттєвий UI для швидких операцій (delete, toggle).</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Корисні ресурси</h2>
+    <ul style="font-size: 19px;">
+        <li><a href="examples/react/12/" target="_blank">Повні приклади коду до лекції 12</a></li>
+        <li><a href="https://react.dev/learn/fetching-data" target="_blank">React Docs: Fetching Data</a></li>
+        <li><a href="https://axios-http.com/docs/intro" target="_blank">Axios Documentation</a></li>
+        <li><a href="https://axios-http.com/docs/interceptors" target="_blank">Axios Interceptors</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">MDN: Fetch API</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank">MDN: AbortController</a></li>
+        <li><a href="https://tanstack.com/query/latest/docs/overview" target="_blank">TanStack Query Overview (Лекція 15)</a></li>
+        <li><a href="https://restfulapi.net/" target="_blank">REST API Tutorial</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">MDN: HTTP Status Codes</a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Дякую за увагу!</h2>
+</section>
+
+<footer class="badge">
+    <a href="https://github.com/Computer-Science-Department-ChNU/client-web-systems" target="_blank">Fork me on
+        GitHub</a>
+</footer>
+
+<div class="progress"></div>
+
+<script src="node_modules/@shower/core/dist/index.js"></script>
+</body>
+</html>

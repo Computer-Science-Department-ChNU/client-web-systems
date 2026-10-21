@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Nested Routes та Layouts</text>
+
+  <!-- Layout -->
+  <rect x="40" y="55" width="640" height="310" rx="8" fill="none" stroke="#61DAFB" stroke-width="2"/>
+  <text x="60" y="78" fill="#61DAFB" font-family="monospace" font-size="13" font-weight="bold">&lt;Layout&gt; (path="/")</text>
+
+  <!-- Nav -->
+  <rect x="60" y="95" width="600" height="35" rx="6" fill="#273c66"/>
+  <text x="360" y="118" text-anchor="middle" fill="#fff" font-family="monospace" font-size="13">&lt;Nav&gt; — logo, menu, search (static for all child routes)</text>
+
+  <!-- Main content with Outlet -->
+  <rect x="60" y="145" width="600" height="200" rx="6" fill="#2a2a3e" stroke="#4a9eff"/>
+  <text x="80" y="170" fill="#4a9eff" font-family="monospace" font-size="12" font-weight="bold">&lt;Outlet /&gt; — here child routes render</text>
+
+  <!-- Child routes -->
+  <rect x="80" y="185" width="170" height="145" rx="6" fill="#d19a66" opacity="0.3"/>
+  <text x="165" y="210" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="11" font-weight="bold">path="users"</text>
+  <text x="165" y="230" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">&lt;UserList /&gt;</text>
+  <text x="165" y="260" text-anchor="middle" fill="#888" font-family="monospace" font-size="10">URL: /users</text>
+
+  <rect x="275" y="185" width="170" height="145" rx="6" fill="#51cf66" opacity="0.3"/>
+  <text x="360" y="210" text-anchor="middle" fill="#51cf66" font-family="monospace" font-size="11" font-weight="bold">path="users/:id"</text>
+  <text x="360" y="230" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">&lt;UserDetail /&gt;</text>
+  <text x="360" y="260" text-anchor="middle" fill="#888" font-family="monospace" font-size="10">URL: /users/42</text>
+
+  <rect x="470" y="185" width="170" height="145" rx="6" fill="#ff6b6b" opacity="0.3"/>
+  <text x="555" y="210" text-anchor="middle" fill="#ff6b6b" font-family="monospace" font-size="11" font-weight="bold">path="settings"</text>
+  <text x="555" y="230" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="11">&lt;Settings /&gt;</text>
+  <text x="555" y="260" text-anchor="middle" fill="#888" font-family="monospace" font-size="10">URL: /settings</text>
+</svg>

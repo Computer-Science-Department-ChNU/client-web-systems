@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">React Performance — що оптимізувати</text>
+
+  <!-- Problem: unnecessary re-renders -->
+  <rect x="20" y="55" width="340" height="150" rx="8" fill="#1a1a2e" stroke="#ff6b6b"/>
+  <text x="40" y="80" fill="#ff6b6b" font-family="monospace" font-size="14" font-weight="bold">Проблема: зайві re-render</text>
+  <text x="40" y="105" fill="#ccc" font-family="monospace" font-size="12">Parent re-renders &#8594; ALL children re-render</text>
+  <text x="40" y="123" fill="#ccc" font-family="monospace" font-size="12">even if their props didn't change</text>
+  <text x="40" y="150" fill="#ff6b6b" font-family="monospace" font-size="12">// 1000 items list re-renders on</text>
+  <text x="40" y="168" fill="#ff6b6b" font-family="monospace" font-size="12">// every parent keystroke</text>
+  <text x="40" y="195" fill="#888" font-family="monospace" font-size="11">React default: render everything below</text>
+
+  <!-- Solutions -->
+  <rect x="380" y="55" width="320" height="150" rx="8" fill="#1a1a2e" stroke="#51cf66"/>
+  <text x="400" y="80" fill="#51cf66" font-family="monospace" font-size="14" font-weight="bold">Рішення</text>
+  <text x="400" y="105" fill="#ccc" font-family="monospace" font-size="12">1. React.memo &#8212; skip if props unchanged</text>
+  <text x="400" y="123" fill="#ccc" font-family="monospace" font-size="12">2. useMemo &#8212; cache computed value</text>
+  <text x="400" y="141" fill="#ccc" font-family="monospace" font-size="12">3. useCallback &#8212; stable function ref</text>
+  <text x="400" y="159" fill="#ccc" font-family="monospace" font-size="12">4. Virtualization (react-window)</text>
+  <text x="400" y="177" fill="#ccc" font-family="monospace" font-size="12">5. Lazy loading (React.lazy)</text>
+  <text x="400" y="195" fill="#ccc" font-family="monospace" font-size="12">6. Key prop for list reconciliation</text>
+
+  <!-- When to optimize -->
+  <rect x="20" y="225" width="680" height="140" rx="8" fill="#2a2a3e" stroke="#444"/>
+  <text x="40" y="250" fill="#61DAFB" font-family="monospace" font-size="14" font-weight="bold">Коли оптимізувати:</text>
+  <text x="40" y="275" fill="#ccc" font-family="monospace" font-size="13">&#9989; Measure first &#8212; React DevTools Profiler, Lighthouse, Performance tab</text>
+  <text x="40" y="300" fill="#ccc" font-family="monospace" font-size="13">&#9989; Large lists (100+ items), frequent updates, complex calculations</text>
+  <text x="40" y="325" fill="#ff6b6b" font-family="monospace" font-size="13">&#10060; Don't premature optimize &#8212; memo/useMemo have cost too</text>
+  <text x="40" y="350" fill="#888" font-family="monospace" font-size="12">Rule: fix real bottlenecks, not hypothetical ones. Profile &#8594; find &#8594; fix.</text>
+</svg>

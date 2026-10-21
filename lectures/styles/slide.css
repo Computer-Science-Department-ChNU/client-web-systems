@@ -35,5 +35,10 @@
     .mark {
         background-color: var(--color-yellow);
     }
+
+    pre {
+        overflow-x: auto;
+        line-height: 1.5;
+    }
 }
 

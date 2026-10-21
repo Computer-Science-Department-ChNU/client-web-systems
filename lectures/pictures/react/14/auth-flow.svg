@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+  <rect width="720" height="380" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Authentication Flow — повний цикл</text>
+
+  <!-- Step 1: Login form -->
+  <rect x="20" y="60" width="160" height="60" rx="8" fill="#4a9eff"/>
+  <text x="100" y="88" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="bold">1. Login Form</text>
+  <text x="100" y="108" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10">email + password</text>
+
+  <line x1="180" y1="90" x2="220" y2="90" stroke="#888" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Step 2: Submit to API -->
+  <rect x="220" y="60" width="160" height="60" rx="8" fill="#d19a66"/>
+  <text x="300" y="88" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12" font-weight="bold">2. POST /api/login</text>
+  <text x="300" y="108" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10">credentials</text>
+
+  <line x1="380" y1="90" x2="420" y2="90" stroke="#888" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Step 3: Server returns JWT -->
+  <rect x="420" y="60" width="160" height="60" rx="8" fill="#51cf66"/>
+  <text x="500" y="85" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12" font-weight="bold">3. JWT Token</text>
+  <text x="500" y="108" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10">+ user data</text>
+
+  <line x1="500" y1="120" x2="500" y2="155" stroke="#888" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Step 4: Store token -->
+  <rect x="400" y="155" width="200" height="60" rx="8" fill="#ff6b6b"/>
+  <text x="500" y="180" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="bold">4. Store Token</text>
+  <text x="500" y="200" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10">localStorage + AuthContext</text>
+
+  <line x1="400" y1="185" x2="360" y2="185" stroke="#888" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Step 5: Set auth state -->
+  <rect x="160" y="155" width="200" height="60" rx="8" fill="#4a9eff"/>
+  <text x="260" y="180" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="bold">5. Set Auth State</text>
+  <text x="260" y="200" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10">user = {...}, isAuth = true</text>
+
+  <line x1="260" y1="215" x2="260" y2="250" stroke="#888" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Step 6: Redirect -->
+  <rect x="160" y="250" width="200" height="60" rx="8" fill="#51cf66"/>
+  <text x="260" y="275" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="12" font-weight="bold">6. Navigate to /dashboard</text>
+  <text x="260" y="295" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="10">ProtectedRoute lets in</text>
+
+  <!-- Step 7: Authenticated requests -->
+  <rect x="400" y="250" width="280" height="60" rx="8" fill="#2a2a3e" stroke="#d19a66"/>
+  <text x="540" y="275" text-anchor="middle" fill="#d19a66" font-family="monospace" font-size="12" font-weight="bold">7. All API requests carry token</text>
+  <text x="540" y="295" text-anchor="middle" fill="#ccc" font-family="monospace" font-size="10">Authorization: Bearer &lt;jwt&gt;</text>
+
+  <line x1="360" y1="280" x2="400" y2="280" stroke="#888" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Logout -->
+  <rect x="20" y="250" width="120" height="60" rx="8" fill="#ff6b6b" opacity="0.5"/>
+  <text x="80" y="275" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" font-weight="bold">Logout</text>
+  <text x="80" y="295" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10">remove token + state</text>
+
+  <text x="360" y="345" text-anchor="middle" fill="#aaa" font-family="monospace" font-size="13">Login &#8594; Token &#8594; Store &#8594; Auth State &#8594; Protected Routes &#8594; Authenticated API</text>
+  <text x="360" y="365" text-anchor="middle" fill="#888" font-family="monospace" font-size="12">Logout: reverse &#8212; remove token, clear state, navigate to /login</text>
+
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

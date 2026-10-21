@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" width="720" height="460">
+  <rect width="720" height="460" fill="#1e1e2e"/>
+
+  <text x="360" y="35" text-anchor="middle" fill="#61DAFB" font-family="monospace" font-size="18" font-weight="bold">Де зберігати state? — Місце стану</text>
+
+  <!-- App (global) -->
+  <rect x="260" y="60" width="200" height="70" rx="8" fill="#ff6b6b"/>
+  <text x="360" y="90" text-anchor="middle" fill="#fff" font-family="monospace" font-size="15" font-weight="bold">App</text>
+  <text x="360" y="115" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12">global state (Context/Redux)</text>
+
+  <line x1="300" y1="130" x2="160" y2="190" stroke="#888" stroke-width="2"/>
+  <line x1="360" y1="130" x2="360" y2="190" stroke="#888" stroke-width="2"/>
+  <line x1="420" y1="130" x2="560" y2="190" stroke="#888" stroke-width="2"/>
+
+  <!-- Page -->
+  <rect x="50" y="190" width="200" height="60" rx="8" fill="#d19a66"/>
+  <text x="160" y="225" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">Page A</text>
+
+  <rect x="260" y="190" width="200" height="60" rx="8" fill="#d19a66"/>
+  <text x="360" y="225" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">Page B</text>
+
+  <rect x="470" y="190" width="200" height="60" rx="8" fill="#d19a66"/>
+  <text x="560" y="225" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="14" font-weight="bold">Page C</text>
+
+  <line x1="160" y1="250" x2="100" y2="310" stroke="#888" stroke-width="2"/>
+  <line x1="160" y1="250" x2="220" y2="310" stroke="#888" stroke-width="2"/>
+
+  <!-- Local components -->
+  <rect x="20" y="310" width="140" height="55" rx="8" fill="#51cf66"/>
+  <text x="100" y="340" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">Widget X</text>
+
+  <rect x="180" y="310" width="140" height="55" rx="8" fill="#51cf66"/>
+  <text x="260" y="340" text-anchor="middle" fill="#1e1e2e" font-family="monospace" font-size="13" font-weight="bold">Widget Y</text>
+
+  <!-- Legend -->
+  <rect x="20" y="410" width="15" height="15" fill="#ff6b6b"/>
+  <text x="40" y="423" fill="#ccc" font-family="monospace" font-size="13">Global (auth, theme, locale)</text>
+  <rect x="270" y="410" width="15" height="15" fill="#d19a66"/>
+  <text x="290" y="423" fill="#ccc" font-family="monospace" font-size="13">Page-level (filters, page data)</text>
+  <rect x="540" y="410" width="15" height="15" fill="#51cf66"/>
+  <text x="560" y="423" fill="#ccc" font-family="monospace" font-size="13">Local (form, toggle)</text>
+</svg>

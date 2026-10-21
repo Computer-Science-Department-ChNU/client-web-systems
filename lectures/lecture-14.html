@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Лекція 14. React: Forms, Validation та Authentication</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/index.css">
+    <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="shower list">
+
+<header class="caption">
+    <h1>Лекція 14. React: Forms, Validation та Authentication</h1>
+    <p>
+        <a href="index.html">Назад до змісту лекцій</a>
+    </p>
+</header>
+
+<section class="slide">
+    <h2 class="shout">
+        Лекція 14. React: Forms, Validation та Authentication
+    </h2>
+</section>
+
+<section class="slide">
+    <h2>План лекції:</h2>
+    <ol>
+        <li>Як працюють форми в React та чим відрізняються controlled і uncontrolled components?</li>
+        <li>Як реалізувати валідацію та обробку помилок у формах?</li>
+        <li>Як побудувати authentication flow у React-застосунку?</li>
+        <li>Як працюють JWT, authentication state та protected routes на frontend?</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Форми в React</h2>
+</section>
+
+<section class="slide">
+    <h2>Форми в React — особливості</h2>
+    <div style="font-size: 19px;">
+        <p>HTML уже має власну модель форм: браузер зберігає значення полів
+            і виконує submit. React дає кілька способів підключитися до цієї моделі.</p>
+        <p><b>Ключові концепції:</b></p>
+        <ul>
+            <li><b>Controlled components</b> — React state є джерелом правди для input;</li>
+            <li><b>Uncontrolled components</b> — DOM керує, React лише читає через ref;</li>
+            <li><b>Form submission</b> — <code>onSubmit</code> + <code>e.preventDefault()</code>;</li>
+            <li><b>Validation</b> — перевірка перед submit та/або під час введення;</li>
+            <li><b>Error display</b> — показ помилок per-field.</li>
+        </ul>
+        <p>У Vue аналоги — <code>v-model</code> (controlled) та <code>$refs</code> (uncontrolled).</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Controlled vs Uncontrolled</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Controlled (React керує)
+const [name, setName] = useState("")
+&lt;input
+  value={name}
+  onChange={e =&gt; setName(e.target.value)}
+/&gt;
+// state → input → state (loop)</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Uncontrolled (DOM керує)
+const inputRef = useRef()
+&lt;input
+  ref={inputRef}
+  defaultValue="hello"
+/&gt;
+// read: inputRef.current.value</pre>
+    </div>
+    <ul style="font-size: 15px;">
+        <li><b>Controlled:</b> + single source of truth, validation on type, easy reset; − re-render on every keystroke.</li>
+        <li><b>Uncontrolled:</b> + no re-render, simple for one-time read, integrate with non-React; − harder to validate, no live feedback.</li>
+    </ul>
+    <p style="font-size: 16px;"><b>Вибір:</b> controlled зручний, коли React має бачити й змінювати значення
+        під час роботи форми. Uncontrolled зручний, коли достатньо прочитати значення під час submit
+        або треба працювати з DOM/API сторонньої бібліотеки.</p>
+</section>
+
+<section class="slide">
+    <h2>Controlled Component — приклад</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">function LoginForm() &#123;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: FormEvent) =&gt; &#123;
+    e.preventDefault();
+    console.log(&#123; email, password &#125;);
+    // API call...
+  &#125;;
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        type="email"
+        value={email}
+        onChange={(e) =&gt; setEmail(e.target.value)}
+      /&gt;
+      &lt;input
+        type="password"
+        value={password}
+        onChange={(e) =&gt; setPassword(e.target.value)}
+      /&gt;
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+  );
+&#125;</pre>
+        <div style="flex: 1; font-size: 14px;">
+            <p><b>Controlled pattern:</b></p>
+            <ol>
+                <li><code>useState</code> зберігає значення;</li>
+                <li><code>value</code> прив'язаний до state;</li>
+                <li><code>onChange</code> оновлює state;</li>
+                <li>React контролює весь цикл.</li>
+            </ol>
+            <p><b>Переваги:</b></p>
+            <ul>
+                <li>Єдине джерело правди (state);</li>
+                <li>Валідація на льоту;</li>
+                <li>Легкий reset (<code>setEmail("")</code>);</li>
+                <li>Програмне встановлення значень.</li>
+            </ul>
+            <p><b>Недолік:</b> re-render на кожен keystroke
+                (для більшості форм — не проблема).</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Uncontrolled Component — приклад</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">import &#123; useRef &#125; from "react";
+
+function QuickForm() &#123;
+  const emailRef = useRef&lt;HTMLInputElement&gt;(null);
+  const fileRef = useRef&lt;HTMLInputElement&gt;(null);
+
+  const handleSubmit = (e: FormEvent) =&gt; &#123;
+    e.preventDefault();
+    const email = emailRef.current?.value;
+    const file = fileRef.current?.files?.[0];
+    console.log(&#123; email, file &#125;);
+  &#125;;
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input type="email"
+        ref={emailRef}
+        defaultValue="old@example.com" /&gt;
+      &lt;input type="file"
+        ref={fileRef} /&gt;
+      &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+&#125;</pre>
+        <div style="flex: 1; font-size: 14px;">
+            <p><b>Uncontrolled pattern:</b></p>
+            <ol>
+                <li><code>useRef</code> посилається на DOM-вузол;</li>
+                <li><code>defaultValue</code> — початкове значення;</li>
+                <li>Читаємо через <code>ref.current.value</code> при submit;</li>
+                <li>React не керує значенням.</li>
+            </ol>
+            <p><b>Коли використовувати:</b></p>
+            <ul>
+                <li><code>&lt;input type="file"&gt;</code> — значення не можна програмно встановити як звичайний input;</li>
+                <li>Інтеграція з 3rd-party (jQuery плагіни);</li>
+                <li>Прості форми без валідації;</li>
+                <li>Великі форми (щоб уникнути re-render).</li>
+            </ul>
+            <p><b>Не існує абсолютного правила:</b> вибір залежить від задачі форми.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Form lifecycle — стани</h2>
+    <img src="pictures/react/14/form-lifecycle.svg" alt="" style="display: block; margin: 0 auto; width: 80%;">
+</section>
+
+<section class="slide">
+    <h2>Багатопольна форма з одним state-об'єктом</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 7px; white-space: pre;">type FormData = &#123;
+  name: string;
+  email: string;
+  age: number;
+  role: string;
+&#125;;
+
+function UserForm() &#123;
+  const [form, setForm] = useState&lt;FormData&gt;(&#123;
+    name: "", email: "", age: 0, role: "user"
+  &#125;);
+
+  const handleChange = (e: ChangeEvent) =&gt; &#123;
+    const &#123; name, value, type &#125; = e.target;
+    setForm(prev =&gt; (&#123;
+      ...prev,
+      [name]: type === "number"
+        ? parseInt(value)
+        : value
+    &#125;));
+  &#125;;
+
+  return (
+    &lt;form onSubmit=&#123;handleSubmit&#125;&gt;
+      &lt;input name="name" value=&#123;form.name&#125;
+        onChange=&#123;handleChange&#125; /&gt;
+      &lt;input name="email" value=&#123;form.email&#125;
+        onChange=&#123;handleChange&#125; /&gt;
+      &lt;input name="age" type="number"
+        value=&#123;form.age&#125; onChange=&#123;handleChange&#125; /&gt;
+      &lt;select name="role" value=&#123;form.role&#125;
+        onChange=&#123;handleChange&#125;&gt;
+        &lt;option value="user"&gt;User&lt;/option&gt;
+        &lt;option value="admin"&gt;Admin&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/form&gt;
+  );
+&#125;</pre>
+        <div style="flex: 1; font-size: 14px;">
+            <p><b>Один state-об'єкт</b> для всіх полів форми.</p>
+            <p><b>Переваги:</b></p>
+            <ul>
+                <li>Один <code>handleChange</code> для всіх полів;</li>
+                <li><code>name</code> атрибут = ключ у state;</li>
+                <li>Легко серіалізувати для API;</li>
+                <li>Легкий reset: <code>setForm(initial)</code>.</li>
+            </ul>
+            <p><b>Важливо:</b> використовуйте
+                <b>функціональну форму</b> <code>setForm(prev =&gt; ...)</code>
+                щоб не втратити дані при швидкому введенні.</p>
+            <p><b>Checkbox:</b> <code>e.target.checked</code>
+                замість <code>value</code>.</p>
+            <p><b>select multiple:</b> потребує окремої обробки.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Валідація форм</h2>
+</section>
+
+<section class="slide">
+    <h2>Валідація — типи правил</h2>
+    <img src="pictures/react/14/validation-types.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>Валідація — коли перевіряти</h2>
+    <div style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+            <pre style="margin: 0; font-size: 10px; white-space: pre;">// 1. On Submit
+handleSubmit = (e) =&gt; {
+  e.preventDefault();
+  const errors = validate(form);
+  if (Object.keys(errors).length)
+    return setErrors(errors);
+  submit(form);
+}
+// всі помилки одразу</pre>
+            <p style="font-size: 16px;"><b>Recommended approach</b></p>
+            <ol style="font-size: 15px;">
+                <li><code>onBlur</code> → validate field when user leaves input (no annoying errors while typing);</li>
+                <li><code>onChange</code> → clear error when user starts fixing;</li>
+                <li><code>onSubmit</code> → validate all fields before submit.</li>
+            </ol>
+        </div>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// 2. On Change (live)
+handleChange = (e) =&gt; {
+  const { name, value } = e.target;
+  setForm(f =&gt; ({...f, [name]: value}));
+  const err = validateField(name, value);
+  setErrors(e =&gt; ({...e, [name]: err}));
+}
+// помилки одразу при введенні
+
+// 3. On Blur (recommended)
+handleBlur = (e) =&gt; {
+  const { name, value } = e.target;
+  const err = validateField(name, value);
+  setErrors(e =&gt; ({...e, [name]: err}));
+}
+// помилки коли поле
+// втратило фокус</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Валідація — ручний підхід</h2>
+    <pre style="margin: 0; font-size: 8px; white-space: pre;">type FormErrors = &#123; name?: string; email?: string; password?: string &#125;;
+
+function validate(form: FormData): FormErrors &#123;
+  const errors: FormErrors = &#123;&#125;;
+  if (!form.name.trim()) errors.name = "Name is required";
+  if (form.name.length &lt; 2) errors.name = "Name too short";
+  if (!/^\S+@\S+\.\S+$/.test(form.email)) errors.email = "Invalid email";
+  if (form.password.length &lt; 8) errors.password = "Min 8 characters";
+  if (!/\d/.test(form.password)) errors.password = "Must contain a digit";
+  return errors;
+&#125;
+
+// Компонент
+const [errors, setErrors] = useState&lt;FormErrors&gt;(&#123;&#125;);
+const [touched, setTouched] = useState&lt;Record&lt;string, boolean&gt;&gt;(&#123;&#125;);
+
+const handleBlur = (e) =&gt; &#123;
+  setTouched(t =&gt; (&#123; ...t, [e.target.name]: true &#125;));
+  const fieldErrors = validate(form);
+  setErrors(prev =&gt; (&#123; ...prev, [e.target.name]: fieldErrors[e.target.name] &#125;));
+&#125;;
+
+const handleSubmit = (e) =&gt; &#123;
+  e.preventDefault();
+  const allErrors = validate(form);
+  if (Object.keys(allErrors).length &gt; 0) &#123;
+    setErrors(allErrors);
+    setTouched(&#123; name: true, email: true, password: true &#125;);
+    return;
+  &#125;
+  // submit
+&#125;;</pre>
+</section>
+
+<section class="slide">
+    <h2>Валідація — UI відображення помилок</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Поле з помилкою
+&lt;div className="field"&gt;
+  &lt;label htmlFor="email"&gt;Email&lt;/label&gt;
+  &lt;input
+    id="email"
+    name="email"
+    value=&#123;form.email&#125;
+    onChange=&#123;handleChange&#125;
+    onBlur=&#123;handleBlur&#125;
+    className=&#123;errors.email &amp;&amp; touched.email
+      ? "input-error"
+      : ""&#125;
+  /&gt;
+  &#123;errors.email &amp;&amp; touched.email &amp;&amp; (
+    &lt;p className="error"&gt;
+      &#123;errors.email&#125;
+    &lt;/p&gt;
+  )&#125;
+&lt;/div&gt;
+
+// CSS
+.input-error &#123;
+  border-color: red;
+&#125;
+.error &#123;
+  color: red; font-size: 10px;
+&#125;</pre>
+        <div style="flex: 1; font-size: 16px;">
+            <p><b>Принципи UI помилок:</b></p>
+            <ul>
+                <li>Показувати помилку <b>тільки після</b>
+                    <code>touched</code> (користувач зайшов у поле);</li>
+                <li>Прибирати помилку при початку виправлення;</li>
+                <li>Червоний border + текст під полем;</li>
+                <li>Aria-атрибути для accessibility:
+                    <code>aria-invalid</code>, <code>aria-describedby</code>;</li>
+                <li>Не блокувати введення — лише підказувати.</li>
+            </ul>
+            <p><b>Подія <code>onBlur</code></b> — коли поле
+                втратило фокус (найкращий момент для першої перевірки).</p>
+            <p><b>touched</b> — об'єкт, що фіксує, які поля
+                вже «відвідав» користувач.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Form libraries — порівняння</h2>
+    <img src="pictures/react/14/form-libraries.svg" alt="" style="display: block; margin: 0 auto; width: 80%;">
+</section>
+
+<section class="slide">
+    <h2>React Hook Form + Zod — практичний підхід</h2>
+    <div style="font-size: 17px;">
+        <pre style="margin: 12px 0; font-size: 10px; white-space: pre;">const schema = z.object(&#123;
+  email: z.string().email(),
+  password: z.string().min(8),
+&#125;);
+
+const &#123; register, handleSubmit,
+  formState: &#123; errors &#125; &#125; = useForm(&#123;
+    resolver: zodResolver(schema)
+  &#125;);</pre>
+        <p><b>Zod</b> описує правила і тип даних; <b>React Hook Form</b>
+            керує form state та submit.</p>
+        <p><b>Повний приклад:</b>
+            <a href="examples/react/14/forms-and-actions.tsx" target="_blank">examples/react/14/forms-and-actions.tsx</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>React 19 — Form Actions</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 7px; white-space: pre;">import &#123; useActionState &#125; from "react";
+import &#123; useFormStatus &#125; from "react-dom";
+
+async function submitName(
+  previous: string,
+  formData: FormData
+) &#123;
+  const name = String(formData.get("name") ?? "");
+
+  if (!name.trim())
+    return "Name is required";
+
+  await saveName(name);
+  return "";
+&#125;
+
+function Form() &#123;
+  const [error, action] =
+    useActionState(submitName, "");
+
+  return (
+    &lt;form action=&#123;action&#125;&gt;
+      &lt;input name="name" /&gt;
+      &lt;SubmitButton /&gt;
+      &#123;error &amp;&amp; &lt;p&gt;&#123;error&#125;&lt;/p&gt;&#125;
+    &lt;/form&gt;
+  );
+&#125;
+
+function SubmitButton() &#123;
+  const &#123; pending &#125; = useFormStatus();
+
+  return (
+    &lt;button type="submit" disabled=&#123;pending&#125;&gt;
+      &#123;pending ? "Saving..." : "Save"&#125;
+    &lt;/button&gt;
+  );
+&#125;</pre>
+        <div style="flex: 1; font-size: 16px;">
+            <p><b>React 19</b> дозволяє передавати функцію як <code>form action</code>.</p>
+            <p><code>useActionState</code> поєднує submit із результатом action та станом виконання.</p>
+            <p><code>useFormStatus</code> дозволяє компоненту всередині форми дізнатися,
+                чи триває submit.</p>
+            <p>Це <b>не заміна RHF + Zod у всіх випадках</b>. Для складних клієнтських форм
+                RHF + schema validation може бути зручнішим.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Authentication Flow</h2>
+</section>
+
+<section class="slide">
+    <h2>Authentication Flow — повний цикл</h2>
+    <img src="pictures/react/14/auth-flow.svg" alt="" style="display: block; margin: 0 auto; width: 80%;">
+</section>
+
+<section class="slide">
+    <h2>Auth — архітектура</h2>
+    <div style="font-size: 19px;">
+        <p style="margin-bottom: 4px;"><b>Authentication</b> — перевірка, <b>хто</b> користувач (login + password).</p>
+        <p style="margin-bottom: 4px;"><b>Authorization</b> — перевірка, <b>що</b> користувач може робити (role, permissions).</p>
+        <p style="margin-bottom: 4px;"><b>Компоненти auth-системи:</b></p>
+        <ul>
+            <li><b>AuthContext</b> — спільний auth state для UI (user, isAuthenticated, loading);</li>
+            <li><b>useAuth hook</b> — доступ до auth state + методів (login, logout, register);</li>
+            <li><b>API layer</b> — <code>authApi.login()</code>, <code>authApi.me()</code>;</li>
+            <li><b>ProtectedRoute</b> — wrapper для захищених сторінок;</li>
+            <li><b>Axios interceptor</b> — додає token до всіх запитів;</li>
+            <li><b>Token/session storage</b> — спосіб залежить від архітектури; для browser-сесій
+                часто використовують HttpOnly cookie.</li>
+            <li><b>Route protection</b> — у Declarative mode wrapper; у Data mode route <code>loader</code>/middleware.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Auth Context — архітектура</h2>
+    <img src="pictures/react/14/auth-context.svg" alt="" style="display: block; margin: 0 auto; width: 85%;">
+</section>
+
+<section class="slide">
+    <h2>AuthContext — реалізація</h2>
+    <div style="font-size: 17px;">
+        <pre style="margin: 12px 0; font-size: 10px; white-space: pre;">const AuthContext = createContext&lt;AuthState | null&gt;(null);
+
+// login → setUser(user)
+// logout → setUser(null)</pre>
+        <p><b>AuthContext</b> — спільний auth state для UI.
+            <code>useAuth()</code> дає компонентам доступ до цього state та auth actions.</p>
+        <p><b>Повний навчальний приклад:</b>
+            <a href="examples/react/14/auth-and-tokens.ts" target="_blank">examples/react/14/auth-and-tokens.ts</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>useAuth hook — використання</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// LoginPage.tsx
+function LoginPage() &#123;
+  const &#123; login &#125; = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [error, setError] = useState(null);
+
+  const from = location.state?.from?.pathname
+    || "/dashboard";
+
+  const handleSubmit = async (data) =&gt; &#123;
+    try &#123;
+      await login(data.email, data.password);
+      navigate(from, &#123; replace: true &#125;);
+    &#125; catch (e) &#123;
+      setError("Invalid credentials");
+    &#125;
+  &#125;;
+
+  return (
+    &lt;LoginForm
+      onSubmit=&#123;handleSubmit&#125;
+      error=&#123;error&#125;
+    /&gt;
+  );
+&#125;</pre>
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">// Navbar.tsx — показ залежно від auth
+function Navbar() &#123;
+  const &#123; user, isAuthenticated, logout &#125; =
+    useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () =&gt; &#123;
+    logout();
+    navigate("/login");
+  &#125;;
+
+  return (
+    &lt;nav&gt;
+      &#123;isAuthenticated ? (
+        &lt;&gt;
+          &lt;span&gt;Hello, &#123;user.name&#125;&lt;/span&gt;
+          &lt;button onClick=&#123;handleLogout&#125;&gt;
+            Logout
+          &lt;/button&gt;
+        &lt;/&gt;
+      ) : (
+        &lt;Link to="/login"&gt;Login&lt;/Link&gt;
+      )&#125;
+    &lt;/nav&gt;
+  );
+&#125;</pre>
+    </div>
+</section>
+
+<section class="slide">
+    <h2 class="shout">JWT та Protected Routes</h2>
+</section>
+
+<section class="slide">
+    <h2>JWT (JSON Web Token) — структура</h2>
+    <img src="pictures/react/14/jwt-structure.svg" alt="" style="display: block; margin: 0 auto; width: 75%;">
+</section>
+
+<section class="slide">
+    <h2>JWT — як це працює</h2>
+    <div style="font-size: 14px;">
+        <p><b>JWT</b> — компактний формат token-а для передачі claims між сторонами.
+            Типовий запис: <code>header.payload.signature</code>.</p>
+        <ul>
+            <li><b>Header</b> — метадані token-а та алгоритм;</li>
+            <li><b>Payload</b> — claims, наприклад <code>sub</code>, <code>role</code>, <code>exp</code>;</li>
+            <li><b>Signature</b> — перевіряє цілісність token-а відповідно до алгоритму
+                (наприклад, HMAC або RSA/ECDSA).</li>
+        </ul>
+        <p><b>Важливо:</b> payload зазвичай <b>не шифрується</b>. Його можна декодувати,
+            тому секретні дані туди не кладуть.</p>
+        <p><b>JWT не означає автоматично "stateless".</b> Його можна використовувати
+            і в системах із серверною перевіркою/відкликанням token-ів.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Токен зберігання — варіанти</h2>
+    <img src="pictures/react/14/token-storage.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+    <div style="font-size: 15px; margin-top: 10px;">
+        <p><b>localStorage/sessionStorage</b> доступні JavaScript, тому XSS може викрасти token.</p>
+        <p><b>HttpOnly + Secure cookie</b> не можна прочитати через JavaScript,
+            але cookie автоматично надсилаються браузером, тому треба враховувати CSRF.
+            <code>SameSite</code> і додатковий CSRF-захист залежать від архітектури.</p>
+        <p><b>Для навчального SPA:</b> localStorage можна використати для демонстрації механіки,
+            але не подавати як рекомендоване production-рішення.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Axios interceptor — додаємо token</h2>
+    <pre style="margin: 0; font-size: 10px; white-space: pre;">// api/client.ts
+import axios from "axios";
+
+export const apiClient = axios.create(&#123;
+  baseURL: "https://api.example.com",
+&#125;);
+
+// Request interceptor — додаємо Authorization header
+apiClient.interceptors.request.use((config) =&gt; &#123;
+  const token = localStorage.getItem("token");
+  if (token) &#123;
+    config.headers.Authorization = `Bearer ${token}`;
+  &#125;
+  return config;
+&#125;);
+
+// Response interceptor — 401 &#8594; logout + redirect
+apiClient.interceptors.response.use(
+  (response) =&gt; response,
+  (error) =&gt; &#123;
+    if (error.response?.status === 401) &#123;
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    &#125;
+    return Promise.reject(error);
+  &#125;
+);</pre>
+    <p style="font-size: 12px; line-height: 1; ">
+        <b>Цей приклад розрахований на token, доступний JavaScript.</b>
+        Якщо auth використовує HttpOnly cookie, JavaScript не читає token і такий request interceptor
+        для Authorization header не потрібен. При 401 застосунок може очистити auth state,
+        запустити refresh flow або показати login — залежно від архітектури.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Protected Routes + Auth — зв'язок</h2>
+    <img src="pictures/react/14/auth-routes.svg" alt="" style="display: block; margin: 0 auto; width: 85%;">
+</section>
+
+<section class="slide">
+    <h2>ProtectedRoute — з AuthContext</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 8px; white-space: pre;">// components/ProtectedRoute.tsx
+import &#123; Navigate, useLocation &#125;
+  from "react-router";
+import &#123; useAuth &#125; from "../context/AuthContext";
+
+export function ProtectedRoute(&#123;
+  children, roles = []
+&#125;: &#123;
+  children: ReactNode;
+  roles?: string[];
+&#125;) &#123;
+  const &#123; user, isAuthenticated, loading &#125; =
+    useAuth();
+  const location = useLocation();
+
+  // Auth check in progress
+  if (loading) return &lt;FullScreenLoader /&gt;;
+
+  if (!isAuthenticated)
+    return &lt;Navigate to="/login"
+      state=&#123; from: location &#125; replace /&gt;;
+
+  // Role check
+  if (roles.length &gt; 0 &amp;&amp;
+      !roles.includes(user!.role))
+    return &lt;Navigate to="/forbidden" replace /&gt;;
+
+  return &lt;&gt;&#123;children&#125;&lt;/&gt;;
+&#125;</pre>
+        <pre style="flex: 1; margin: 0; font-size: 8px; white-space: pre;">// App.tsx — структура з AuthProvider
+&lt;AuthProvider&gt;
+  &lt;BrowserRouter&gt;
+    &lt;Routes&gt;
+      &lt;Route path="/login"
+        element=&#123;&lt;LoginPage /&gt;&#125; /&gt;
+
+      &lt;Route path="/dashboard" element=&#123;
+        &lt;ProtectedRoute&gt;
+          &lt;DashboardLayout /&gt;
+        &lt;/ProtectedRoute&gt;
+      &#125;&gt;
+        &lt;Route index
+          element=&#123;&lt;DashboardHome /&gt;&#125; /&gt;
+        &lt;Route path="users"
+          element=&#123;&lt;UserList /&gt;&#125; /&gt;
+      &lt;/Route&gt;
+
+      &lt;Route path="/admin" element=&#123;
+        &lt;ProtectedRoute
+          roles=&#123;["admin"]&#125;&gt;
+          &lt;AdminPanel /&gt;
+        &lt;/ProtectedRoute&gt;
+      &#125; /&gt;
+    &lt;/Routes&gt;
+  &lt;/BrowserRouter&gt;
+&lt;/AuthProvider&gt;</pre>
+    </div>
+    <p style="font-size: 16px; margin-top: 10px;">
+        <b>loading</b> стан — поки AuthContext перевіряє session/token при завантаженні сторінки.
+        Без нього — при reload користувача можна помилково редиректити до завершення перевірки.
+        У Data mode цю перевірку також можна виконувати в route <code>loader</code> або middleware.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Token Refresh — автоматичне оновлення</h2>
+    <img src="pictures/react/14/token-refresh.svg" alt="" style="display: block; margin: 0 auto; width: 80%;">
+</section>
+
+<section class="slide">
+    <h2>Token Refresh — реалізація interceptor</h2>
+    <div style="font-size: 17px;">
+        <pre style="margin: 12px 0; font-size: 11px; white-space: pre;">401
+ ↓
+refresh access token
+ ↓
+retry original request
+
+// parallel 401 → queue</pre>
+        <p><b>Ідея:</b> один refresh обслуговує паралельні 401-запити,
+            інші чекають результату.</p>
+        <p><b>Повний навчальний приклад:</b>
+            <a href="examples/react/14/auth-and-tokens.ts" target="_blank">examples/react/14/auth-and-tokens.ts</a></p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Security threats — XSS та CSRF</h2>
+    <img src="pictures/react/14/security-threats.svg" alt="" style="display: block; margin: 0 auto; width: 90%;">
+</section>
+
+<section class="slide">
+    <h2>Auth — типові помилки</h2>
+    <ul style="font-size: 18px;">
+        <li><b>Зберігати bearer token у localStorage без урахування XSS</b> — шкідливий JavaScript може прочитати token.
+            Рішення: не використовувати небезпечний HTML без санітизації; CSP — додатковий захист;</li>
+        <li><b>Без loading-стану при перевірці token</b> — при reload користувача одразу редиректить на /login. Рішення: <code>loading</code> в AuthContext;</li>
+        <li><b>Token не видаляється при logout</b> — залишається в localStorage. Рішення: <code>localStorage.removeItem</code> + очистка state;</li>
+        <li><b>Неправильно обробляти 401</b> — застосунок не синхронізує auth state з API.
+            Варіант рішення: response interceptor, refresh або logout — залежно від auth-схеми;</li>
+        <li><b>Немає перевірки permissions для route, який її потребує</b> — одного <code>isAuthenticated</code> недостатньо.
+            Додайте role/permission check;</li>
+        <li><b>Пароль у state без <code>type="password"</code></b> — видно на екрані. Рішення: завжди <code>type="password"</code>;</li>
+        <li><b>Frontend валідація як єдина</b> — обхід через curl. Рішення: <b>backend обов'язково валідує</b>.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Registration flow — реєстрація</h2>
+    <div style="display: flex; gap: 20px;">
+        <pre style="flex: 1; margin: 0; font-size: 10px; white-space: pre;">function RegisterPage() &#123;
+  const &#123; login &#125; = useAuth();
+  const navigate = useNavigate();
+  const [serverError, setServerError] =
+    useState(null);
+
+  const handleSubmit = async (data) =&gt; &#123;
+    try &#123;
+      // 1. Register
+      await authApi.register(data);
+      // 2. Auto-login через єдиний auth flow
+      await login(data.email, data.password);
+      // 3. Redirect
+      navigate("/dashboard");
+    &#125; catch (e) &#123;
+      setServerError(e.response?.data?.message
+        || "Registration failed");
+    &#125;
+  &#125;;
+
+  return &lt;RegisterForm
+    onSubmit=&#123;handleSubmit&#125;
+    serverError=&#123;serverError&#125; /&gt;;
+&#125;</pre>
+        <div style="flex: 1; font-size: 14px;">
+            <p><b>Registration кроки:</b></p>
+            <ol>
+                <li>Форма: name, email, password, confirm;</li>
+                <li>Frontend валідація (Zod schema);</li>
+                <li>POST /api/register;</li>
+                <li>Успіх &#8594; auto-login (зберегти token);</li>
+                <li>Редирект на /dashboard;</li>
+                <li>Помилка (email exists) &#8594;
+                    показати serverError.</li>
+            </ol>
+            <p><b>Валідація password confirm:</b></p>
+            <p>Zod: <code>.refine(data =&gt; data.password
+                === data.confirm)</code></p>
+            <p><b>Server errors</b> (email exists) —
+                показуємо як <code>serverError</code>
+                окремо від field errors.</p>
+        </div>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Password handling — безпека</h2>
+    <div style="font-size: 18px;">
+        <p><b>Основні правила:</b></p>
+        <ul>
+            <li><b>Ніколи не логувати</b> пароль і не зберігати його без потреби після submit;</li>
+            <li><code>type="password"</code> — приховує введення в UI;</li>
+            <li><code>autocomplete="new-password"</code> для registration;</li>
+            <li><code>autocomplete="current-password"</code> для login;</li>
+            <li><b>Хешування</b> — на backend (наприклад, Argon2id або bcrypt), не на frontend;</li>
+            <li><b>HTTPS</b> — обов'язковий для передачі credentials;</li>
+            <li><b>Не вимагайте довільних "букви + цифри + спецсимволи"</b> як універсальне правило.
+                Актуальні рекомендації NIST роблять акцент на довжині та blocklist скомпрометованих паролів.</li>
+            <li><b>Мінімальна довжина</b> залежить від моделі автентифікації: NIST SP 800-63B-4
+                вимагає 15 символів для single-factor password і дозволяє 8+ у складі MFA.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Підсумок</h2>
+    <ul style="font-size: 18px;">
+        <li><b>Controlled</b> — React state керує значенням поля. <b>Uncontrolled</b> — DOM зберігає значення,
+            React читає його через ref або Form API.</li>
+        <li><b>Валідація</b> — можна виконувати onBlur/onChange/onSubmit; UX залежить від форми.</li>
+        <li><b>React Hook Form + Zod</b> — практичний варіант для складних форм: form state + schema validation + TS types.</li>
+        <li><b>React 19 Forms</b> — <code>form action</code>, <code>useActionState</code>, <code>useFormStatus</code> спрощують частину submit-flow.</li>
+        <li><b>Frontend validation &#8800; security</b> — backend обов'язково перевіряє credentials та permissions.</li>
+        <li><b>Authentication vs Authorization</b>: хто користувач + що йому дозволено.</li>
+        <li><b>Auth state</b> можна тримати через Context для UI; route protection у Data mode можна будувати через <code>loader</code>/middleware.</li>
+        <li><b>JWT</b> має header/payload/signature; payload не є шифрованим за замовчуванням.</li>
+        <li><b>Token storage</b>: localStorage доступний JavaScript і вразливий до викрадення при XSS; HttpOnly cookie захищає token від читання JavaScript, але потребує CSRF-захисту.</li>
+        <li><b>Axios interceptor</b> корисний для bearer token, який додається JavaScript; cookie-based auth працює інакше.</li>
+        <li><b>Token refresh</b> — окремий advanced flow, який залежить від backend та способу зберігання refresh token.</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Корисні ресурси</h2>
+    <ul style="font-size: 19px;">
+        <li><a href="examples/react/14/" target="_blank">Повні приклади коду до лекції 14</a></li>
+        <li><a href="https://react.dev/reference/react-dom/hooks" target="_blank">React Docs: Form Hooks</a></li>
+        <li><a href="https://react.dev/blog/2024/12/05/react-19" target="_blank">React 19 — Actions and form improvements</a></li>
+        <li><a href="https://www.react-hook-form.com/" target="_blank">React Hook Form</a></li>
+        <li><a href="https://zod.dev/" target="_blank">Zod — schema validation</a></li>
+        <li><a href="https://github.com/jquense/yup" target="_blank">Yup (альтернатива Zod)</a></li>
+        <li><a href="https://jwt.io/" target="_blank">jwt.io — JWT debugger</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc7519" target="_blank">RFC 7519 — JWT specification</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html" target="_blank">OWASP JWT Cheat Sheet</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank">MDN: HTTP Cookies</a></li>
+        <li><a href="https://owasp.org/www-community/attacks/xss/" target="_blank">OWASP: XSS</a></li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2 class="shout">Дякую за увагу!</h2>
+</section>
+
+<footer class="badge">
+    <a href="https://github.com/Computer-Science-Department-ChNU/client-web-systems" target="_blank">Fork me on
+        GitHub</a>
+</footer>
+
+<div class="progress"></div>
+
+<script src="node_modules/@shower/core/dist/index.js"></script>
+</body>
+</html>
