@@ -8,6 +8,13 @@
 - [**Лабораторна робота №4.** Vue.js: Обчислювані властивості, обробка подій, прив'язування елементів форми, props, watchers](lab-04)
 - [**Лабораторна робота №5.** Vue.js: Керування маршрутами з використанням vue-router](lab-05)
 - [**Лабораторна робота №6.** Vue.js: Архітектура Feature-Sliced Design (FSD), керування станом за допомогою Pinia та використання UI-бібліотеки компонентів.](lab-06)
+- > Lab 7: Vue.js project placeholder
+- [**Лабораторна робота №8.** React Fundamentals: компоненти, JSX, props, стан, події та списки](lab-08)
+
+[//]: # (- [**Лабораторна робота №9.** React State та Effects: Context API, useReducer, useEffect і Custom Hooks]&#40;lab-09&#41;)
+[//]: # (- [**Лабораторна робота №10.** React та REST API: асинхронні операції, loading/error/empty states та CRUD]&#40;lab-10&#41;)
+[//]: # (- [**Лабораторна робота №11.** React Router, форми, валідація та автентифікація]&#40;lab-11&#41;)
+[//]: # (- [**Лабораторна робота №12.** Підсумковий mini-project: server state та client state]&#40;lab-12&#41;)
 
 
 
