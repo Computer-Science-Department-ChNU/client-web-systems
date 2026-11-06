@@ -25,17 +25,17 @@
 
 Опрацювати:
 
-. https://react.dev/learn[Quick Start — React].
-. https://react.dev/learn/your-first-component[Your First Component].
-. https://react.dev/learn/writing-markup-with-jsx[Writing Markup with JSX].
-. https://react.dev/learn/javascript-in-jsx-with-curly-braces[JavaScript in JSX with Curly Braces].
-. https://react.dev/learn/passing-props-to-a-component[Passing Props to a Component].
-. https://react.dev/learn/rendering-lists[Rendering Lists].
-. https://react.dev/learn/conditional-rendering[Conditional Rendering].
-. https://react.dev/learn/responding-to-events[Responding to Events].
-. https://react.dev/learn/state-a-components-memory[State: A Component's Memory].
-. https://react.dev/learn/updating-objects-in-state[Updating Objects in State].
-. https://react.dev/learn/updating-arrays-in-state[Updating Arrays in State].
+. https://uk.react.dev/learn[Quick Start — React].
+. https://uk.react.dev/learn/your-first-component[Your First Component].
+. https://uk.react.dev/learn/writing-markup-with-jsx[Writing Markup with JSX].
+. https://uk.react.dev/learn/javascript-in-jsx-with-curly-braces[JavaScript in JSX with Curly Braces].
+. https://uk.react.dev/learn/passing-props-to-a-component[Passing Props to a Component].
+. https://uk.react.dev/learn/rendering-lists[Rendering Lists].
+. https://uk.react.dev/learn/conditional-rendering[Conditional Rendering].
+. https://uk.react.dev/learn/responding-to-events[Responding to Events].
+. https://uk.react.dev/learn/state-a-components-memory[State: A Component's Memory].
+. https://uk.react.dev/learn/updating-objects-in-state[Updating Objects in State].
+. https://uk.react.dev/learn/updating-arrays-in-state[Updating Arrays in State].
 
 == Практична частина
 

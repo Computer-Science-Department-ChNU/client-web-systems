@@ -30,12 +30,12 @@
 
 Опрацювати:
 
-. https://react.dev/learn/managing-state[Managing State].
-. https://react.dev/learn/sharing-state-between-components[Sharing State Between Components].
-. https://react.dev/learn/extracting-state-logic-into-a-reducer[Extracting State Logic into a Reducer].
-. https://react.dev/learn/scaling-up-with-reducer-and-context[Scaling Up with Reducer and Context].
-. https://react.dev/learn/synchronizing-with-effects[Synchronizing with Effects].
-. https://react.dev/learn/reusing-logic-with-custom-hooks[Reusing Logic with Custom Hooks].
+. https://uk.react.dev/learn/managing-state[Managing State].
+. https://uk.react.dev/learn/sharing-state-between-components[Sharing State Between Components].
+. https://uk.react.dev/learn/extracting-state-logic-into-a-reducer[Extracting State Logic into a Reducer].
+. https://uk.react.dev/learn/scaling-up-with-reducer-and-context[Scaling Up with Reducer and Context].
+. https://uk.react.dev/learn/synchronizing-with-effects[Synchronizing with Effects].
+. https://uk.react.dev/learn/reusing-logic-with-custom-hooks[Reusing Logic with Custom Hooks].
 
 == Стилізація та BEM
 
