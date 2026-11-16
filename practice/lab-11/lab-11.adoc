@@ -42,12 +42,6 @@
 | Непарний | **Data Mode** | `createBrowserRouter`, `RouterProvider`; protected route через `loader` + redirect
 |===
 
-Не потрібно реалізовувати обидва режими в межах однієї лабораторної.
-Другий режим потрібно знати теоретично за матеріалами лекції, але в коді виконується лише режим, визначений варіантом.
-
-Для Data Mode використати `RouterProvider` з `react-router/dom`.
-Основні routing API імпортувати з `react-router`.
-
 == Теоретична частина
 
 . https://reactrouter.com/home[React Router 8].
@@ -71,27 +65,6 @@
 ----
 npm install react-router
 ----
-
-Основні routing API:
-
-[source,typescript]
-----
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router";
-----
-
-Для Data Mode також:
-
-[source,typescript]
-----
-import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
-----
-
-Студент реалізує лише режим, визначений його варіантом.
 
 === 2. Стилізація та BEM
 
@@ -138,29 +111,7 @@ feat(lab-11): add routing and protected auth
 
 Маршрут `/` може перенаправляти на `/tasks`.
 
-Незалежно від режиму маршрутизація повинна працювати без повного перезавантаження браузера.
-
-==== 4.1. Парний варіант — Declarative Mode
-
-Використати:
-
-* `BrowserRouter`;
-* `Routes`;
-* `Route`;
-* route wrapper або окремий компонент для protected route.
-
-У protected route перевірити авторизацію та перенаправити неавторизованого користувача на `/login`.
-
-==== 4.2. Непарний варіант — Data Mode
-
-Використати:
-
-* `createBrowserRouter`;
-* `RouterProvider`;
-* route `loader`;
-* `redirect` або еквівалентний механізм для protected route.
-
-`requireUser` повинен перевіряти поточну сесію та не допускати неавторизованого користувача до `/profile`.
+Незалежно від режиму маршрутизація повинна працювати без повного перезавантаження браузера!
 
 === 5. Layout та навігація
 
