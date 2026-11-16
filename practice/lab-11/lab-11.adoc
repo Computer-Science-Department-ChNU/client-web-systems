@@ -1,0 +1,436 @@
+= Лабораторна робота №11
+
+*Тема:* React Router 8, форми, валідація та автентифікація.
+
+*Мета:* навчитися будувати багатосторінкову SPA-структуру на основі React Router, працювати з route params і query params, створювати повторно використовувану форму в діалоговому вікні, організовувати authentication та authorization для дій із даними.
+
+Лабораторна є продовженням **Study Planner**.
+Потрібно зберегти попередній REST/API-функціонал і додати навігацію та автентифікацію.
+
+== Вимоги до звіту
+
+. Використовувати React 19.x (не нижче 19.2.7) та Node.js 22.22 або новішу версію.
+. Використовувати TypeScript.
+. Використати актуальний React Router 8.
+. Реалізувати динамічний маршрут із route params.
+. Використати query params для фільтрації або сортування.
+. Реалізувати спільний layout.
+. Реалізувати форму Login з React Hook Form.
+. Реалізувати схему валідації за допомогою Zod.
+. Реалізувати Auth Context.
+. Реалізувати login, logout та protected route.
+. Реалізувати routing у режимі, визначеному варіантом студента.
+. Для парного варіанту використати **Declarative Mode**.
+. Для непарного варіанту використати **Data Mode**.
+. Реалізувати спільний `TaskFormDialog` для створення та редагування завдання.
+. Створення, редагування та видалення завдань повинні бути доступні лише авторизованому користувачу.
+. Під час авторизованих API-запитів передавати token через `Authorization: Bearer <token>`.
+. Не використовувати `alert`.
+. Для стилізації використати один із підходів: SCSS із дотриманням BEM, Bootstrap або Tailwind CSS.
+. Якщо обрано SCSS, дотримуватися BEM-патерну для класів.
+. Дотримуватися ESLint, TypeScript та Conventional Commits.
+
+== Розподіл варіантів
+
+Спосіб реалізації маршрутизації визначається *номером варіанту* студента:
+
+[cols="1,2,3",options="header"]
+|===
+| Номер варіанту | React Router mode | Що обов'язково використати
+
+| Парний | **Declarative Mode** | `BrowserRouter`, `Routes`, `Route`; protected route через wrapper/route component
+| Непарний | **Data Mode** | `createBrowserRouter`, `RouterProvider`; protected route через `loader` + redirect
+|===
+
+== Теоретична частина
+
+. https://reactrouter.com/home[React Router 8].
+. https://reactrouter.com/start/data/routing[Routing].
+. https://reactrouter.com/start/declarative/navigating[Navigating].
+. https://reactrouter.com/start/declarative/url-values[URL values].
+. https://react-hook-form.com/get-started[React Hook Form].
+. https://zod.dev/[Zod].
+. Матеріали лекцій щодо Routing, Forms, Validation та Authentication.
+. Поняття authentication, authorization, token та protected route.
+
+== Практична частина
+
+=== 1. Версії та встановлення React Router
+
+Для цієї лабораторної використовується **React Router 8**.
+
+Встановити:
+
+[source,bash]
+----
+npm install react-router
+----
+
+=== 2. Стилізація та BEM
+
+Для стилізації обрати один із трьох підходів:
+
+. **SCSS + BEM** — власні стилі з класами за схемою Block__Element--Modifier;
+. **Bootstrap** — готові utility та component класи;
+. **Tailwind CSS** — utility-first класи.
+
+Не потрібно поєднувати всі три підходи одночасно!
+
+Якщо обрано **SCSS + BEM**:
+
+* стилі організувати за компонентами або логічними блоками;
+* кожен компонент або логічний UI-блок має власний `.scss` файл поруч із відповідним компонентом;
+* не зберігати стилі компонентів у загальному `App.css` або іншому великому спільному файлі;
+* назви класів повинні відповідати BEM;
+* не прив'язувати стилі до глибокої структури DOM;
+* глобальні стилі залишати лише для справді глобальних речей: `body`, базові стилі, шрифти, reset тощо.
+
+=== 3. Git workflow
+
+Обов'язково виконувати роботу у feature-гілці `feature/routing-auth`.
+
+Приклад Conventional Commit:
+
+[source]
+----
+feat(lab-11): add routing and protected auth
+----
+
+=== 4. Структура маршрутів
+
+Розширити Study Planner такими маршрутами:
+
+[source]
+----
+/
+├── /tasks
+├── /tasks/:taskId
+├── /login
+└── /profile
+----
+
+Маршрут `/` може перенаправляти на `/tasks`.
+
+Незалежно від режиму маршрутизація повинна працювати без повного перезавантаження браузера!
+
+=== 5. Layout та навігація
+
+Створити спільний layout застосунку з:
+
+* Header;
+* навігацією;
+* основною областю контенту.
+
+Навігація між сторінками повинна працювати без повного перезавантаження браузера.
+
+У навігації передбачити посилання на:
+
+* Tasks;
+* Profile;
+* Login/Logout відповідно до стану сесії.
+
+Layout можна реалізувати як звичайний route wrapper у Declarative Mode або як батьківський route з children у Data Mode.
+
+=== 6. Route Params та сторінка деталей
+
+На сторінці деталей отримувати `taskId` з URL.
+
+Приклад:
+
+----
+/tasks/42
+----
+
+Для отримання даних використати repository з лабораторної №10.
+
+На сторінці показати щонайменше:
+
+* назву;
+* опис;
+* категорію;
+* пріоритет;
+* стан виконання;
+* хто створив завдання;
+* дату створення.
+
+Поля `createdBy` та `createdAt` повинні належати domain-моделі `Task`.
+Якщо обраний API не надає ці поля, вони можуть бути client-owned metadata. У такому разі потрібно явно позначити їх у коді як дані, якими володіє клієнт, а не сервер.
+
+=== 7. Query Params
+
+Фільтр Study Planner перенести у URL.
+
+Приклад:
+
+----
+/tasks?status=completed&priority=high
+----
+
+Після оновлення сторінки параметри повинні зберігатися.
+
+Один і той самий фільтр не потрібно одночасно дублювати в незалежному state та URL без чіткої причини.
+
+=== 8. TaskFormDialog — створення та редагування
+
+Створити один повторно використовуваний компонент `TaskFormDialog`, який використовується для двох сценаріїв:
+
+* **create** — відкривається кнопкою `+` на сторінці `/tasks`;
+* **edit** — відкривається кнопкою «Редагувати» на сторінці `/tasks/:taskId`.
+
+Не потрібно створювати окремі `CreateTaskForm` та `EditTaskForm`.
+Одна форма повинна працювати в двох режимах, отримуючи через props режим та початкові дані.
+
+Приблизний API компонента:
+
+[source,typescript]
+----
+type TaskFormDialogProps = {
+  open: boolean;
+  mode: "create" | "edit";
+  task?: Task;
+  onClose: () => void;
+  onSubmit: (data: TaskFormData) => Promise<void>;
+};
+----
+
+Форма повинна містити:
+
+* назву;
+* опис;
+* категорію;
+* пріоритет.
+
+Використати React Hook Form та Zod.
+Під час відправлення показувати pending state та блокувати кнопку Submit.
+
+Після успішного create/edit:
+
+* закрити dialog;
+* оновити дані в UI без повного перезавантаження сторінки;
+* показати короткий success state.
+
+Dialog повинен коректно закриватися через кнопку Close/Cancel.
+Обов'язково передбачити базову доступність: зрозумілий заголовок, keyboard focus та закриття через Escape.
+
+=== 9. Authorization для CRUD-дій
+
+Перегляд списку та деталей завдання можна залишити доступним без авторизації.
+
+Для неавторизованого користувача такі дії повинні бути недоступними:
+
+* створення нового завдання;
+* редагування;
+* видалення.
+
+Приклад сценарію:
+
+[source]
+----
+Гість → /tasks → /tasks/42 → «Редагувати» → Login
+Авторизований → /tasks → «+» → TaskFormDialog → create
+----
+
+Не потрібно покладатися лише на приховування кнопок.
+Перед виконанням захищеної дії потрібно перевіряти стан авторизації.
+
+Для редагування та видалення після перевірки auth виконати відповідну repository-операцію з Authorization header.
+
+=== 10. Форма Login
+
+Створити сторінку `Login`.
+
+Для рекомендованого DummyJSON використовувати поля:
+
+* username;
+* password.
+
+Використати React Hook Form та Zod.
+
+Мінімальна схема:
+
+* username — обов'язковий;
+* password — обов'язковий, щонайменше 6 символів у межах цієї лабораторної.
+
+Помилки повинні показуватися біля відповідних полів.
+
+Після коректної відправки форми виконати login-flow.
+
+=== 11. Auth Context та token
+
+Створити `AuthContext`, який зберігатиме щонайменше:
+
+* поточного користувача;
+* `accessToken` або ознаку активної сесії;
+* `isAuthenticated`;
+* `login`;
+* `logout`.
+
+Для рекомендованого DummyJSON використовувати реальний authentication flow:
+
+[source,http]
+----
+POST https://dummyjson.com/auth/login
+----
+
+Тіло запиту:
+
+[source,json]
+----
+{
+  "username": "emilys",
+  "password": "emilyspass"
+}
+----
+
+DummyJSON повертає `accessToken` і `refreshToken`.
+
+Для отримання поточного користувача:
+
+[source,http]
+----
+GET https://dummyjson.com/auth/me
+Authorization: Bearer <accessToken>
+----
+
+Для базової частини достатньо login, logout, Auth Context та protected route.
+Refresh token flow належить до додаткових завдань.
+
+Authentication відповідає на питання «хто користувач?», а authorization — «які дії йому дозволені?». У цій лабораторній authorization демонструється через create/edit/delete для завдань.
+
+Вимога щодо мінімальної довжини пароля тут є лише навчальною перевіркою форми, а не універсальним правилом безпеки.
+
+Для альтернативного API студент адаптує API client/repository до його контракту.
+
+==== API, що використовується в роботі
+
+Рекомендований DummyJSON надає:
+
+[cols="1,2,3",options="header"]
+|===
+|Метод |Endpoint |Призначення
+
+|POST |`/auth/login` |логін та отримання `accessToken` і `refreshToken`;
+|GET |`/auth/me` |отримання поточного авторизованого користувача;
+|POST |`/auth/refresh` |оновлення токенів.
+|===
+
+Тестові облікові дані для базової роботи: `emilys` / `emilyspass`.
+Не потрібно зберігати реальні персональні дані або секрети в репозиторії.
+
+=== 12. Protected Route
+
+Захистити маршрут `/profile`.
+
+Неавторизований користувач повинен перенаправлятися на `/login`.
+
+Спосіб захисту залежить від варіанту:
+
+* **парний варіант** — перевірка через declarative wrapper / protected route component;
+* **непарний варіант** — перевірка через `loader` та redirect.
+
+Після успішного входу користувач повинен отримати доступ до protected route.
+
+=== 13. Авторизовані API-запити
+
+Для запитів, що потребують автентифікації, передавати token через заголовок:
+
+[source,http]
+----
+Authorization: Bearer <token>
+----
+
+Ця логіка повинна бути зосереджена в API client або іншому спільному модулі, а не дублюватися в кожному компоненті.
+
+=== 14. Profile та Logout
+
+На `/profile` показати:
+
+* username або email користувача;
+* статус авторизації;
+* кнопку Logout.
+
+Після Logout protected routes повинні знову стати недоступними.
+
+=== 15. Додаткові завдання
+
+. Повернення на попередній маршрут після успішного входу.
+. Додати реєстрацію.
+. Реалізувати окремий `NotFound` для 404.
+. Додати nested routes.
+. Додати роль `admin` та адміністративний маршрут.
+. Зробити lazy loading для однієї сторінки.
+. Відновлювати сесію після перезавантаження.
+. Реалізувати refresh token flow.
+
+== Рекомендована структура
+
+[source]
+----
+src/
+├── api/
+├── repositories/
+├── components/
+│   └── TaskFormDialog.tsx
+├── context/
+│   └── AuthContext.tsx
+├── hooks/
+├── layouts/
+│   └── AppLayout.tsx
+├── pages/
+│   ├── TasksPage.tsx
+│   ├── TaskDetailsPage.tsx
+│   ├── LoginPage.tsx
+│   ├── ProfilePage.tsx
+│   └── NotFoundPage.tsx
+├── schemas/
+│   ├── authSchema.ts
+│   └── taskSchema.ts
+├── routes/
+└── App.tsx
+----
+
+Структура може бути іншою, але routing, auth та page-level code повинні мати зрозуміле розділення відповідальності.
+
+== Демонстрація на захисті
+
+За час захисту необхідно продемонструвати:
+
+. список `/tasks` та відкриття `/tasks/:taskId`;
+. query params для фільтрації або сортування;
+. відкриття `TaskFormDialog` через `+` для створення;
+. відкриття того самого dialog для редагування з Task Details;
+. Login з помилкою Zod-валідації та успішним входом;
+. спробу захищеної дії без авторизації та перехід на Login;
+. виконання create/edit/delete після авторизації;
+. Logout і повторну перевірку захищеної дії.
+
+Додатково за своїм варіантом показати routing:
+
+* **парний варіант:** `BrowserRouter` + `Routes` + `Route` та declarative protected route;
+* **непарний варіант:** `createBrowserRouter` + `RouterProvider` + protected `loader`.
+
+У коді достатньо коротко показати `AuthContext`, `TaskFormDialog`, місце, де формується Authorization header, та конфігурацію маршрутів свого режиму.
+
+Не потрібно демонструвати всі додаткові можливості.
+
+== Контрольні запитання
+
+. Що таке SPA і як React Router допомагає реалізувати навігацію?
+. Чим route params відрізняються від query params?
+. Для чого URL можна розглядати як частину стану застосунку?
+. Чим Declarative Mode відрізняється від Data Mode у React Router?
+. Які основні API використовуються в Declarative Mode?
+. Які основні API використовуються в Data Mode?
+. Як працює protected route у declarative підході?
+. Як працює protected route через loader у Data Mode?
+. Чому loader не повинен напряму використовувати React hooks?
+. Що таке nested routes і layout?
+. Що таке authentication і чим вона відрізняється від authorization?
+. Що таке token?
+. Чому Authorization header зручніше централізувати в API client?
+. Що має містити Auth Context?
+. Чому автентифікацію не варто реалізовувати окремо в кожному компоненті?
+. Що таке schema validation і для чого використовується Zod?
+. Як React Hook Form взаємодіє із Zod?
+. Які ризики пов'язані зі зберіганням token у localStorage?
+. Для чого потрібен redirect на Login у protected route?
