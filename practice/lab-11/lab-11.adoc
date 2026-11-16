@@ -21,7 +21,7 @@
 . Реалізувати login, logout та protected route.
 . Реалізувати спільний `TaskFormDialog` для створення та редагування завдання.
 . Створення, редагування та видалення завдань повинні бути доступні лише авторизованому користувачу.
-. Під час авторизованих API-запитів передавати token через `Authorization: Bearer <token>`. Для рекомендованого DummyJSON це обов'язково для `/auth/me`.
+. Під час авторизованих API-запитів передавати token через `Authorization: Bearer <token>`.
 . Не використовувати `alert`.
 . Для стилізації використати один із підходів: SCSS із дотриманням BEM, Bootstrap або Tailwind CSS.
 . Якщо обрано SCSS, дотримуватися BEM-патерну для класів.
@@ -47,8 +47,6 @@
 === Версії та встановлення React Router
 
 Для цієї лабораторної використовується **React Router 8**.
-У React Router 8 пакет `react-router-dom` більше не використовується: основні API імпортуються з `react-router`, а DOM-специфічний `RouterProvider` — з `react-router/dom`.
-
 Встановити:
 
 [source,bash]
@@ -59,20 +57,6 @@ npm install react-router
 Для базової частини лабораторної використовувати Declarative Mode з `BrowserRouter`, `Routes` та `Route`.
 Data Router з `createBrowserRouter`, `loader` та `redirect` можна використати як додатковий варіант.
 
-Приклад базового імпорту:
-
-[source,typescript]
-----
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-} from 'react-router';
-----
-
-Не використовувати приклади з `react-router-dom`, розраховані на старі версії React Router.
-
 === Стилізація та BEM
 
 Для стилізації обрати один із трьох підходів:
@@ -81,7 +65,7 @@ import {
 . **Bootstrap** — готові utility та component класи;
 . **Tailwind CSS** — utility-first класи.
 
-Не потрібно поєднувати всі три підходи одночасно.
+Не потрібно поєднувати всі три підходи одночасно!
 
 Якщо обрано **SCSS + BEM**:
 
@@ -94,7 +78,7 @@ import {
 
 === Git workflow
 
-Рекомендується виконувати роботу у feature-гілці `feature/routing-auth`.
+Обов'язково виконувати роботу у feature-гілці `feature/routing-auth`.
 
 Приклад Conventional Commit:
 
