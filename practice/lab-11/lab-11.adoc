@@ -149,23 +149,6 @@ feat(lab-11): add routing and protected auth
 * `Route`;
 * route wrapper або окремий компонент для protected route.
 
-Орієнтовно:
-
-[source,tsx]
-----
-<BrowserRouter>
-  <Routes>
-    <Route path="/" element={<Navigate to="/tasks" replace />} />
-    <Route path="/tasks" element={<TasksPage />} />
-    <Route path="/tasks/:taskId" element={<TaskDetailsPage />} />
-    <Route path="/login" element={<LoginPage />} />
-    <Route element={<ProtectedRoute />}>
-      <Route path="/profile" element={<ProfilePage />} />
-    </Route>
-  </Routes>
-</BrowserRouter>
-----
-
 У protected route перевірити авторизацію та перенаправити неавторизованого користувача на `/login`.
 
 ==== 4.2. Непарний варіант — Data Mode
@@ -177,36 +160,7 @@ feat(lab-11): add routing and protected auth
 * route `loader`;
 * `redirect` або еквівалентний механізм для protected route.
 
-Орієнтовно:
-
-[source,tsx]
-----
-const router = createBrowserRouter([
-  {
-    path: "/",
-    children: [
-      { index: true, loader: () => redirect("/tasks") },
-      { path: "tasks", Component: TasksPage },
-      { path: "tasks/:taskId", Component: TaskDetailsPage },
-      { path: "login", Component: LoginPage },
-      {
-        path: "profile",
-        loader: requireUser,
-        Component: ProfilePage,
-      },
-    ],
-  },
-]);
-
-function App() {
-  return <RouterProvider router={router} />;
-}
-----
-
 `requireUser` повинен перевіряти поточну сесію та не допускати неавторизованого користувача до `/profile`.
-
-Для Data Mode логіку перевірки сесії винести у функцію або модуль, який може бути використаний loader-ом.
-Не намагатися викликати React hook безпосередньо всередині loader.
 
 === 5. Layout та навігація
 
