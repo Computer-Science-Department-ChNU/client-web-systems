@@ -15,9 +15,9 @@
 * React 19.x;
 * Node.js 22.22 або новіша версія;
 * TypeScript;
-* React Router 8;
-* TanStack Query v5;
-* Zustand v5;
+* React Router;
+* TanStack Query;
+* Zustand;
 * React Hook Form + Zod.
 
 Підходи до стилізації:
@@ -35,7 +35,6 @@
 * **feature-first** — переважно за функціональністю;
 * **type-first** — переважно за технічною відповідальністю.
 
-Повний FSD не вимагається.
 
 Незалежно від структури повинні бути зрозумілими:
 
@@ -49,10 +48,6 @@
 == Server state та client state
 
 Server state організуйте за допомогою **TanStack Query**, client/UI state — за допомогою **Zustand**.
-
-Не дублюйте один і той самий server state у Zustand.
-
-Client-owned state має мати реальну роль у користувацькому сценарії та зберігатися між перезавантаженнями, якщо це доречно для обраної предметної області.
 
 == API та Repository
 
