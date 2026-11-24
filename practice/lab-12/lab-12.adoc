@@ -51,7 +51,8 @@
 
 == Server state та client state
 
-Server state організуйте за допомогою **TanStack Query**, client/UI state — за допомогою **Zustand**.
+- server state організуйте за допомогою **TanStack Query**
+- client/UI state — за допомогою **Zustand**.
 
 == API та Repository
 
@@ -81,7 +82,7 @@ Repository повинен відокремлювати UI від деталей 
 
 == Тема курсового проєкту
 
-Тему визначає **номер у списку студентів своєї групи**.
+Тему визначає **номер у списку студентів своєї підгрупи**.
 
 Теми розподіляються по колу:
 
