@@ -7,8 +7,8 @@
 - [**Лабораторна робота №3.** Vue.js: Основи роботи з компонентами. Шаблони. Директиви](lab-03)
 - [**Лабораторна робота №4.** Vue.js: Обчислювані властивості, обробка подій, прив'язування елементів форми, props, watchers](lab-04)
 - [**Лабораторна робота №5.** Vue.js: Керування маршрутами з використанням vue-router](lab-05)
-- [**Лабораторна робота №6.** Vue.js: Архітектура Feature-Sliced Design (FSD), керування станом за допомогою Pinia та використання UI-бібліотеки компонентів.](lab-06)
-- > Lab 7 placeholder
+- [**Лабораторна робота №6.** Vue.js: Архітектура Feature-Sliced Design (FSD), керування станом за допомогою Pinia та використання UI-бібліотеки компонентів](lab-06)
+- [**Лабораторна робота №7.** Vue.js: Підсумковий проєкт (Vue 3, TypeScript, API, Pinia та архітектура Feature-Sliced Design)](lab-07)
 - [**Лабораторна робота №8.** React Fundamentals: компоненти, JSX, props, стан, події та списки](lab-08)
 - [**Лабораторна робота №9.** React State та Effects: Context API, useReducer, useEffect і Custom Hooks](lab-09)
 - [**Лабораторна робота №10.** React та REST API: асинхронні операції, loading/error/empty states та CRUD](lab-10)
